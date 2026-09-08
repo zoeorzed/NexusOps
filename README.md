@@ -178,6 +178,8 @@ curl -X POST http://localhost:8080/chat \
 .\scripts\run-evaluation.ps1
 ```
 
+普通评测只与现有 baseline 对比，不会覆盖它。确认本次结果适合作为后续回归基准时，再显式执行 `./scripts/run-evaluation.ps1 -SaveAsBaseline`。
+
 没有真实模型密钥时，流程仍可做离线烟测，但对话 Judge 会明确标记 `judge_failed=true` 并返回 0.5 fallback；该分数不能当作真实模型质量指标。
 
 ## 快速启动

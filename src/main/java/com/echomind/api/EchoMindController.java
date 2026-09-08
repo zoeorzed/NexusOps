@@ -16,6 +16,7 @@ import com.echomind.intent.IntentResult;
 import com.echomind.knowledge.KnowledgeBaseService;
 import com.echomind.knowledge.SearchResult;
 import com.echomind.memory.MemoryContext;
+import com.echomind.memory.ConversationEntityResolver;
 import com.echomind.memory.MemoryManager;
 import com.echomind.memory.MessageRole;
 import com.echomind.monitor.PerformanceMonitor;
@@ -52,6 +53,7 @@ public class EchoMindController {
     private final AgentOrchestrator orchestrator;
     private final IntentRecognizer intentRecognizer;
     private final MemoryManager memoryManager;
+    private final ConversationEntityResolver conversationEntityResolver;
     private final KnowledgeToolManager knowledgeToolManager;
     private final KnowledgeBaseService knowledgeBaseService;
     private final AnswerVerifier answerVerifier;
@@ -65,6 +67,7 @@ public class EchoMindController {
             AgentOrchestrator orchestrator,
             IntentRecognizer intentRecognizer,
             MemoryManager memoryManager,
+            ConversationEntityResolver conversationEntityResolver,
             KnowledgeToolManager knowledgeToolManager,
             KnowledgeBaseService knowledgeBaseService,
             AnswerVerifier answerVerifier,
@@ -77,6 +80,7 @@ public class EchoMindController {
         this.orchestrator = orchestrator;
         this.intentRecognizer = intentRecognizer;
         this.memoryManager = memoryManager;
+        this.conversationEntityResolver = conversationEntityResolver;
         this.knowledgeToolManager = knowledgeToolManager;
         this.knowledgeBaseService = knowledgeBaseService;
         this.answerVerifier = answerVerifier;
@@ -132,6 +136,11 @@ public class EchoMindController {
         );
         AnswerVerifier.VerificationResult verification = answerVerifier.verify(request.message(), result.response(), fullContext);
         boolean escalated = result.escalated() || verification.needEscalation();
+        Map<String, List<String>> currentEntities = intentResult.entities();
+        Map<String, List<String>> resolvedEntities = conversationEntityResolver.resolve(
+                currentEntities,
+                memoryContext.recentMessages()
+        );
         orchestrator.updateTraceEscalated(result.requestId(), escalated);
         memoryManager.addMessage(userId, conversationId, MessageRole.USER, request.message());
         memoryManager.addMessage(userId, conversationId, MessageRole.ASSISTANT, result.response());
@@ -153,7 +162,9 @@ public class EchoMindController {
                 knowledge.success() && knowledge.data() != null && !knowledge.data().isEmpty(),
                 verification.pass(),
                 verification.grounded(),
-                intentResult.entities(),
+                resolvedEntities,
+                currentEntities,
+                resolvedEntities,
                 round(intentResult.confidence(), 4),
                 intentResult.sourceScores()
         );

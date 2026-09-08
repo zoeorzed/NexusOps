@@ -114,7 +114,9 @@ public class EndToEndEvaluator {
                 "judge_fallback_count", judgeFallbackCount,
                 "results", results
         );
-        saveBaseline(report);
+        if (request != null && Boolean.TRUE.equals(request.saveAsBaseline())) {
+            saveBaseline(report);
+        }
         return report;
     }
 

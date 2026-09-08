@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,9 +24,30 @@ class IntentRecognizerTest {
         assertThat(result.intent()).isEqualTo(IntentCategory.TECHNICAL_LOGIN);
         assertThat(result.intentGroup()).isEqualTo("technical");
         assertThat(result.entities().get("error_code")).contains("401");
+        assertThat(result.entities().get("error_code")).doesNotContain("ABCD1234");
         assertThat(result.entities().get("order_id")).contains("ABCD1234");
         assertThat(result.entities().get("date")).contains("今天");
         assertThat(result.entities().get("amount")).contains("￥99.00");
+    }
+
+    @Test
+    void doesNotTreatOrderIdAsErrorCodeInCompositeRequest() {
+        IntentResult result = recognizer.recognize(
+                "我登录失败并提示401，订单#A20260906001查不到，而且银行卡重复扣款299元",
+                List.of()
+        );
+
+        assertThat(result.entities().get("order_id")).containsExactly("A20260906001");
+        assertThat(result.entities().get("error_code")).contains("401").doesNotContain("A20260906001");
+        assertThat(result.entities().get("amount")).contains("299元");
+    }
+
+    @Test
+    void extractsOrderIdIntroducedByChineseCopula() {
+        Map<String, List<String>> entities = recognizer.extractEntities("我的订单号是A20260906002，支付金额是199元。");
+
+        assertThat(entities.get("order_id")).containsExactly("A20260906002");
+        assertThat(entities.get("amount")).containsExactly("199元");
     }
 
     @Test

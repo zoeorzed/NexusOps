@@ -54,6 +54,7 @@ public class PerformanceMonitor {
             monitorCollections.increment();
             Map<String, Object> agentStats = orchestrator.stats();
             Map<String, Double> penalties = new HashMap<>();
+            Set<String> currentAlertKeys = new HashSet<>();
             double[] minSuccessRate = {1.0};
             agentStats.forEach((key, value) -> {
                 if (value instanceof Map<?, ?> map) {
@@ -64,18 +65,28 @@ public class PerformanceMonitor {
                         agentSuccessRate = sr;
                     }
                     if (sr < properties.getMonitor().getSuccessRateThreshold()) {
-                        addAlert("agent_success_rate:" + key, sr, properties.getMonitor().getSuccessRateThreshold());
+                        String metric = "agent_success_rate:" + key;
+                        currentAlertKeys.add(metric);
+                        addAlert(metric, sr, properties.getMonitor().getSuccessRateThreshold());
                     }
                     if (avg > properties.getMonitor().getLatencyMsThreshold()) {
-                        addAlert("agent_avg_ms:" + key, avg, properties.getMonitor().getLatencyMsThreshold());
+                        String metric = "agent_avg_ms:" + key;
+                        currentAlertKeys.add(metric);
+                        addAlert(metric, avg, properties.getMonitor().getLatencyMsThreshold());
                     }
                     penalties.put(key, routingPenalty(sr, avg));
                 }
             });
             agentSuccessRate = minSuccessRate[0];
+            resolveRecoveredAlerts(currentAlertKeys);
             orchestrator.updateRoutingPenalties(penalties);
-            if (!penalties.isEmpty()) {
+            suggestions.clear();
+            suggestionKeys.clear();
+            boolean routingAdjusted = penalties.values().stream().anyMatch(penalty -> penalty > 0.0);
+            if (routingAdjusted) {
                 addSuggestion("路由权重已根据在线表现调整", "检查 /monitor 中低成功率或高延迟 Agent，必要时优化 prompt 或增加实例。", 7);
+            } else {
+                addSuggestion("当前运行状态正常，暂无需调整路由权重", "继续观察 Agent 成功率和平均延迟即可。", 1);
             }
         });
     }
@@ -84,7 +95,9 @@ public class PerformanceMonitor {
         return Map.of(
                 "agent_stats", orchestrator.stats(),
                 "tool_stats", toolManager.stats(),
-                "active_alerts", tail(alerts, 10),
+                "active_alerts", tail(alerts.stream()
+                        .filter(alert -> !Boolean.TRUE.equals(alert.get("resolved")))
+                        .toList(), 10),
                 "suggestions", tail(suggestions, 5)
         );
     }
@@ -106,6 +119,24 @@ public class PerformanceMonitor {
             alerts.add(alert);
             sendWebhook(alert);
         }
+    }
+
+    private void resolveRecoveredAlerts(Set<String> currentAlertKeys) {
+        Set<String> recovered = new HashSet<>(alertKeys);
+        recovered.removeAll(currentAlertKeys);
+        if (recovered.isEmpty()) {
+            return;
+        }
+        for (int index = 0; index < alerts.size(); index++) {
+            Map<String, Object> alert = alerts.get(index);
+            if (recovered.contains(String.valueOf(alert.get("metric")))
+                    && !Boolean.TRUE.equals(alert.get("resolved"))) {
+                Map<String, Object> resolved = new HashMap<>(alert);
+                resolved.put("resolved", true);
+                alerts.set(index, Map.copyOf(resolved));
+            }
+        }
+        alertKeys.removeAll(recovered);
     }
 
     private void addSuggestion(String title, String action, int priority) {

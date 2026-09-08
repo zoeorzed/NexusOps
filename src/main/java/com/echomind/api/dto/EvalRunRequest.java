@@ -9,7 +9,9 @@ public record EvalRunRequest(
         @Schema(description = "意图识别评测用例")
         List<IntentCase> intentCases,
         @Schema(description = "对话质量评测用例")
-        List<DialogCase> dialogCases
+        List<DialogCase> dialogCases,
+        @Schema(description = "是否将本次报告保存为后续回归检测基线；默认 false")
+        Boolean saveAsBaseline
 ) {
     @Schema(description = "意图识别评测用例")
     public record IntentCase(

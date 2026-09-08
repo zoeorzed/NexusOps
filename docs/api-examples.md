@@ -37,6 +37,8 @@ Content-Type: application/json
   "verified": true,
   "grounded": true,
   "entities": {"error_code": ["401"]},
+  "current_entities": {"error_code": ["401"]},
+  "resolved_entities": {"error_code": ["401"]},
   "intent_confidence": 0.595,
   "intent_source_scores": {"llm": 0.85, "embedding": 0.0891, "pattern": 0.5, "refined_by_pattern": 0.5}
 }

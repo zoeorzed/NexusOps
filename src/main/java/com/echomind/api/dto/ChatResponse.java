@@ -42,8 +42,14 @@ public record ChatResponse(
         boolean verified,
         @Schema(description = "回答是否基于上下文")
         boolean grounded,
-        @Schema(description = "结构化实体")
+        @Schema(description = "兼容旧版调用方的结构化实体字段，内容与 resolved_entities 相同")
         Map<String, List<String>> entities,
+        @Schema(description = "仅从当前一轮用户消息中直接抽取的结构化实体")
+        @JsonProperty("current_entities")
+        Map<String, List<String>> currentEntities,
+        @Schema(description = "当前实体结合该会话历史补全后的结构化实体；当前一轮优先")
+        @JsonProperty("resolved_entities")
+        Map<String, List<String>> resolvedEntities,
         @Schema(description = "意图识别置信度")
         double intentConfidence,
         @Schema(description = "意图识别来源分数")

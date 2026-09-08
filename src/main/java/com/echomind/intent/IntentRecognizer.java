@@ -267,17 +267,22 @@ public class IntentRecognizer {
         return ((Number) result.getOrDefault("confidence", 0.0)).doubleValue();
     }
 
-    private Map<String, List<String>> extractEntities(String message) {
+    public Map<String, List<String>> extractEntities(String message) {
         Map<String, List<String>> entities = new LinkedHashMap<>();
-        entities.put("order_id", regexFindGroup(message, "(?:订单号?|order(?:_id)?|#)\\s*[:：#]?\\s*([A-Za-z0-9_-]{4,32})", 1));
+        List<String> orderIds = regexFindGroup(message, "(?:订单号?|order(?:_id)?|#)\\s*(?:是|为|[:：#])?\\s*([A-Za-z0-9_-]{4,32})", 1);
+        entities.put("order_id", orderIds);
         entities.put("product", List.of());
         entities.put("date", regexFind(message, "(今天|明天|昨天|本周|这周|下周|\\d{4}[-/.年]\\d{1,2}[-/.月]\\d{1,2}日?)"));
         entities.put("error_code", regexFind(message, "\\b[45]\\d{2}\\b"));
         entities.put("amount", regexFind(message, "((?:¥|￥)\\s*\\d+(?:\\.\\d{1,2})?|\\d+(?:\\.\\d{1,2})?\\s*(?:元|块|rmb|cny|usd|美元))"));
-        entities.put("error_code", uniqueConcat(
+        List<String> errorCodes = uniqueConcat(
                 entities.get("error_code"),
                 regexFind(message, "\\b[A-Z][A-Z0-9_-]{2,16}\\b")
-        ));
+        );
+        errorCodes = errorCodes.stream()
+                .filter(code -> orderIds.stream().noneMatch(orderId -> orderId.equalsIgnoreCase(code)))
+                .toList();
+        entities.put("error_code", errorCodes);
         return entities;
     }
 

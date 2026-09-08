@@ -56,7 +56,7 @@ curl -X POST http://localhost:8080/eval/run \
   --data-binary @evaluation/eval-dataset.json
 ```
 
-完整 JSON 默认保存到 `target/evaluation-report.json`，baseline 保存到 `data/eval/baseline.json`（二者均不提交 Git）。
+完整 JSON 默认保存到 `target/evaluation-report.json`，普通运行不会覆盖现有 baseline。只有执行 `./scripts/run-evaluation.ps1 -SaveAsBaseline` 时，才会把本次结果保存到 `data/eval/baseline.json`（二者均不提交 Git）。
 
 ## 如何判定是真实 LLM-as-Judge
 

@@ -15,15 +15,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 public class AgentOrchestrator {
+
+    private static final double SUPPORTING_AGENT_MIN_SCORE = 0.30;
+    private static final double SUPPORTING_AGENT_PRIMARY_RATIO = 0.30;
 
     private final IntentRecognizer intentRecognizer;
     private final Map<AgentType, List<BaseAgent>> pool;
@@ -123,15 +128,28 @@ public class AgentOrchestrator {
     private OrchestratorResult runParallel(AgentRequest req, RoutingDecision decision, List<ToolCallTrace> externalToolCalls) {
         Instant start = Instant.now();
         List<AgentType> targets = decision.agentTypes();
-        List<CompletableFuture<AgentResponse>> futures = targets.stream()
-                .map(type -> CompletableFuture.supplyAsync(() -> execute(req, type)))
-                .toList();
+        List<CompletableFuture<AgentResponse>> futures = new ArrayList<>();
+        for (int index = 0; index < targets.size(); index++) {
+            AgentType type = targets.get(index);
+            boolean lastTarget = index == targets.size() - 1;
+            futures.add(CompletableFuture.supplyAsync(() -> execute(scopedRequest(req, type, lastTarget), type)));
+        }
         List<AgentResponse> responses = futures.stream().map(CompletableFuture::join).toList();
+        int lastSuccessfulIndex = -1;
+        for (int index = 0; index < responses.size(); index++) {
+            if (responses.get(index).success()) {
+                lastSuccessfulIndex = index;
+            }
+        }
         List<String> parts = new ArrayList<>();
-        for (AgentResponse response : responses) {
+        for (int index = 0; index < responses.size(); index++) {
+            AgentResponse response = responses.get(index);
             if (response.success()) {
                 String role = response.agentType() == decision.primaryAgent() ? "主处理" : "辅助处理";
-                parts.add("[" + response.agentType().name().toLowerCase(Locale.ROOT) + " - " + role + "]\n" + response.content());
+                String responseContent = index == lastSuccessfulIndex
+                        ? removeTrailingCollaborationNotice(response.content())
+                        : response.content();
+                parts.add("[" + response.agentType().name().toLowerCase(Locale.ROOT) + " - " + role + "]\n" + responseContent);
             }
         }
         String content = parts.isEmpty() ? "抱歉，所有 Agent 均处理失败。" : String.join("\n\n", parts);
@@ -157,6 +175,109 @@ public class AgentOrchestrator {
         );
         recordTrace(req, result);
         return result;
+    }
+
+    private AgentRequest scopedRequest(AgentRequest request, AgentType agentType, boolean lastTarget) {
+        String original = request.message() == null ? "" : request.message();
+        String scopedMessage;
+        Map<String, List<String>> scopedEntities = new LinkedHashMap<>();
+        Map<String, List<String>> entities = request.entities() == null ? Map.of() : request.entities();
+        copyEntity(entities, scopedEntities, "order_id");
+        copyEntity(entities, scopedEntities, "date");
+
+        if (agentType == AgentType.TECHNICAL) {
+            copyEntity(entities, scopedEntities, "error_code");
+            scopedMessage = """
+                    [用户请求中与技术相关的内容]
+                    %s
+
+                    [技术子任务]
+                    你当前就是 Technical Agent。只处理登录、认证、系统故障和订单不可见等技术问题；不要回答扣款、退款、到账或财务审核。
+                    回复中不要复述、解释或提示账务问题，账务子任务会由协同 Agent 独立处理。
+                    不得建议“转交技术Agent”或“升级至技术Agent”。如确需人工后台排查，只说明需要人工后台排查；不得声称已记录、将记录、已提交、将提交或会继续跟进。
+                    %s
+                    """.formatted(domainMessage(original, AgentType.TECHNICAL), endingInstruction(lastTarget));
+        } else if (agentType == AgentType.BILLING) {
+            copyEntity(entities, scopedEntities, "amount");
+            scopedMessage = """
+                    [用户请求中与账务相关的内容]
+                    %s
+
+                    [账务子任务]
+                    你当前就是 Billing Agent。只处理扣款、支付、退款、账单和流水核验；不要回答登录、401、缓存或技术排障。
+                    回复中不要复述、解释或提示技术问题，技术子任务会由协同 Agent 独立处理。
+                    若知识库说“24小时内完成核验”，24小时只能用于核验时限，不得表述为退款24小时内到账；知识库没有到账时限时必须说明以支付渠道为准。
+                    涉及实际退款可说明需要人工或财务审核，但不得声称当前对话已经转人工或已经完成退款。
+                    %s
+                    """.formatted(domainMessage(original, AgentType.BILLING), endingInstruction(lastTarget));
+        } else {
+            scopedEntities.putAll(entities);
+            scopedMessage = original;
+        }
+
+        return new AgentRequest(
+                scopedMessage,
+                request.userId(),
+                request.conversationId(),
+                request.context(),
+                request.history(),
+                scopedEntities,
+                request.intent(),
+                request.intentGroup(),
+                request.urgency(),
+                request.intentConfidence(),
+                request.requestId()
+        );
+    }
+
+    private String endingInstruction(boolean lastTarget) {
+        if (lastTarget) {
+            return "你是本次并行结果中最后展示的 Agent。回答完本领域问题后直接结束，不得再说明其他问题由哪个 Agent 处理，也不要添加“处理范围说明”段落。";
+        }
+        return "你不是最后展示的 Agent；如有必要，可在结尾用一句话提示剩余领域将由下一个协同 Agent 处理。";
+    }
+
+    private String removeTrailingCollaborationNotice(String content) {
+        if (content == null || content.isBlank()) {
+            return content == null ? "" : content;
+        }
+        List<String> blocks = new ArrayList<>(Arrays.asList(content.strip().split("\\R\\s*\\R")));
+        if (!blocks.isEmpty() && isCollaborationNotice(blocks.getLast())) {
+            blocks.removeLast();
+            if (!blocks.isEmpty() && blocks.getLast().trim().matches("#{1,6}\\s*.*(?:处理范围|协同).*(?:说明)?")) {
+                blocks.removeLast();
+            }
+        }
+        return String.join("\n\n", blocks).strip();
+    }
+
+    private boolean isCollaborationNotice(String block) {
+        String text = block == null ? "" : block.toLowerCase(Locale.ROOT);
+        return text.contains("agent")
+                && (text.contains("协同") || text.contains("另一部分") || text.contains("其他问题"))
+                && (text.contains("独立处理") || text.contains("不展开") || text.contains("不做展开") || text.contains("处理范围"));
+    }
+
+    private String domainMessage(String original, AgentType agentType) {
+        String[] keywords = agentType == AgentType.TECHNICAL
+                ? new String[]{"登录", "401", "认证", "凭证", "报错", "错误", "故障", "崩溃", "查不到", "不可见", "系统"}
+                : new String[]{"扣款", "支付", "退款", "账单", "发票", "流水", "金额", "299元", "多扣"};
+        List<String> relevant = Arrays.stream(original.split("(?<=[，,。；;！？!?])"))
+                .map(String::trim)
+                .filter(part -> containsAny(part.toLowerCase(Locale.ROOT), keywords))
+                .toList();
+        return relevant.isEmpty() ? original : String.join("", relevant);
+    }
+
+    private void copyEntity(
+            Map<String, List<String>> source,
+            Map<String, List<String>> target,
+            String name
+    ) {
+        List<String> values = source.getOrDefault(name, List.of());
+        if (!values.isEmpty()) {
+            target.put(name, values);
+        }
     }
 
     private AgentType route(IntentCategory intent, UrgencyLevel urgency) {
@@ -195,15 +316,24 @@ public class AgentOrchestrator {
             return new RoutingDecision(AgentType.GENERAL, List.of(), "无可用专属 Agent，降级到 GeneralAgent", 0.1);
         }
 
-        List<Map.Entry<AgentType, Double>> ordered = availableScores.entrySet().stream()
+        List<Map.Entry<AgentType, Double>> specificCandidates = availableScores.entrySet().stream()
+                .filter(entry -> entry.getKey() != AgentType.GENERAL)
+                .filter(entry -> entry.getValue() >= SUPPORTING_AGENT_MIN_SCORE)
+                .toList();
+        List<Map.Entry<AgentType, Double>> candidates = specificCandidates.isEmpty()
+                ? new ArrayList<>(availableScores.entrySet())
+                : specificCandidates;
+        List<Map.Entry<AgentType, Double>> ordered = candidates.stream()
                 .sorted(Map.Entry.<AgentType, Double>comparingByValue().reversed())
                 .toList();
         AgentType primary = ordered.getFirst().getKey();
         double primaryScore = ordered.getFirst().getValue();
+        double normalizedPrimaryScore = Math.min(primaryScore, 1.0);
         List<AgentType> supportingAgents = ordered.stream()
                 .skip(1)
                 .filter(entry -> entry.getKey() != AgentType.GENERAL)
-                .filter(entry -> entry.getValue() >= 0.45 && entry.getValue() >= primaryScore * 0.50)
+                .filter(entry -> entry.getValue() >= SUPPORTING_AGENT_MIN_SCORE
+                        && entry.getValue() >= normalizedPrimaryScore * SUPPORTING_AGENT_PRIMARY_RATIO)
                 .map(Map.Entry::getKey)
                 .toList();
         return new RoutingDecision(
