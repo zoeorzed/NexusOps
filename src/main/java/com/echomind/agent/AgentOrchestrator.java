@@ -1,5 +1,7 @@
 package com.echomind.agent;
 
+import com.echomind.config.AgentExecutionConfig;
+import com.echomind.config.AgentExecutionProperties;
 import com.echomind.intent.IntentCategory;
 import com.echomind.intent.IntentRecognizer;
 import com.echomind.intent.IntentResult;
@@ -7,6 +9,8 @@ import com.echomind.intent.UrgencyLevel;
 import com.echomind.trace.RequestTraceStore;
 import com.echomind.trace.RequestToolTrace;
 import com.echomind.trace.ToolCallTrace;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -22,7 +26,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Service
 public class AgentOrchestrator {
@@ -33,12 +43,27 @@ public class AgentOrchestrator {
     private final IntentRecognizer intentRecognizer;
     private final Map<AgentType, List<BaseAgent>> pool;
     private final RequestTraceStore traceStore;
+    private final ThreadPoolExecutor executor;
+    private final long executionTimeoutNanos;
     private final Map<IntentCategory, AgentType> routing = new EnumMap<>(IntentCategory.class);
 
     public AgentOrchestrator(IntentRecognizer intentRecognizer, Map<AgentType, List<BaseAgent>> pool, RequestTraceStore traceStore) {
+        this(intentRecognizer, pool, traceStore, DefaultExecutor.INSTANCE, new AgentExecutionProperties());
+    }
+
+    @Autowired
+    public AgentOrchestrator(
+            IntentRecognizer intentRecognizer,
+            Map<AgentType, List<BaseAgent>> pool,
+            RequestTraceStore traceStore,
+            @Qualifier("agentExecutor") ThreadPoolExecutor executor,
+            AgentExecutionProperties properties
+    ) {
         this.intentRecognizer = intentRecognizer;
         this.pool = pool;
         this.traceStore = traceStore;
+        this.executor = executor;
+        this.executionTimeoutNanos = TimeUnit.MILLISECONDS.toNanos(properties.getTimeoutMs());
         routing.put(IntentCategory.TECHNICAL, AgentType.TECHNICAL);
         routing.put(IntentCategory.TECHNICAL_LOGIN, AgentType.TECHNICAL);
         routing.put(IntentCategory.TECHNICAL_CRASH, AgentType.TECHNICAL);
@@ -86,10 +111,10 @@ public class AgentOrchestrator {
 
         RoutingDecision decision = routeDecision(req);
         if (decision.multiAgent()) {
-            return runParallel(req, decision, externalToolCalls);
+            return runParallel(req, decision, externalToolCalls, start);
         }
 
-        AgentResponse response = execute(req, decision.primaryAgent());
+        AgentResponse response = executeWithinDeadline(req, decision).getFirst();
         boolean escalated = response.escalate()
                 || req.urgency() == UrgencyLevel.CRITICAL
                 || req.intent() == IntentCategory.ESCALATION
@@ -125,16 +150,9 @@ public class AgentOrchestrator {
         traceStore.updateEscalated(requestId, escalated);
     }
 
-    private OrchestratorResult runParallel(AgentRequest req, RoutingDecision decision, List<ToolCallTrace> externalToolCalls) {
-        Instant start = Instant.now();
+    private OrchestratorResult runParallel(AgentRequest req, RoutingDecision decision, List<ToolCallTrace> externalToolCalls, Instant start) {
         List<AgentType> targets = decision.agentTypes();
-        List<CompletableFuture<AgentResponse>> futures = new ArrayList<>();
-        for (int index = 0; index < targets.size(); index++) {
-            AgentType type = targets.get(index);
-            boolean lastTarget = index == targets.size() - 1;
-            futures.add(CompletableFuture.supplyAsync(() -> execute(scopedRequest(req, type, lastTarget), type)));
-        }
-        List<AgentResponse> responses = futures.stream().map(CompletableFuture::join).toList();
+        List<AgentResponse> responses = executeWithinDeadline(req, decision);
         int lastSuccessfulIndex = -1;
         for (int index = 0; index < responses.size(); index++) {
             if (responses.get(index).success()) {
@@ -153,7 +171,17 @@ public class AgentOrchestrator {
             }
         }
         String content = parts.isEmpty() ? "抱歉，所有 Agent 均处理失败。" : String.join("\n\n", parts);
-        boolean escalate = responses.stream().anyMatch(AgentResponse::escalate);
+        List<String> failures = responses.stream()
+                .filter(response -> !response.success())
+                .map(AgentResponse::content)
+                .toList();
+        if (!failures.isEmpty()) {
+            content += "\n\n" + String.join("\n", failures);
+        }
+        boolean escalate = responses.stream().anyMatch(AgentResponse::escalate)
+                || req.urgency() == UrgencyLevel.CRITICAL
+                || req.intent() == IntentCategory.ESCALATION
+                || req.intent() == IntentCategory.HUMAN_HANDOFF;
         List<AgentType> agentTypes = responses.stream()
                 .filter(AgentResponse::success)
                 .map(AgentResponse::agentType)
@@ -175,6 +203,95 @@ public class AgentOrchestrator {
         );
         recordTrace(req, result);
         return result;
+    }
+
+    private List<AgentResponse> executeWithinDeadline(AgentRequest request, RoutingDecision decision) {
+        // One monotonic deadline for the whole fan-out; queue waiting consumes the same budget.
+        long startedNanos = System.nanoTime();
+        long deadlineNanos = startedNanos + executionTimeoutNanos;
+        List<AgentType> targets = decision.agentTypes();
+        List<PendingAgent> pending = new ArrayList<>();
+        for (int index = 0; index < targets.size(); index++) {
+            AgentType type = targets.get(index);
+            AgentRequest scoped = decision.multiAgent()
+                    ? scopedRequest(request, type, index == targets.size() - 1)
+                    : request;
+            if (deadlineNanos - System.nanoTime() <= 0) {
+                pending.add(new PendingAgent(type, null, "timeout"));
+                continue;
+            }
+            try {
+                Future<CompletedAgent> future = executor.submit(() -> {
+                    AgentResponse response = execute(scoped, type, deadlineNanos);
+                    return new CompletedAgent(response, System.nanoTime());
+                });
+                pending.add(new PendingAgent(type, future, null));
+            } catch (RejectedExecutionException rejected) {
+                pending.add(new PendingAgent(type, null, "rejected"));
+            }
+        }
+
+        List<AgentResponse> responses = new ArrayList<>();
+        for (PendingAgent task : pending) {
+            if (task.failure() != null) {
+                responses.add(executionFailure(task.type(), task.failure(), startedNanos));
+                continue;
+            }
+            try {
+                // get(0) still collects a completed sibling after another Agent used the budget.
+                CompletedAgent completed = task.future().get(
+                        Math.max(0, deadlineNanos - System.nanoTime()), TimeUnit.NANOSECONDS);
+                responses.add(completed.finishedNanos() - deadlineNanos <= 0
+                        ? completed.response()
+                        : executionFailure(task.type(), "timeout", startedNanos));
+            } catch (TimeoutException timedOut) {
+                cancel(task.future());
+                responses.add(executionFailure(task.type(), "timeout", startedNanos));
+            } catch (InterruptedException interrupted) {
+                cancel(task.future());
+                Thread.currentThread().interrupt();
+                responses.add(executionFailure(task.type(), "interrupted", startedNanos));
+            } catch (ExecutionException | CancellationException failed) {
+                responses.add(executionFailure(task.type(), "failed", startedNanos));
+            }
+        }
+        return responses;
+    }
+
+    private void cancel(Future<?> future) {
+        // This requests interruption only. An underlying HTTP client may continue until its own timeout.
+        future.cancel(true);
+        if (future instanceof Runnable queuedTask) {
+            executor.remove(queuedTask);
+        }
+    }
+
+    private AgentResponse executionFailure(AgentType type, String reason, long startedNanos) {
+        String domain = switch (type) {
+            case TECHNICAL -> "技术问题";
+            case BILLING -> "账务问题";
+            case ESCALATION -> "升级请求";
+            default -> "当前问题";
+        };
+        String message = switch (reason) {
+            case "timeout" -> domain + "处理超时，请稍后重试。";
+            case "rejected" -> domain + "处理服务繁忙，请稍后重试。";
+            case "interrupted" -> domain + "处理已中断，请稍后重试。";
+            default -> domain + "暂时处理失败，请稍后重试。";
+        };
+        return new AgentResponse(type, message, false, 0.0,
+                TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedNanos), false,
+                "agent_execution:" + type.name().toLowerCase(Locale.ROOT), false, false, false, reason);
+    }
+
+    private record PendingAgent(AgentType type, Future<CompletedAgent> future, String failure) {
+    }
+
+    private record CompletedAgent(AgentResponse response, long finishedNanos) {
+    }
+
+    private static class DefaultExecutor {
+        private static final ThreadPoolExecutor INSTANCE = AgentExecutionConfig.newExecutor(new AgentExecutionProperties());
     }
 
     private AgentRequest scopedRequest(AgentRequest request, AgentType agentType, boolean lastTarget) {
@@ -472,14 +589,21 @@ public class AgentOrchestrator {
         return req.intentConfidence() < 0.5;
     }
 
-    private AgentResponse execute(AgentRequest req, AgentType agentType) {
+    private AgentResponse execute(AgentRequest req, AgentType agentType, long deadlineNanos) {
+        if (deadlineNanos - System.nanoTime() <= 0 || Thread.currentThread().isInterrupted()) {
+            return executionFailure(agentType, "timeout", deadlineNanos - executionTimeoutNanos);
+        }
         BaseAgent agent = bestAgent(agentType).orElseGet(() -> bestAgent(AgentType.GENERAL).orElse(null));
         if (agent == null) {
-            return new AgentResponse(AgentType.GENERAL, "服务暂时不可用，请稍后重试。", false, 0.0, 0, false, "", false, false, false, "service unavailable");
+            return executionFailure(agentType, "failed", deadlineNanos - executionTimeoutNanos);
         }
         AgentResponse response = agent.handle(req);
-        if (!response.success() && agentType != AgentType.GENERAL) {
-            return bestAgent(AgentType.GENERAL).map(a -> a.handle(req)).orElse(response);
+        if (response == null || !response.success()) {
+            // A failed specialist is not retried through another domain with the same model.
+            // BaseAgent returns failures rather than throwing; normalize those failures too.
+            String reason = deadlineNanos - System.nanoTime() <= 0 || Thread.currentThread().isInterrupted()
+                    ? "timeout" : "failed";
+            return executionFailure(agentType, reason, deadlineNanos - executionTimeoutNanos);
         }
         return response;
     }
@@ -546,7 +670,7 @@ public class AgentOrchestrator {
         return new ToolCallTrace(
                 toolName == null ? "" : toolName,
                 response.success(),
-                !response.success(),
+                !response.success() && !toolName.startsWith("agent_execution:"),
                 response.toolCached(),
                 response.toolReranked(),
                 response.latencyMs(),

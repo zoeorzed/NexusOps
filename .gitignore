@@ -10,3 +10,8 @@ data/
 .mvn/wrapper/maven-wrapper.jar
 /src/main/java/Main.java
 .resume-*/
+.resume_compare/
+/*.docx
+# Local interview notes covering other projects; publish project-specific verification instead.
+/docs/interview-audit.md
+/docs/interview-tests.md

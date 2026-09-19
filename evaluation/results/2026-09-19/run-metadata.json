@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-19",
+  "model": "deepseek-chat",
+  "profile": "deepseek",
+  "synthetic_data": true,
+  "fallback_enabled": false,
+  "jar_sha256": "01f8c19f8d4e3397d8e81c04d9441a476376be3462b50ef784431f48127a93ed",
+  "redis_version": "3.2.100 (isolated native Windows instance)",
+  "dataset_sha256": "22605bdc2fb2fdabf003b7ff0c86f24fc55a716ea1f13ab942255e9a744130d0",
+  "scope": "95 candidate intent samples plus three real HTTP demo requests; no production benchmark",
+  "demo_exit_code": 0,
+  "intent_elapsed_seconds": 67.14
+}

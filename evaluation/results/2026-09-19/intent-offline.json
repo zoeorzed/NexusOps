@@ -1,0 +1,608 @@
+{
+  "evaluation_mode" : "offline_production_intent_fallback",
+  "metrics_version" : "intent-v2-expected-labels-dialog-valid-only",
+  "scope" : "19-class synthetic candidate set; not an LLM, RAG, agent or independent human evaluation",
+  "algorithm" : "Unmodified IntentRecognizer with failing LlmGateway: specific keyword rules, then template character n-gram similarity, then generic rules",
+  "reproducibility_note" : "Equal-score Map iteration ties in production can vary between JVM runs; keep per-case predictions and do not claim bitwise repeatability.",
+  "label_scope" : [ "account", "account_security", "billing", "complaint", "escalation", "feedback", "greeting", "human_handoff", "invoice", "logistics", "order_status", "other", "payment_issue", "query", "refund", "request", "technical", "technical_crash", "technical_login" ],
+  "total" : 95,
+  "passed" : 50,
+  "avg_scores" : {
+    "macro_f1" : 0.4876,
+    "intent_accuracy" : 0.5263
+  },
+  "per_class" : {
+    "account" : {
+      "f1" : 0.7499999999999999,
+      "precision" : 1.0,
+      "support" : 5.0,
+      "recall" : 0.6
+    },
+    "account_security" : {
+      "f1" : 0.9090909090909091,
+      "precision" : 0.8333333333333334,
+      "support" : 5.0,
+      "recall" : 1.0
+    },
+    "billing" : {
+      "f1" : 0.0,
+      "precision" : 0.0,
+      "support" : 5.0,
+      "recall" : 0.0
+    },
+    "complaint" : {
+      "f1" : 0.7272727272727272,
+      "precision" : 0.6666666666666666,
+      "support" : 5.0,
+      "recall" : 0.8
+    },
+    "escalation" : {
+      "f1" : 0.5,
+      "precision" : 0.42857142857142855,
+      "support" : 5.0,
+      "recall" : 0.6
+    },
+    "feedback" : {
+      "f1" : 0.0,
+      "precision" : 0.0,
+      "support" : 5.0,
+      "recall" : 0.0
+    },
+    "greeting" : {
+      "f1" : 0.5454545454545454,
+      "precision" : 0.5,
+      "support" : 5.0,
+      "recall" : 0.6
+    },
+    "human_handoff" : {
+      "f1" : 0.4444444444444445,
+      "precision" : 0.5,
+      "support" : 5.0,
+      "recall" : 0.4
+    },
+    "invoice" : {
+      "f1" : 0.7692307692307693,
+      "precision" : 0.625,
+      "support" : 5.0,
+      "recall" : 1.0
+    },
+    "logistics" : {
+      "f1" : 0.7692307692307693,
+      "precision" : 0.625,
+      "support" : 5.0,
+      "recall" : 1.0
+    },
+    "order_status" : {
+      "f1" : 0.5714285714285714,
+      "precision" : 0.4444444444444444,
+      "support" : 5.0,
+      "recall" : 0.8
+    },
+    "other" : {
+      "f1" : 0.0,
+      "precision" : 0.0,
+      "support" : 5.0,
+      "recall" : 0.0
+    },
+    "payment_issue" : {
+      "f1" : 0.33333333333333337,
+      "precision" : 1.0,
+      "support" : 5.0,
+      "recall" : 0.2
+    },
+    "query" : {
+      "f1" : 0.0,
+      "precision" : 0.0,
+      "support" : 5.0,
+      "recall" : 0.0
+    },
+    "refund" : {
+      "f1" : 0.9090909090909091,
+      "precision" : 0.8333333333333334,
+      "support" : 5.0,
+      "recall" : 1.0
+    },
+    "request" : {
+      "f1" : 0.33333333333333337,
+      "precision" : 1.0,
+      "support" : 5.0,
+      "recall" : 0.2
+    },
+    "technical" : {
+      "f1" : 0.3076923076923077,
+      "precision" : 0.25,
+      "support" : 5.0,
+      "recall" : 0.4
+    },
+    "technical_crash" : {
+      "f1" : 0.7272727272727272,
+      "precision" : 0.6666666666666666,
+      "support" : 5.0,
+      "recall" : 0.8
+    },
+    "technical_login" : {
+      "f1" : 0.6666666666666665,
+      "precision" : 0.75,
+      "support" : 5.0,
+      "recall" : 0.6
+    }
+  },
+  "results" : [ {
+    "message" : "会员分为几个等级，各自有哪些权益？",
+    "expected" : "query",
+    "predicted" : "complaint",
+    "passed" : false
+  }, {
+    "message" : "周末门店的营业时间到几点？",
+    "expected" : "query",
+    "predicted" : "logistics",
+    "passed" : false
+  }, {
+    "message" : "学生购买套餐有没有优惠条件？",
+    "expected" : "query",
+    "predicted" : "order_status",
+    "passed" : false
+  }, {
+    "message" : "你们是否提供英文版的使用手册？",
+    "expected" : "query",
+    "predicted" : "escalation",
+    "passed" : false
+  }, {
+    "message" : "积分在一年之后会失效吗？",
+    "expected" : "query",
+    "predicted" : "invoice",
+    "passed" : false
+  }, {
+    "message" : "售后人员态度敷衍，这次体验让人失望。",
+    "expected" : "complaint",
+    "predicted" : "greeting",
+    "passed" : false
+  }, {
+    "message" : "预约时间已经过去两小时，始终无人接待。",
+    "expected" : "complaint",
+    "predicted" : "complaint",
+    "passed" : true
+  }, {
+    "message" : "承诺当天回复却拖了一星期，太不负责任了。",
+    "expected" : "complaint",
+    "predicted" : "complaint",
+    "passed" : true
+  }, {
+    "message" : "同一个问题让我反复说明，我对这种处理方式不满。",
+    "expected" : "complaint",
+    "predicted" : "complaint",
+    "passed" : true
+  }, {
+    "message" : "服务过程中一直被打断，感觉没有受到尊重。",
+    "expected" : "complaint",
+    "predicted" : "complaint",
+    "passed" : true
+  }, {
+    "message" : "把下周二的上门预约挪到周五下午。",
+    "expected" : "request",
+    "predicted" : "greeting",
+    "passed" : false
+  }, {
+    "message" : "请将我买的套餐从月度改为年度。",
+    "expected" : "request",
+    "predicted" : "refund",
+    "passed" : false
+  }, {
+    "message" : "这笔还没出库的订单不要了，请撤销。",
+    "expected" : "request",
+    "predicted" : "query",
+    "passed" : false
+  }, {
+    "message" : "请为这次服务备注不要打电话，直接留言。",
+    "expected" : "request",
+    "predicted" : "feedback",
+    "passed" : false
+  }, {
+    "message" : "我需要增加一位预约参加人。",
+    "expected" : "request",
+    "predicted" : "request",
+    "passed" : true
+  }, {
+    "message" : "下午好呀，客服小伙伴。",
+    "expected" : "greeting",
+    "predicted" : "escalation",
+    "passed" : false
+  }, {
+    "message" : "哈喽，我来打个招呼。",
+    "expected" : "greeting",
+    "predicted" : "feedback",
+    "passed" : false
+  }, {
+    "message" : "晚上好，在这里先问声好。",
+    "expected" : "greeting",
+    "predicted" : "greeting",
+    "passed" : true
+  }, {
+    "message" : "嗨嗨，祝你今天工作愉快。",
+    "expected" : "greeting",
+    "predicted" : "greeting",
+    "passed" : true
+  }, {
+    "message" : "Hello，初次见面！",
+    "expected" : "greeting",
+    "predicted" : "greeting",
+    "passed" : true
+  }, {
+    "message" : "请把这起服务纠纷提交主管复核。",
+    "expected" : "escalation",
+    "predicted" : "feedback",
+    "passed" : false
+  }, {
+    "message" : "我要对门店提起正式投诉并要求书面答复。",
+    "expected" : "escalation",
+    "predicted" : "escalation",
+    "passed" : true
+  }, {
+    "message" : "一线已经处理三次没有结果，请升级到负责人。",
+    "expected" : "escalation",
+    "predicted" : "human_handoff",
+    "passed" : false
+  }, {
+    "message" : "请登记投诉工单，交给管理层跟进。",
+    "expected" : "escalation",
+    "predicted" : "escalation",
+    "passed" : true
+  }, {
+    "message" : "这个争议需要你们经理介入裁定。",
+    "expected" : "escalation",
+    "predicted" : "escalation",
+    "passed" : true
+  }, {
+    "message" : "上传头像时进度条停在一半不动。",
+    "expected" : "technical",
+    "predicted" : "logistics",
+    "passed" : false
+  }, {
+    "message" : "导出的表格出现乱码，页面其他功能正常。",
+    "expected" : "technical",
+    "predicted" : "technical",
+    "passed" : true
+  }, {
+    "message" : "视频没有声音，其他软件的扬声器正常。",
+    "expected" : "technical",
+    "predicted" : "order_status",
+    "passed" : false
+  }, {
+    "message" : "搜索框输入中文后没有任何搜索结果。",
+    "expected" : "technical",
+    "predicted" : "order_status",
+    "passed" : false
+  }, {
+    "message" : "手机端的按钮重叠了，无法点中保存。",
+    "expected" : "technical",
+    "predicted" : "technical",
+    "passed" : true
+  }, {
+    "message" : "本月账单里的服务费是按天还是按次计算？",
+    "expected" : "billing",
+    "predicted" : "query",
+    "passed" : false
+  }, {
+    "message" : "年费套餐的结算周期从哪一天开始？",
+    "expected" : "billing",
+    "predicted" : "order_status",
+    "passed" : false
+  }, {
+    "message" : "请解释一下账单中基础费用和增值费用的组成。",
+    "expected" : "billing",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "续费金额是否包含税费和服务费？",
+    "expected" : "billing",
+    "predicted" : "feedback",
+    "passed" : false
+  }, {
+    "message" : "在哪里可以下载上个季度的费用明细账单？",
+    "expected" : "billing",
+    "predicted" : "invoice",
+    "passed" : false
+  }, {
+    "message" : "我想把个人资料中的昵称换成新的名字。",
+    "expected" : "account",
+    "predicted" : "account",
+    "passed" : true
+  }, {
+    "message" : "以前绑定的邮箱不用了，想更新联系邮箱。",
+    "expected" : "account",
+    "predicted" : "logistics",
+    "passed" : false
+  }, {
+    "message" : "请将我的会员账户永久注销。",
+    "expected" : "account",
+    "predicted" : "account",
+    "passed" : true
+  }, {
+    "message" : "个人资料页中的出生日期填错了，需要更正。",
+    "expected" : "account",
+    "predicted" : "account",
+    "passed" : true
+  }, {
+    "message" : "如何更换账号上绑定的手机号？",
+    "expected" : "account",
+    "predicted" : "query",
+    "passed" : false
+  }, {
+    "message" : "这次客服解释得清楚又耐心，感谢你。",
+    "expected" : "feedback",
+    "predicted" : "escalation",
+    "passed" : false
+  }, {
+    "message" : "建议增加深色主题，夜间使用会舒服一些。",
+    "expected" : "feedback",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "新版本的页面布局很好用，给团队点赞。",
+    "expected" : "feedback",
+    "predicted" : "technical_crash",
+    "passed" : false
+  }, {
+    "message" : "希望以后能提供自定义字体大小的功能。",
+    "expected" : "feedback",
+    "predicted" : "complaint",
+    "passed" : false
+  }, {
+    "message" : "体验结束了，工作人员很专业，我愿意推荐给朋友。",
+    "expected" : "feedback",
+    "predicted" : "human_handoff",
+    "passed" : false
+  }, {
+    "message" : "查一下订单 B73021 目前处于哪个处理阶段。",
+    "expected" : "order_status",
+    "predicted" : "order_status",
+    "passed" : true
+  }, {
+    "message" : "我昨天提交的订单是否已经审核通过？",
+    "expected" : "order_status",
+    "predicted" : "query",
+    "passed" : false
+  }, {
+    "message" : "订单 C48216 页面显示处理中，现在完成了吗？",
+    "expected" : "order_status",
+    "predicted" : "order_status",
+    "passed" : true
+  }, {
+    "message" : "麻烦确认刚买的那笔订单有没有发货。",
+    "expected" : "order_status",
+    "predicted" : "order_status",
+    "passed" : true
+  }, {
+    "message" : "订单 D91628 现在显示待确认，这个状态更新了吗？",
+    "expected" : "order_status",
+    "predicted" : "order_status",
+    "passed" : true
+  }, {
+    "message" : "运单停在分拨中心两天了，包裹走到哪里了？",
+    "expected" : "logistics",
+    "predicted" : "logistics",
+    "passed" : true
+  }, {
+    "message" : "快递显示正在派送，今晚能送上门吗？",
+    "expected" : "logistics",
+    "predicted" : "logistics",
+    "passed" : true
+  }, {
+    "message" : "已经寄出的商品能查看物流轨迹吗？",
+    "expected" : "logistics",
+    "predicted" : "logistics",
+    "passed" : true
+  }, {
+    "message" : "配送员说地址不完整，我该联系哪家承运商？",
+    "expected" : "logistics",
+    "predicted" : "logistics",
+    "passed" : true
+  }, {
+    "message" : "包裹显示签收但我没收到，帮忙核实配送情况。",
+    "expected" : "logistics",
+    "predicted" : "logistics",
+    "passed" : true
+  }, {
+    "message" : "商品尺寸不合适，想退回并拿回货款。",
+    "expected" : "refund",
+    "predicted" : "refund",
+    "passed" : true
+  }, {
+    "message" : "退款申请已经审核通过，余额何时返还？",
+    "expected" : "refund",
+    "predicted" : "refund",
+    "passed" : true
+  }, {
+    "message" : "退货寄出的商品仓库收到了吗，退款到哪一步了？",
+    "expected" : "refund",
+    "predicted" : "refund",
+    "passed" : true
+  }, {
+    "message" : "订阅还在可退款期限内，我要申请退回费用。",
+    "expected" : "refund",
+    "predicted" : "refund",
+    "passed" : true
+  }, {
+    "message" : "收到的商品损坏了，需要办理退货退款。",
+    "expected" : "refund",
+    "predicted" : "refund",
+    "passed" : true
+  }, {
+    "message" : "公司报销需要增值税专用发票，请问如何申请？",
+    "expected" : "invoice",
+    "predicted" : "invoice",
+    "passed" : true
+  }, {
+    "message" : "上次开票的税号少了一位，能重新开具吗？",
+    "expected" : "invoice",
+    "predicted" : "invoice",
+    "passed" : true
+  }, {
+    "message" : "电子发票附件无法找到，请补发到邮箱。",
+    "expected" : "invoice",
+    "predicted" : "invoice",
+    "passed" : true
+  }, {
+    "message" : "这笔消费能把发票抬头改为公司全称吗？",
+    "expected" : "invoice",
+    "predicted" : "invoice",
+    "passed" : true
+  }, {
+    "message" : "开具发票时购买方地址是不是必填项？",
+    "expected" : "invoice",
+    "predicted" : "invoice",
+    "passed" : true
+  }, {
+    "message" : "银行卡显示交易成功，系统却说尚未支付。",
+    "expected" : "payment_issue",
+    "predicted" : "technical_crash",
+    "passed" : false
+  }, {
+    "message" : "同一笔消费在银行卡记录里扣了两笔金额。",
+    "expected" : "payment_issue",
+    "predicted" : "billing",
+    "passed" : false
+  }, {
+    "message" : "结账点确认后提示支付失败，余额没有不足。",
+    "expected" : "payment_issue",
+    "predicted" : "payment_issue",
+    "passed" : true
+  }, {
+    "message" : "订单金额是八十元，实际却扣了一百元。",
+    "expected" : "payment_issue",
+    "predicted" : "order_status",
+    "passed" : false
+  }, {
+    "message" : "支付页面提示交易被拒绝，换卡后仍无法付款。",
+    "expected" : "payment_issue",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "收到异地设备登录提醒，但那个人不是我。",
+    "expected" : "account_security",
+    "predicted" : "account_security",
+    "passed" : true
+  }, {
+    "message" : "怀疑账户被盗用，想立即冻结并保护资料。",
+    "expected" : "account_security",
+    "predicted" : "account_security",
+    "passed" : true
+  }, {
+    "message" : "我忘记密码了，需要重新设置一个密码。",
+    "expected" : "account_security",
+    "predicted" : "account_security",
+    "passed" : true
+  }, {
+    "message" : "想为账户启用两步验证，防止别人盗号。",
+    "expected" : "account_security",
+    "predicted" : "account_security",
+    "passed" : true
+  }, {
+    "message" : "发现陌生登录设备，请撤销它的访问权限。",
+    "expected" : "account_security",
+    "predicted" : "account_security",
+    "passed" : true
+  }, {
+    "message" : "输入正确密码后仍回到登录页，进不了系统。",
+    "expected" : "technical_login",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "登录接口返回 HTTP 401，账号密码没有改过。",
+    "expected" : "technical_login",
+    "predicted" : "technical_login",
+    "passed" : true
+  }, {
+    "message" : "尝试短信登录，等了十分钟仍未收到验证码。",
+    "expected" : "technical_login",
+    "predicted" : "technical_login",
+    "passed" : true
+  }, {
+    "message" : "扫码登录确认成功后网页一直卡在验证中。",
+    "expected" : "technical_login",
+    "predicted" : "technical_login",
+    "passed" : true
+  }, {
+    "message" : "每次登录都提示身份认证失败，无法进入主页。",
+    "expected" : "technical_login",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "刚点开客户端它就直接退出桌面了。",
+    "expected" : "technical_crash",
+    "predicted" : "account_security",
+    "passed" : false
+  }, {
+    "message" : "提交表单后整个页面变白，服务器返回 500。",
+    "expected" : "technical_crash",
+    "predicted" : "technical_crash",
+    "passed" : true
+  }, {
+    "message" : "更新后应用每隔几分钟就闪退一次。",
+    "expected" : "technical_crash",
+    "predicted" : "technical_crash",
+    "passed" : true
+  }, {
+    "message" : "打开订单详情时程序崩溃并自动关闭。",
+    "expected" : "technical_crash",
+    "predicted" : "technical_crash",
+    "passed" : true
+  }, {
+    "message" : "保存设置触发 HTTP 500，整个操作中断。",
+    "expected" : "technical_crash",
+    "predicted" : "technical_crash",
+    "passed" : true
+  }, {
+    "message" : "请接通一位真人客服，我想直接沟通。",
+    "expected" : "human_handoff",
+    "predicted" : "escalation",
+    "passed" : false
+  }, {
+    "message" : "机器人没能解决问题，能让人工坐席接手吗？",
+    "expected" : "human_handoff",
+    "predicted" : "billing",
+    "passed" : false
+  }, {
+    "message" : "我现在只希望和人工客服聊天。",
+    "expected" : "human_handoff",
+    "predicted" : "human_handoff",
+    "passed" : true
+  }, {
+    "message" : "麻烦帮忙转人工，安排在线工作人员。",
+    "expected" : "human_handoff",
+    "predicted" : "human_handoff",
+    "passed" : true
+  }, {
+    "message" : "结束自动回复模式，联系真人服务人员。",
+    "expected" : "human_handoff",
+    "predicted" : "feedback",
+    "passed" : false
+  }, {
+    "message" : "窗外的云今天像一只小兔子。",
+    "expected" : "other",
+    "predicted" : "technical",
+    "passed" : false
+  }, {
+    "message" : "蓝色，七，倒过来的三角形。",
+    "expected" : "other",
+    "predicted" : "greeting",
+    "passed" : false
+  }, {
+    "message" : "帮我证明黎曼猜想。",
+    "expected" : "other",
+    "predicted" : "invoice",
+    "passed" : false
+  }, {
+    "message" : "给我写一首描绘木星风暴的长诗。",
+    "expected" : "other",
+    "predicted" : "query",
+    "passed" : false
+  }, {
+    "message" : "zxqv 7842 @@ ###",
+    "expected" : "other",
+    "predicted" : "technical_login",
+    "passed" : false
+  } ],
+  "dataset" : "evaluation\\intent-holdout-candidate-v1.json",
+  "dataset_sha256" : "22605bdc2fb2fdabf003b7ff0c86f24fc55a716ea1f13ab942255e9a744130d0"
+}

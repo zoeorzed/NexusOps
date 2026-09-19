@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +28,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class MemoryManager {
 
     private static final Logger log = LoggerFactory.getLogger(MemoryManager.class);
+    private static final DefaultRedisScript<Long> COMPRESS_SCRIPT = new DefaultRedisScript<>();
+    static {
+        COMPRESS_SCRIPT.setLocation(new ClassPathResource("memory-compress.lua"));
+        COMPRESS_SCRIPT.setResultType(Long.class);
+    }
 
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
@@ -114,13 +121,20 @@ public class MemoryManager {
     }
 
     private void compress(String userId, String conversationId) {
-        List<ConversationMessage> messages = getWorkingMemory(userId, conversationId);
-        if (messages.size() < properties.getMemory().getCompressAt()) {
+        String key = wmKey(userId, conversationId);
+        List<String> snapshot = redisTemplate.opsForList().range(key, 0, -1);
+        if (snapshot == null || snapshot.size() < properties.getMemory().getCompressAt() || snapshot.size() <= 5) {
             return;
         }
-        int keep = Math.min(5, messages.size());
-        List<ConversationMessage> oldMessages = messages.subList(0, messages.size() - keep);
-        List<ConversationMessage> keepMessages = messages.subList(messages.size() - keep, messages.size());
+        List<ConversationMessage> oldMessages = new ArrayList<>();
+        try {
+            for (int i = snapshot.size() - 1; i >= 5; i--) {
+                oldMessages.add(objectMapper.readValue(snapshot.get(i), ConversationMessage.class));
+            }
+        } catch (Exception ex) {
+            log.warn("Memory snapshot cannot be decoded; preserving messages");
+            return;
+        }
         String text = oldMessages.stream()
                 .map(m -> m.role().name().toLowerCase() + ": " + m.content())
                 .reduce((a, b) -> a + "\n" + b)
@@ -129,20 +143,21 @@ public class MemoryManager {
         try {
             summary = llmGateway.chat("", "用 2-3 句话总结以下对话关键信息：\n" + text, 0.0, 256);
         } catch (Exception ex) {
-            summary = "对话包含 " + oldMessages.size() + " 条历史消息。";
+            log.warn("Memory summary unavailable; preserving messages");
+            return;
         }
-        episodicStore.add(new EpisodicEntry(userId, conversationId, summary, text, Instant.now(), embed(summary)));
-        persistMemory();
-        String key = wmKey(userId, conversationId);
+        if (summary == null || summary.isBlank()) return;
         try {
-            String oldSummary = safeRedisGet(summaryKey(userId, conversationId));
-            redisTemplate.opsForValue().set(summaryKey(userId, conversationId), ((oldSummary == null ? "" : oldSummary + "\n") + summary).trim(),
-                    Duration.ofSeconds(properties.getMemory().getTtlSeconds()));
-            redisTemplate.delete(key);
-            for (int i = keepMessages.size() - 1; i >= 0; i--) {
-                redisTemplate.opsForList().leftPush(key, objectMapper.writeValueAsString(keepMessages.get(i)));
+            List<String> args = new ArrayList<>(List.of(
+                    String.valueOf(properties.getMemory().getTtlSeconds()), "5", summary,
+                    String.valueOf(snapshot.size())));
+            args.addAll(snapshot);
+            Long applied = redisTemplate.execute(COMPRESS_SCRIPT,
+                    List.of(key, summaryKey(userId, conversationId)), args.toArray());
+            if (Long.valueOf(1).equals(applied)) {
+                episodicStore.add(new EpisodicEntry(userId, conversationId, summary, text, Instant.now(), embed(summary)));
+                persistMemory();
             }
-            redisTemplate.expire(key, Duration.ofSeconds(properties.getMemory().getTtlSeconds()));
         } catch (Exception ex) {
             log.warn("Memory compression failed: {}", ex.getMessage());
         }

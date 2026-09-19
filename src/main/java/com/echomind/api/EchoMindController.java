@@ -100,6 +100,7 @@ public class EchoMindController {
     @PostMapping("/chat")
     @Operation(summary = "智能客服对话", description = "执行完整对话链路：记忆读取、知识库检索、意图识别、多 Agent 路由、回答校验和记忆写入。")
     public ChatResponse chat(@Valid @RequestBody ChatRequest request) {
+        long started = System.nanoTime();
         String userId = request.userIdOrDefault();
         String conversationId = request.conversationId() == null || request.conversationId().isBlank()
                 ? UUID.randomUUID().toString()
@@ -112,6 +113,12 @@ public class EchoMindController {
                 .map(m -> Map.of("role", m.role().name().toLowerCase(), "content", m.content()))
                 .toList();
         IntentResult intentResult = intentRecognizer.recognize(request.message(), history);
+        Map<String, List<String>> currentEntities = intentResult.entities();
+        Map<String, List<String>> resolvedEntities = conversationEntityResolver.resolve(
+                currentEntities, memoryContext.recentMessages());
+        IntentResult resolvedIntent = new IntentResult(intentResult.intent(), intentResult.confidence(),
+                intentResult.urgency(), intentResult.intentGroup(), resolvedEntities,
+                intentResult.reasoning(), intentResult.latencyMs(), intentResult.sourceScores());
         boolean useKnowledge = shouldUseKnowledge(intentResult.intent());
         ToolCallTrace knowledgeTrace = null;
         ToolResult<List<SearchResult>> knowledge = useKnowledge
@@ -131,16 +138,11 @@ public class EchoMindController {
         String knowledgeText = buildKnowledgeContext(knowledge.data());
         String fullContext = join(memoryText, knowledgeText);
         OrchestratorResult result = orchestrator.run(
-                AgentRequest.of(request.message(), userId, conversationId, fullContext, history, intentResult, requestId),
+                AgentRequest.of(request.message(), userId, conversationId, fullContext, history, resolvedIntent, requestId),
                 knowledgeTrace == null ? List.of() : List.of(knowledgeTrace)
         );
         AnswerVerifier.VerificationResult verification = answerVerifier.verify(request.message(), result.response(), fullContext);
         boolean escalated = result.escalated() || verification.needEscalation();
-        Map<String, List<String>> currentEntities = intentResult.entities();
-        Map<String, List<String>> resolvedEntities = conversationEntityResolver.resolve(
-                currentEntities,
-                memoryContext.recentMessages()
-        );
         orchestrator.updateTraceEscalated(result.requestId(), escalated);
         memoryManager.addMessage(userId, conversationId, MessageRole.USER, request.message());
         memoryManager.addMessage(userId, conversationId, MessageRole.ASSISTANT, result.response());
@@ -158,7 +160,7 @@ public class EchoMindController {
                 result.routingReason(),
                 result.routingConfidence(),
                 escalated,
-                result.latencyMs(),
+                java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started),
                 knowledge.success() && knowledge.data() != null && !knowledge.data().isEmpty(),
                 verification.pass(),
                 verification.grounded(),

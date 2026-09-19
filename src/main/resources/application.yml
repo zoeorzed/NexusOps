@@ -49,6 +49,10 @@ springdoc:
     path: /v3/api-docs
 
 echomind:
+  agent-execution:
+    threads: ${AGENT_EXECUTION_THREADS:8}
+    queue-capacity: ${AGENT_EXECUTION_QUEUE_CAPACITY:32}
+    timeout-ms: ${AGENT_EXECUTION_TIMEOUT_MS:30000}
   llm:
     fallback-enabled: ${LLM_FALLBACK_ENABLED:true}
   memory:

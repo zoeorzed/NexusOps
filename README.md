@@ -57,6 +57,8 @@ NexusOps 将这条流程工程化：
 - 综合意图、实体、紧急程度与历史运行表现进行路由
 - 对复合问题并行调用主、辅 Agent，并保留人工升级通道
 
+Agent 执行使用独立的有界线程池（默认 8 个线程、32 个排队任务）。单领域和多领域请求共用执行阶段的 30 秒截止时间，排队时间计入预算；超时、拒绝或某个 Agent 失败时，保留已完成领域的回答，并在响应和 Trace 中标明未完成的部分。该预算不包含前置意图识别、检索和后置校验，也不保证中断底层 HTTP 调用。
+
 ### 按意图触发的 Hybrid RAG
 
 ```text
@@ -82,6 +84,8 @@ NexusOps 将这条流程工程化：
 - 本地持久化保存历史会话摘要和用户画像
 - 通过相关历史召回增强多轮对话连续性
 - 异步更新用户画像，避免阻塞主响应链路
+- 摘要生成后通过 Redis Lua 比较原消息快照，再原子保存摘要并截断旧消息；期间有新写入则放弃本次压缩，摘要失败保留原文
+- 在回答生成前补全历史实体，区分当前轮实体与结合历史解析后的实体
 
 ### 动态 Skills
 
@@ -172,7 +176,7 @@ curl -X POST http://localhost:8080/chat \
 
 ## 可复现评测
 
-仓库提供与 Java 版细粒度意图枚举一致的 [评测集](evaluation/eval-dataset.json)、[运行脚本](scripts/run-evaluation.ps1) 和 [LLM-as-Judge 报告](docs/evaluation-report.md)。
+仓库提供与 Java 版细粒度意图枚举一致的 [95 条候选评测集](evaluation/intent-holdout-candidate-v1.json)、[运行脚本](scripts/run-evaluation.ps1) 和 [评测报告](docs/evaluation-report.md)。
 
 ```powershell
 .\scripts\run-evaluation.ps1
@@ -180,7 +184,25 @@ curl -X POST http://localhost:8080/chat \
 
 普通评测只与现有 baseline 对比，不会覆盖它。确认本次结果适合作为后续回归基准时，再显式执行 `./scripts/run-evaluation.ps1 -SaveAsBaseline`。
 
-没有真实模型密钥时，流程仍可做离线烟测，但对话 Judge 会明确标记 `judge_failed=true` 并返回 0.5 fallback；该分数不能当作真实模型质量指标。
+扩充评测集与离线对照说明见 [评测说明](evaluation/README.md)。旧的 12 条意图样本仍作为历史烟测集保留；新增 95 条合成候选样本覆盖 19 类意图，不能据此声称已完成独立人工盲测。
+
+2026-09-19 完整验证：58 项 Java 测试与 6 项 Python 测试通过；在上述 95 条冻结候选上，DeepSeek 意图识别为 93/95（Accuracy 97.89%，Macro-F1 0.9787，识别调用失败及降级均为 0），离线生产降级路径为 50/95。三条真实 HTTP 演示另行验证检索、复合路由和跨轮记忆。环境、逐题结果、错例及范围限制见 [本轮验证记录](docs/verification-2026-09-19.md)。
+
+没有真实模型密钥时，只能报告离线降级路径的结果。对话 Judge 失败会明确标记，失败项不作为有效质量评分，仍计入测试总数与失败数；不同数据集或评分口径不会直接做 baseline 回归比较。
+
+## 一次完成测试与打包
+
+准备一个仅用于测试的本机无密码 Redis，使用 JDK 21，在项目根目录执行：
+
+```powershell
+./scripts/verify.ps1 -RedisPort 6379
+```
+
+该脚本执行干净构建、完整测试与可执行 JAR 打包，并要求 Redis 集成测试实际运行且没有失败或跳过。测试摘要、各套件结果和 JAR SHA-256 保存在 `target/verification-summary.json`；原始 JUnit 报告在 `target/surefire-reports/`。测试使用确定性模型替身，不调用真实模型服务。GitHub Actions 使用 Redis 7.4.2 和同一验证脚本，并上传验证报告。
+
+真实模型演示与历史证据见 [演示说明](demo/README.md)。执行演示会使用配置的模型 API；历史样例、模拟测试结果与新运行结果应分别记录。
+
+并发配置可以通过 `AGENT_EXECUTION_THREADS`、`AGENT_EXECUTION_QUEUE_CAPACITY`、`AGENT_EXECUTION_TIMEOUT_MS` 调整。线程耗尽时快速返回繁忙提示，已超时的远程请求仍可能由 HTTP 客户端继续等待，因此需要同时考虑模型服务自身的连接、读取超时与限额。
 
 ## 快速启动
 
@@ -239,7 +261,8 @@ NexusOps 当前是可运行的 Java 工程实现，同时保留清晰的演进�
 - 工具治理目前聚焦 `knowledge_search`，尚未扩展为通用 MCP Tool Registry
 - 请求轨迹保存在进程内的有界队列中，重启后不会保留
 - 高风险请求提供升级标记，真实工单或人工队列需要对接企业系统
-- 已覆盖意图识别、主辅路由、请求轨迹和熔断状态的核心单元测试；仍需扩展控制器与端到端回归测试
+- 已覆盖意图识别、主辅路由、请求轨迹、熔断、Agent 超时与部分失败，以及真实 Redis 记忆压缩；控制器组件测试使用替身，不等同于完整 HTTP 或真实模型评测
+- 客户端传入的 `user_id` 和 `conv_id` 用于演示会话分离，当前没有服务端登录鉴权
 
 这些边界不会影响当前演示链路，也避免将规划能力描述成已经完成的实现。
 

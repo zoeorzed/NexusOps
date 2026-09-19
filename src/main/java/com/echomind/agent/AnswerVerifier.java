@@ -44,8 +44,7 @@ public class AnswerVerifier {
                     String.valueOf(data.getOrDefault("reason", ""))
             );
         } catch (Exception ex) {
-            boolean grounded = context != null && !context.isBlank();
-            return new VerificationResult(true, grounded, normalizeEscalation(question, answer, false), "verifier fallback");
+            return new VerificationResult(false, false, normalizeEscalation(question, answer, false), "verifier unavailable: answer unverified");
         }
     }
 

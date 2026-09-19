@@ -1,0 +1,368 @@
+{
+  "schema_version": 2,
+  "mode": "live_demo",
+  "synthetic_data": true,
+  "started_at": "2026-09-19T05:31:22.405687+00:00",
+  "knowledge_sha256": "bfb16af9bdeb16baed1cb2796d2691409e5c5a9b09af6c31cd089d7ba6f16ee7",
+  "user_id": "interview-1789795882405687900",
+  "conv_id": "memory-1789795882405687900",
+  "responses": {
+    "composite": {
+      "conv_id": "composite-1789795882405687900",
+      "request_id": "026f7d7d",
+      "response": "[technical - 主处理]\n**结论：401 表示认证失败，先按登录态排查；订单查不到可能与当前账号未成功登录有关。**\n\n1. **确认会话是否过期**：退出后重新登录再试。若恢复，说明是登录态失效。\n2. **仍失败时**：记录错误码 401、发生时间和客户端版本（浏览器/App 及版本号），用于进一步定位。\n3. **订单不可见**：请确认查询时使用的账号与下单账号是否一致，以及订单号 A20260914001 是否输入完整。\n\n若重新登录后仍持续 401，或订单在正确账号下仍不可见，需要人工后台排查，请准备好上述错误码、发生时间和客户端版本。\n\n其余涉及账务的疑问将由下一个协同 Agent 处理。\n\n[billing - 辅助处理]\n**结论：** 疑似重复扣款需要先核对两笔交易信息，确认后才能判断是否进入退款审核，当前无法直接承诺退回。\n\n**请提供以下信息：**\n1. 两笔扣款的**时间**和**支付渠道**（是否均为同一张银行卡）。\n2. 两笔交易的**流水号或账单截图摘要**。\n3. 订单号 A20260914001、金额 299 元，如与其中一笔对应，请说明另一笔的订单号。\n\n**处理路径：** 材料齐全后需人工或财务核验是否确属重复扣款；核验、退款申请审核、审核通过后的到账是不同阶段，到账时间以支付渠道处理为准。请保留支付凭证。",
+      "intent": "technical_login",
+      "intent_group": "technical",
+      "agent_type": "technical",
+      "agent_types": [
+        "technical",
+        "billing"
+      ],
+      "primary_agent": "technical",
+      "supporting_agents": [
+        "billing"
+      ],
+      "routing_reason": "intent=technical_login, group=technical, primary=technical, supporting=billing, scores=[technical=1.31, billing=0.33, general=0.32]",
+      "routing_confidence": 1.0,
+      "escalated": false,
+      "latency_ms": 5556,
+      "knowledge_used": true,
+      "verified": true,
+      "grounded": true,
+      "entities": {
+        "order_id": [
+          "A20260914001"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [
+          "401"
+        ],
+        "amount": [
+          "299元"
+        ]
+      },
+      "current_entities": {
+        "order_id": [
+          "A20260914001"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [
+          "401"
+        ],
+        "amount": [
+          "299元"
+        ]
+      },
+      "resolved_entities": {
+        "order_id": [
+          "A20260914001"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [
+          "401"
+        ],
+        "amount": [
+          "299元"
+        ]
+      },
+      "intent_confidence": 0.6842,
+      "intent_source_scores": {
+        "llm": 0.85,
+        "embedding": 0.07086614173228346,
+        "pattern": 0.75
+      }
+    },
+    "composite_trace": {
+      "trace": {
+        "request_id": "026f7d7d",
+        "timestamp": "2026-09-19T05:31:27.039447500Z",
+        "endpoint": "chat",
+        "user_id": "interview-1789795882405687900",
+        "conversation_id": "composite-1789795882405687900",
+        "intent": "technical_login",
+        "intent_group": "technical",
+        "agent_type": "technical",
+        "primary_agent": "technical",
+        "supporting_agents": [
+          "billing"
+        ],
+        "tools_used": [
+          "knowledge_search"
+        ],
+        "tool_calls": [
+          {
+            "tool_name": "knowledge_search",
+            "success": true,
+            "fallback_used": false,
+            "cached": false,
+            "reranked": true,
+            "latency_ms": 1156,
+            "error": ""
+          }
+        ],
+        "knowledge_used": true,
+        "escalated": false,
+        "latency_ms": 1417
+      },
+      "found": true
+    },
+    "memory_first": {
+      "conv_id": "memory-1789795882405687900",
+      "request_id": "5d055324",
+      "response": "**结论**：本轮我会按订单 A20260914002、金额 299 元继续说明。是否属于重复扣款，需要核对两笔交易记录后才能确认，当前无法直接判定。\n\n**需要您补充的信息**\n1. 两笔扣款各自的支付时间、支付渠道（微信/支付宝/银行卡等）。\n2. 两笔交易的流水号或账单截图摘要。\n\n**处理路径**\n- 若两笔金额、时间高度接近，属疑似重复扣款，需人工或财务核验后处理，不能承诺自动退回。\n- 核验、退款申请审核、审核通过后的到账是不同阶段：审核为 1-3 个工作日，审核通过后 5-7 个工作日退回原支付账户。\n\n请保留支付凭证。",
+      "intent": "payment_issue",
+      "intent_group": "billing",
+      "agent_type": "billing",
+      "agent_types": [
+        "billing"
+      ],
+      "primary_agent": "billing",
+      "supporting_agents": [],
+      "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+      "routing_confidence": 1.0,
+      "escalated": false,
+      "latency_ms": 5254,
+      "knowledge_used": true,
+      "verified": true,
+      "grounded": true,
+      "entities": {
+        "order_id": [
+          "A20260914002"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": [
+          "299元"
+        ]
+      },
+      "current_entities": {
+        "order_id": [
+          "A20260914002"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": [
+          "299元"
+        ]
+      },
+      "resolved_entities": {
+        "order_id": [
+          "A20260914002"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": [
+          "299元"
+        ]
+      },
+      "intent_confidence": 0.715,
+      "intent_source_scores": {
+        "llm": 0.95,
+        "embedding": 0.08928571428571429,
+        "pattern": 0.5
+      }
+    },
+    "memory_first_trace": {
+      "trace": {
+        "request_id": "5d055324",
+        "timestamp": "2026-09-19T05:31:32.088537Z",
+        "endpoint": "chat",
+        "user_id": "interview-1789795882405687900",
+        "conversation_id": "memory-1789795882405687900",
+        "intent": "payment_issue",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "tools_used": [
+          "knowledge_search"
+        ],
+        "tool_calls": [
+          {
+            "tool_name": "knowledge_search",
+            "success": true,
+            "fallback_used": false,
+            "cached": false,
+            "reranked": true,
+            "latency_ms": 1673,
+            "error": ""
+          }
+        ],
+        "knowledge_used": true,
+        "escalated": false,
+        "latency_ms": 1376
+      },
+      "found": true
+    },
+    "memory_second": {
+      "conv_id": "memory-1789795882405687900",
+      "request_id": "3e81ff1e",
+      "response": "**结论**：订单 A20260914002（299 元）可以走退款申请流程，但能否通过需先核验订单状态和实际支付金额；若涉及疑似重复扣款，还需人工或财务核验。\n\n**申请步骤**\n1. 在订单详情页提交退款申请，选择该订单及退款原因（如“疑似重复扣款”）。\n2. 提交后系统审核，时限为 1-3 个工作日；审核通过后 5-7 个工作日退回原支付账户。\n3. 若商品已发货，需先完成退货流程。\n\n**需注意**：审核结果与到账是两个阶段，均需以核验为准，无法承诺一定退款成功。请保留两笔扣款的支付凭证，便于重复扣款核验。",
+      "intent": "refund",
+      "intent_group": "billing",
+      "agent_type": "billing",
+      "agent_types": [
+        "billing"
+      ],
+      "primary_agent": "billing",
+      "supporting_agents": [],
+      "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+      "routing_confidence": 1.0,
+      "escalated": false,
+      "latency_ms": 5097,
+      "knowledge_used": true,
+      "verified": true,
+      "grounded": true,
+      "entities": {
+        "order_id": [
+          "A20260914002"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": [
+          "299元"
+        ]
+      },
+      "current_entities": {
+        "order_id": [],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": []
+      },
+      "resolved_entities": {
+        "order_id": [
+          "A20260914002"
+        ],
+        "product": [],
+        "date": [],
+        "error_code": [],
+        "amount": [
+          "299元"
+        ]
+      },
+      "intent_confidence": 0.715,
+      "intent_source_scores": {
+        "llm": 0.95,
+        "embedding": 0.2727272727272727,
+        "pattern": 0.5
+      }
+    },
+    "memory_second_trace": {
+      "trace": {
+        "request_id": "3e81ff1e",
+        "timestamp": "2026-09-19T05:31:37.282327200Z",
+        "endpoint": "chat",
+        "user_id": "interview-1789795882405687900",
+        "conversation_id": "memory-1789795882405687900",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "tools_used": [
+          "knowledge_search"
+        ],
+        "tool_calls": [
+          {
+            "tool_name": "knowledge_search",
+            "success": true,
+            "fallback_used": false,
+            "cached": false,
+            "reranked": true,
+            "latency_ms": 1560,
+            "error": ""
+          }
+        ],
+        "knowledge_used": true,
+        "escalated": false,
+        "latency_ms": 1481
+      },
+      "found": true
+    }
+  },
+  "model_quality_status": "pending_manual_review",
+  "health": {
+    "status": "ok",
+    "agents": {
+      "general_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      },
+      "technical_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      },
+      "billing_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      }
+    }
+  },
+  "import": {
+    "added_chunks": 2,
+    "total_chunks": 8
+  },
+  "checks": {
+    "all_responses_present": true,
+    "technical_and_billing": true,
+    "same_memory_conversation": true,
+    "second_turn_order_comes_from_history": true,
+    "amount_resolved_in_second_turn": true,
+    "second_answer_quotes_order": true,
+    "knowledge_used": true,
+    "composite_knowledge_trace_succeeded": true,
+    "memory_first_knowledge_trace_succeeded": true,
+    "memory_second_knowledge_trace_succeeded": true
+  },
+  "observations": {
+    "composite": {
+      "answer_characters": 587,
+      "latency_ms": 5556,
+      "model_verified": true,
+      "model_grounded": true,
+      "mentions_legacy_24_hour_rule": false,
+      "mentions_ticket": false
+    },
+    "memory_first": {
+      "answer_characters": 270,
+      "latency_ms": 5254,
+      "model_verified": true,
+      "model_grounded": true,
+      "mentions_legacy_24_hour_rule": false,
+      "mentions_ticket": false
+    },
+    "memory_second": {
+      "answer_characters": 260,
+      "latency_ms": 5097,
+      "model_verified": true,
+      "model_grounded": true,
+      "mentions_legacy_24_hour_rule": false,
+      "mentions_ticket": false
+    }
+  },
+  "manual_checks": [
+    "回答是否分技术与账务两部分，且没有重复索要已知订单号、金额",
+    "是否把会话引用订单误解成创建工单，或承诺永久保存信息",
+    "若引用退款政策，是否分别说明申请审核1–3个工作日、审核通过后到账5–7个工作日；未编造核验时限",
+    "是否虚构已退款、已建单或已查询支付流水",
+    "第二轮自然语言回答是否承接第一轮订单与金额",
+    "是否先给结论、保留必要步骤且避免重复政策；长度仅作观察，不作为质量分数"
+  ]
+}

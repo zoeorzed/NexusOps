@@ -1,0 +1,21 @@
+{
+  "intent_cases": [
+    {"message": "我的订单什么时候能送到？", "expected_intent": "logistics"},
+    {"message": "帮我取消这个订单", "expected_intent": "request"},
+    {"message": "你们的服务太差了，我非常不满意", "expected_intent": "complaint"},
+    {"message": "应用一直报 500 错误", "expected_intent": "technical_crash"},
+    {"message": "为什么扣了我两次款？", "expected_intent": "payment_issue"},
+    {"message": "我要转人工客服", "expected_intent": "human_handoff"},
+    {"message": "你好", "expected_intent": "greeting"},
+    {"message": "修改我的邮箱地址", "expected_intent": "account"},
+    {"message": "请给这个订单开发票", "expected_intent": "invoice"},
+    {"message": "我想申请退款", "expected_intent": "refund"},
+    {"message": "登录时提示 401", "expected_intent": "technical_login"},
+    {"message": "订单号 #A1024 现在是什么状态？", "expected_intent": "order_status"}
+  ],
+  "dialog_cases": [
+    {"question": "退款审核通过后多久能到账？", "user_id": "eval-user-1", "conversation_id": "eval-refund"},
+    {"question": "登录一直报 401，应该怎么排查？", "user_id": "eval-user-2", "conversation_id": "eval-login"},
+    {"turns": ["你好，我想退款", "订单号是 #A1024", "退款多久到账？"], "user_id": "eval-user-3", "conversation_id": "eval-multi-turn"}
+  ]
+}

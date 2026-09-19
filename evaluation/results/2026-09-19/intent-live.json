@@ -1,0 +1,1593 @@
+{
+  "regressions": [],
+  "recommendations": [
+    "当前未检测到所定义的回归；请同时检查样本覆盖、失败数及模型配置，不能据此宣称全部达标"
+  ],
+  "avg_scores": {
+    "macro_f1": 0.9787,
+    "dialog_overall": null,
+    "intent_accuracy": 0.9789
+  },
+  "judge_fallback_count": 0,
+  "pass_rate": 0.9789,
+  "per_class": {
+    "account": {
+      "f1": 0.9090909090909091,
+      "precision": 0.8333333333333334,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "account_security": {
+      "f1": 0.888888888888889,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 0.8
+    },
+    "billing": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "complaint": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "escalation": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "feedback": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "greeting": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "human_handoff": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "invoice": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "logistics": {
+      "f1": 0.9090909090909091,
+      "precision": 0.8333333333333334,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "order_status": {
+      "f1": 0.888888888888889,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 0.8
+    },
+    "other": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "payment_issue": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "query": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "refund": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "request": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "technical": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "technical_crash": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    },
+    "technical_login": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "support": 5.0,
+      "recall": 1.0
+    }
+  },
+  "passed": 93,
+  "results": [
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "会员分为几个等级，各自有哪些权益？",
+        "predicted": "query",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "query"
+      },
+      "test_id": "intent_0",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "周末门店的营业时间到几点？",
+        "predicted": "query",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "query"
+      },
+      "test_id": "intent_1",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "学生购买套餐有没有优惠条件？",
+        "predicted": "query",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "query"
+      },
+      "test_id": "intent_2",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "你们是否提供英文版的使用手册？",
+        "predicted": "query",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "query"
+      },
+      "test_id": "intent_3",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "积分在一年之后会失效吗？",
+        "predicted": "query",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "query"
+      },
+      "test_id": "intent_4",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "售后人员态度敷衍，这次体验让人失望。",
+        "predicted": "complaint",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "complaint"
+      },
+      "test_id": "intent_5",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "预约时间已经过去两小时，始终无人接待。",
+        "predicted": "complaint",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "complaint"
+      },
+      "test_id": "intent_6",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "承诺当天回复却拖了一星期，太不负责任了。",
+        "predicted": "complaint",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "complaint"
+      },
+      "test_id": "intent_7",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "同一个问题让我反复说明，我对这种处理方式不满。",
+        "predicted": "complaint",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "complaint"
+      },
+      "test_id": "intent_8",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "服务过程中一直被打断，感觉没有受到尊重。",
+        "predicted": "complaint",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "complaint"
+      },
+      "test_id": "intent_9",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "把下周二的上门预约挪到周五下午。",
+        "predicted": "request",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "request"
+      },
+      "test_id": "intent_10",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请将我买的套餐从月度改为年度。",
+        "predicted": "request",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "request"
+      },
+      "test_id": "intent_11",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "这笔还没出库的订单不要了，请撤销。",
+        "predicted": "request",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "request"
+      },
+      "test_id": "intent_12",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请为这次服务备注不要打电话，直接留言。",
+        "predicted": "request",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "request"
+      },
+      "test_id": "intent_13",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "我需要增加一位预约参加人。",
+        "predicted": "request",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "request"
+      },
+      "test_id": "intent_14",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "下午好呀，客服小伙伴。",
+        "predicted": "greeting",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "greeting"
+      },
+      "test_id": "intent_15",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "哈喽，我来打个招呼。",
+        "predicted": "greeting",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "greeting"
+      },
+      "test_id": "intent_16",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "晚上好，在这里先问声好。",
+        "predicted": "greeting",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "greeting"
+      },
+      "test_id": "intent_17",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "嗨嗨，祝你今天工作愉快。",
+        "predicted": "greeting",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "greeting"
+      },
+      "test_id": "intent_18",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "Hello，初次见面！",
+        "predicted": "greeting",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "greeting"
+      },
+      "test_id": "intent_19",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请把这起服务纠纷提交主管复核。",
+        "predicted": "escalation",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "escalation"
+      },
+      "test_id": "intent_20",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "我要对门店提起正式投诉并要求书面答复。",
+        "predicted": "escalation",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "escalation"
+      },
+      "test_id": "intent_21",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "一线已经处理三次没有结果，请升级到负责人。",
+        "predicted": "escalation",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "escalation"
+      },
+      "test_id": "intent_22",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请登记投诉工单，交给管理层跟进。",
+        "predicted": "escalation",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "escalation"
+      },
+      "test_id": "intent_23",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "这个争议需要你们经理介入裁定。",
+        "predicted": "escalation",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "escalation"
+      },
+      "test_id": "intent_24",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "上传头像时进度条停在一半不动。",
+        "predicted": "technical",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical"
+      },
+      "test_id": "intent_25",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "导出的表格出现乱码，页面其他功能正常。",
+        "predicted": "technical",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical"
+      },
+      "test_id": "intent_26",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "视频没有声音，其他软件的扬声器正常。",
+        "predicted": "technical",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical"
+      },
+      "test_id": "intent_27",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "搜索框输入中文后没有任何搜索结果。",
+        "predicted": "technical",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical"
+      },
+      "test_id": "intent_28",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "手机端的按钮重叠了，无法点中保存。",
+        "predicted": "technical",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical"
+      },
+      "test_id": "intent_29",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "本月账单里的服务费是按天还是按次计算？",
+        "predicted": "billing",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "billing"
+      },
+      "test_id": "intent_30",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "年费套餐的结算周期从哪一天开始？",
+        "predicted": "billing",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "billing"
+      },
+      "test_id": "intent_31",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请解释一下账单中基础费用和增值费用的组成。",
+        "predicted": "billing",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "billing"
+      },
+      "test_id": "intent_32",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "续费金额是否包含税费和服务费？",
+        "predicted": "billing",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "billing"
+      },
+      "test_id": "intent_33",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "在哪里可以下载上个季度的费用明细账单？",
+        "predicted": "billing",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "billing"
+      },
+      "test_id": "intent_34",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "我想把个人资料中的昵称换成新的名字。",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account"
+      },
+      "test_id": "intent_35",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "以前绑定的邮箱不用了，想更新联系邮箱。",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account"
+      },
+      "test_id": "intent_36",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请将我的会员账户永久注销。",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account"
+      },
+      "test_id": "intent_37",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "个人资料页中的出生日期填错了，需要更正。",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account"
+      },
+      "test_id": "intent_38",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "如何更换账号上绑定的手机号？",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account"
+      },
+      "test_id": "intent_39",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "这次客服解释得清楚又耐心，感谢你。",
+        "predicted": "feedback",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "feedback"
+      },
+      "test_id": "intent_40",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "建议增加深色主题，夜间使用会舒服一些。",
+        "predicted": "feedback",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "feedback"
+      },
+      "test_id": "intent_41",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "新版本的页面布局很好用，给团队点赞。",
+        "predicted": "feedback",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "feedback"
+      },
+      "test_id": "intent_42",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "希望以后能提供自定义字体大小的功能。",
+        "predicted": "feedback",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "feedback"
+      },
+      "test_id": "intent_43",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "体验结束了，工作人员很专业，我愿意推荐给朋友。",
+        "predicted": "feedback",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "feedback"
+      },
+      "test_id": "intent_44",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "查一下订单 B73021 目前处于哪个处理阶段。",
+        "predicted": "order_status",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "order_status"
+      },
+      "test_id": "intent_45",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "我昨天提交的订单是否已经审核通过？",
+        "predicted": "order_status",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "order_status"
+      },
+      "test_id": "intent_46",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "订单 C48216 页面显示处理中，现在完成了吗？",
+        "predicted": "order_status",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "order_status"
+      },
+      "test_id": "intent_47",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 0.0
+      },
+      "metadata": {
+        "message": "麻烦确认刚买的那笔订单有没有发货。",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "order_status"
+      },
+      "test_id": "intent_48",
+      "passed": false
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "订单 D91628 现在显示待确认，这个状态更新了吗？",
+        "predicted": "order_status",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "order_status"
+      },
+      "test_id": "intent_49",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "运单停在分拨中心两天了，包裹走到哪里了？",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "logistics"
+      },
+      "test_id": "intent_50",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "快递显示正在派送，今晚能送上门吗？",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "logistics"
+      },
+      "test_id": "intent_51",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "已经寄出的商品能查看物流轨迹吗？",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "logistics"
+      },
+      "test_id": "intent_52",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "配送员说地址不完整，我该联系哪家承运商？",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "logistics"
+      },
+      "test_id": "intent_53",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "包裹显示签收但我没收到，帮忙核实配送情况。",
+        "predicted": "logistics",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "logistics"
+      },
+      "test_id": "intent_54",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "商品尺寸不合适，想退回并拿回货款。",
+        "predicted": "refund",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "refund"
+      },
+      "test_id": "intent_55",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "退款申请已经审核通过，余额何时返还？",
+        "predicted": "refund",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "refund"
+      },
+      "test_id": "intent_56",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "退货寄出的商品仓库收到了吗，退款到哪一步了？",
+        "predicted": "refund",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "refund"
+      },
+      "test_id": "intent_57",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "订阅还在可退款期限内，我要申请退回费用。",
+        "predicted": "refund",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "refund"
+      },
+      "test_id": "intent_58",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "收到的商品损坏了，需要办理退货退款。",
+        "predicted": "refund",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "refund"
+      },
+      "test_id": "intent_59",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "公司报销需要增值税专用发票，请问如何申请？",
+        "predicted": "invoice",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "invoice"
+      },
+      "test_id": "intent_60",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "上次开票的税号少了一位，能重新开具吗？",
+        "predicted": "invoice",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "invoice"
+      },
+      "test_id": "intent_61",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "电子发票附件无法找到，请补发到邮箱。",
+        "predicted": "invoice",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "invoice"
+      },
+      "test_id": "intent_62",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "这笔消费能把发票抬头改为公司全称吗？",
+        "predicted": "invoice",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "invoice"
+      },
+      "test_id": "intent_63",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "开具发票时购买方地址是不是必填项？",
+        "predicted": "invoice",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "invoice"
+      },
+      "test_id": "intent_64",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "银行卡显示交易成功，系统却说尚未支付。",
+        "predicted": "payment_issue",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "payment_issue"
+      },
+      "test_id": "intent_65",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "同一笔消费在银行卡记录里扣了两笔金额。",
+        "predicted": "payment_issue",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "payment_issue"
+      },
+      "test_id": "intent_66",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "结账点确认后提示支付失败，余额没有不足。",
+        "predicted": "payment_issue",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "payment_issue"
+      },
+      "test_id": "intent_67",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "订单金额是八十元，实际却扣了一百元。",
+        "predicted": "payment_issue",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "payment_issue"
+      },
+      "test_id": "intent_68",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "支付页面提示交易被拒绝，换卡后仍无法付款。",
+        "predicted": "payment_issue",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "payment_issue"
+      },
+      "test_id": "intent_69",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "收到异地设备登录提醒，但那个人不是我。",
+        "predicted": "account_security",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account_security"
+      },
+      "test_id": "intent_70",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "怀疑账户被盗用，想立即冻结并保护资料。",
+        "predicted": "account_security",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account_security"
+      },
+      "test_id": "intent_71",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 0.0
+      },
+      "metadata": {
+        "message": "我忘记密码了，需要重新设置一个密码。",
+        "predicted": "account",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account_security"
+      },
+      "test_id": "intent_72",
+      "passed": false
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "想为账户启用两步验证，防止别人盗号。",
+        "predicted": "account_security",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account_security"
+      },
+      "test_id": "intent_73",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "发现陌生登录设备，请撤销它的访问权限。",
+        "predicted": "account_security",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "account_security"
+      },
+      "test_id": "intent_74",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "输入正确密码后仍回到登录页，进不了系统。",
+        "predicted": "technical_login",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_login"
+      },
+      "test_id": "intent_75",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "登录接口返回 HTTP 401，账号密码没有改过。",
+        "predicted": "technical_login",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_login"
+      },
+      "test_id": "intent_76",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "尝试短信登录，等了十分钟仍未收到验证码。",
+        "predicted": "technical_login",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_login"
+      },
+      "test_id": "intent_77",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "扫码登录确认成功后网页一直卡在验证中。",
+        "predicted": "technical_login",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_login"
+      },
+      "test_id": "intent_78",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "每次登录都提示身份认证失败，无法进入主页。",
+        "predicted": "technical_login",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_login"
+      },
+      "test_id": "intent_79",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "刚点开客户端它就直接退出桌面了。",
+        "predicted": "technical_crash",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_crash"
+      },
+      "test_id": "intent_80",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "提交表单后整个页面变白，服务器返回 500。",
+        "predicted": "technical_crash",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_crash"
+      },
+      "test_id": "intent_81",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "更新后应用每隔几分钟就闪退一次。",
+        "predicted": "technical_crash",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_crash"
+      },
+      "test_id": "intent_82",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "打开订单详情时程序崩溃并自动关闭。",
+        "predicted": "technical_crash",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_crash"
+      },
+      "test_id": "intent_83",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "保存设置触发 HTTP 500，整个操作中断。",
+        "predicted": "technical_crash",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "technical_crash"
+      },
+      "test_id": "intent_84",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "请接通一位真人客服，我想直接沟通。",
+        "predicted": "human_handoff",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "human_handoff"
+      },
+      "test_id": "intent_85",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "机器人没能解决问题，能让人工坐席接手吗？",
+        "predicted": "human_handoff",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "human_handoff"
+      },
+      "test_id": "intent_86",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "我现在只希望和人工客服聊天。",
+        "predicted": "human_handoff",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "human_handoff"
+      },
+      "test_id": "intent_87",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "麻烦帮忙转人工，安排在线工作人员。",
+        "predicted": "human_handoff",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "human_handoff"
+      },
+      "test_id": "intent_88",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "结束自动回复模式，联系真人服务人员。",
+        "predicted": "human_handoff",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "human_handoff"
+      },
+      "test_id": "intent_89",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "窗外的云今天像一只小兔子。",
+        "predicted": "other",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "other"
+      },
+      "test_id": "intent_90",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "蓝色，七，倒过来的三角形。",
+        "predicted": "other",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "other"
+      },
+      "test_id": "intent_91",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "帮我证明黎曼猜想。",
+        "predicted": "other",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "other"
+      },
+      "test_id": "intent_92",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "给我写一首描绘木星风暴的长诗。",
+        "predicted": "other",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "other"
+      },
+      "test_id": "intent_93",
+      "passed": true
+    },
+    {
+      "scores": {
+        "accuracy": 1.0
+      },
+      "metadata": {
+        "message": "zxqv 7842 @@ ###",
+        "predicted": "other",
+        "prediction_failed": false,
+        "error": "",
+        "llm_recognition_failed": false,
+        "expected": "other"
+      },
+      "test_id": "intent_94",
+      "passed": true
+    }
+  ],
+  "total": 95,
+  "evaluation_mode": "application_pipeline",
+  "dialog_scope": "AgentOrchestrator + Judge; bypasses /chat controller retrieval, Redis memory and history entity resolution",
+  "metrics_version": "intent-v2-expected-labels-dialog-valid-only",
+  "dataset_fingerprint": "94c2684ca8ee6c64b8a3fc26723bfe54bc80162f952848b35e65c08ca2a4474e",
+  "label_scope": [
+    "account",
+    "account_security",
+    "billing",
+    "complaint",
+    "escalation",
+    "feedback",
+    "greeting",
+    "human_handoff",
+    "invoice",
+    "logistics",
+    "order_status",
+    "other",
+    "payment_issue",
+    "query",
+    "refund",
+    "request",
+    "technical",
+    "technical_crash",
+    "technical_login"
+  ],
+  "intent_failure_count": 0,
+  "intent_llm_failure_count": 0,
+  "intent_total": 95,
+  "dialog_total": 0,
+  "dialog_valid_count": 0,
+  "dialog_invalid_count": 0,
+  "dialog_execution_failure_count": 0,
+  "judge_failure_count": 0,
+  "dialog_valid_rate": null,
+  "baseline_comparison": "missing"
+}

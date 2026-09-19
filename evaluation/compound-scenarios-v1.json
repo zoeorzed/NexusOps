@@ -1,0 +1,9 @@
+{
+  "purpose": "复合请求人工场景检查；不纳入单标签 Accuracy/Macro-F1",
+  "scenarios": [
+    {"message":"应用频繁闪退，而且昨天还多扣了我一笔钱。","expected_topics":["technical_crash","payment_issue"],"check":"回复覆盖两个问题；检查实际路由与工具轨迹，不能只看最终单标签。"},
+    {"message":"快递迟迟不到，我想退货退款。","expected_topics":["logistics","refund"],"check":"识别退款诉求，说明物流状态对退货退款步骤的影响。"},
+    {"message":"账户出现陌生设备登录，现在我自己也登录不进去。","expected_topics":["account_security","technical_login"],"check":"先保护账户，再指导身份验证；不要求用户提供密码。"},
+    {"message":"上次发票税号填错了，请转人工帮我处理。","expected_topics":["invoice","human_handoff"],"check":"保留发票上下文并触发转人工，不声称已开具新发票。"}
+  ]
+}

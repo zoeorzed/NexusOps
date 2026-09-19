@@ -35,26 +35,24 @@ public class LLMJudge {
             Map<String, Object> data = objectMapper.readValue(raw.substring(start, end + 1), new TypeReference<>() {
             });
             return new QualityScores(
-                    asDouble(data.get("relevance"), 0.5),
-                    asDouble(data.get("accuracy"), 0.5),
-                    asDouble(data.get("completeness"), 0.5),
-                    asDouble(data.get("helpfulness"), 0.5),
+                    requiredScore(data.get("relevance")),
+                    requiredScore(data.get("accuracy")),
+                    requiredScore(data.get("completeness")),
+                    requiredScore(data.get("helpfulness")),
                     false,
                     null
             );
         } catch (Exception ex) {
-            return new QualityScores(0.5, 0.5, 0.5, 0.5, true, ex.getMessage());
+            return new QualityScores(0.0, 0.0, 0.0, 0.0, true, ex.getClass().getSimpleName());
         }
     }
 
-    private double asDouble(Object value, double fallback) {
-        if (value instanceof Number number) {
-            return Math.max(0.0, Math.min(1.0, number.doubleValue()));
+    private double requiredScore(Object value) {
+        double score = value instanceof Number number ? number.doubleValue()
+                : Double.parseDouble(String.valueOf(value));
+        if (!Double.isFinite(score) || score < 0.0 || score > 1.0) {
+            throw new IllegalArgumentException("Judge score must be finite and within [0, 1]");
         }
-        try {
-            return Math.max(0.0, Math.min(1.0, Double.parseDouble(String.valueOf(value))));
-        } catch (Exception ex) {
-            return fallback;
-        }
+        return score;
     }
 }

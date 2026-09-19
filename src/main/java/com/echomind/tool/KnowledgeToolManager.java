@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,12 @@ public class KnowledgeToolManager {
     private final LlmGateway llmGateway;
     private final ObjectMapper objectMapper;
     private final ToolStats stats = new ToolStats();
-    private final Map<String, CacheEntry> cache = new HashMap<>();
+    private final Map<String, CacheEntry> cache = Collections.synchronizedMap(
+            new LinkedHashMap<>(128, 0.75f, true) {
+                @Override protected boolean removeEldestEntry(Map.Entry<String, CacheEntry> eldest) {
+                    return size() > 512;
+                }
+            });
     private final CircuitBreaker breaker = new CircuitBreaker(5, Duration.ofSeconds(60));
 
     public KnowledgeToolManager(KnowledgeBaseService knowledgeBaseService, LlmGateway llmGateway, ObjectMapper objectMapper) {
@@ -38,7 +43,7 @@ public class KnowledgeToolManager {
     public ToolResult<List<SearchResult>> searchWithRewrite(String query, int topK) {
         validate(query, topK);
         if (!breaker.allow()) {
-            return new ToolResult<>(true, fallback(query, "工具熔断中，请稍后重试"), "knowledge_search", "circuit open", false, 0, false);
+            return new ToolResult<>(false, fallback(query, "工具熔断中，请稍后重试"), "knowledge_search", "circuit open", false, 0, false);
         }
         Instant start = Instant.now();
         try {
@@ -49,24 +54,27 @@ public class KnowledgeToolManager {
                     .map(subQuery -> CompletableFuture.supplyAsync(() -> search(subQuery, recallK)))
                     .toList();
             for (CompletableFuture<ToolResult<List<SearchResult>>> future : futures) {
-                for (SearchResult result : future.get(30, TimeUnit.SECONDS).data()) {
+                ToolResult<List<SearchResult>> recalled = future.get(30, TimeUnit.SECONDS);
+                if (!recalled.success()) throw new IllegalStateException("knowledge recall failed");
+                for (SearchResult result : recalled.data()) {
                     merged.putIfAbsent(result.id(), result);
                 }
             }
-            List<SearchResult> reranked = rerank(query, new ArrayList<>(merged.values()), topK);
+            RerankResult reranked = rerank(query, new ArrayList<>(merged.values()), topK);
             stats.record(true, Duration.between(start, Instant.now()).toMillis());
             breaker.recordSuccess();
-            return new ToolResult<>(true, reranked, "knowledge_search", null, false,
-                    Duration.between(start, Instant.now()).toMillis(), true);
+            return new ToolResult<>(true, reranked.results(), "knowledge_search", reranked.error(), false,
+                    Duration.between(start, Instant.now()).toMillis(), reranked.applied());
         } catch (TimeoutException ex) {
             stats.record(false, Duration.between(start, Instant.now()).toMillis());
             breaker.recordFailure();
-            return new ToolResult<>(true, fallback(query, "执行超时"), "knowledge_search", "timeout", false,
+            return new ToolResult<>(false, fallback(query, "执行超时"), "knowledge_search", "timeout", false,
                     Duration.between(start, Instant.now()).toMillis(), false);
         } catch (Exception ex) {
             stats.record(false, Duration.between(start, Instant.now()).toMillis());
             breaker.recordFailure();
-            return new ToolResult<>(true, fallback(query, ex.getMessage()), "knowledge_search", ex.getMessage(), false,
+            if (ex instanceof InterruptedException) Thread.currentThread().interrupt();
+            return new ToolResult<>(false, fallback(query, "检索失败"), "knowledge_search", "knowledge recall failed", false,
                     Duration.between(start, Instant.now()).toMillis(), false);
         }
     }
@@ -85,7 +93,7 @@ public class KnowledgeToolManager {
             return new ToolResult<>(true, results, "knowledge_search", null, false,
                     Duration.between(start, Instant.now()).toMillis(), false);
         } catch (Exception ex) {
-            return new ToolResult<>(true, fallback(query, ex.getMessage()), "knowledge_search", ex.getMessage(), false,
+            return new ToolResult<>(false, fallback(query, "检索失败"), "knowledge_search", "knowledge recall failed", false,
                     Duration.between(start, Instant.now()).toMillis(), false);
         }
     }
@@ -116,15 +124,15 @@ public class KnowledgeToolManager {
             List<String> queries = new ArrayList<>();
             queries.add(query);
             rewritten.stream().filter(q -> q != null && !q.isBlank()).forEach(queries::add);
-            return queries.stream().distinct().toList();
+            return queries.stream().distinct().limit(4).toList();
         } catch (Exception ex) {
             return List.of(query);
         }
     }
 
-    private List<SearchResult> rerank(String query, List<SearchResult> results, int topK) {
+    private RerankResult rerank(String query, List<SearchResult> results, int topK) {
         if (results.size() <= topK) {
-            return results;
+            return new RerankResult(results, false, null);
         }
         String items = "";
         for (int i = 0; i < results.size(); i++) {
@@ -154,12 +162,15 @@ public class KnowledgeToolManager {
                 }
             }
             if (!reranked.isEmpty()) {
-                return reranked.stream().limit(topK).toList();
+                return new RerankResult(reranked.stream().limit(topK).toList(), true, null);
             }
         } catch (Exception ignored) {
         }
-        return results.stream().sorted(Comparator.comparingDouble(SearchResult::score).reversed()).limit(topK).toList();
+        return new RerankResult(results.stream().sorted(Comparator.comparingDouble(SearchResult::score).reversed()).limit(topK).toList(),
+                false, "rerank unavailable; using local ranking");
     }
+
+    private record RerankResult(List<SearchResult> results, boolean applied, String error) {}
 
     private void validate(String query, int topK) {
         if (query == null || query.isBlank()) {
