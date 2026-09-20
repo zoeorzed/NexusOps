@@ -39,6 +39,13 @@ public class AgentOrchestrator {
 
     private static final double SUPPORTING_AGENT_MIN_SCORE = 0.30;
     private static final double SUPPORTING_AGENT_PRIMARY_RATIO = 0.30;
+    private static final String[] TECHNICAL_SIGNALS = {
+            "闪退", "崩溃", "无法登录", "不能登录", "登录失败", "登录不进去", "登录不上",
+            "账号被盗", "账户被盗", "异地登录", "密码被改"
+    };
+    private static final String[] BILLING_SIGNALS = {
+            "重复扣款", "多扣", "扣了两次", "扣款两次", "异常扣款", "重复收费"
+    };
 
     private final IntentRecognizer intentRecognizer;
     private final Map<AgentType, List<BaseAgent>> pool;
@@ -72,7 +79,7 @@ public class AgentOrchestrator {
         routing.put(IntentCategory.INVOICE, AgentType.BILLING);
         routing.put(IntentCategory.PAYMENT_ISSUE, AgentType.BILLING);
         routing.put(IntentCategory.ACCOUNT, AgentType.BILLING);
-        routing.put(IntentCategory.ACCOUNT_SECURITY, AgentType.BILLING);
+        routing.put(IntentCategory.ACCOUNT_SECURITY, AgentType.TECHNICAL);
         routing.put(IntentCategory.ESCALATION, AgentType.ESCALATION);
         routing.put(IntentCategory.HUMAN_HANDOFF, AgentType.ESCALATION);
     }
@@ -309,7 +316,7 @@ public class AgentOrchestrator {
                     %s
 
                     [技术子任务]
-                    你当前就是 Technical Agent。只处理登录、认证、系统故障和订单不可见等技术问题；不要回答扣款、退款、到账或财务审核。
+                    你当前就是 Technical Agent。只处理账户保护、登录恢复、认证、系统故障和订单不可见等技术问题；不要回答扣款、退款、到账或财务审核。
                     回复中不要复述、解释或提示账务问题，账务子任务会由协同 Agent 独立处理。
                     不得建议“转交技术Agent”或“升级至技术Agent”。如确需人工后台排查，只说明需要人工后台排查；不得声称已记录、将记录、已提交、将提交或会继续跟进。
                     %s
@@ -323,7 +330,7 @@ public class AgentOrchestrator {
                     [账务子任务]
                     你当前就是 Billing Agent。只处理扣款、支付、退款、账单和流水核验；不要回答登录、401、缓存或技术排障。
                     回复中不要复述、解释或提示技术问题，技术子任务会由协同 Agent 独立处理。
-                    若知识库说“24小时内完成核验”，24小时只能用于核验时限，不得表述为退款24小时内到账；知识库没有到账时限时必须说明以支付渠道为准。
+                    区分扣款核验、退款申请审核和审核通过后到账三个阶段；只引用知识库中对应阶段的规则与起算点，没有该阶段时限时明确未知，不得将审核时限当作到账承诺。
                     涉及实际退款可说明需要人工或财务审核，但不得声称当前对话已经转人工或已经完成退款。
                     %s
                     """.formatted(domainMessage(original, AgentType.BILLING), endingInstruction(lastTarget));
@@ -377,13 +384,14 @@ public class AgentOrchestrator {
 
     private String domainMessage(String original, AgentType agentType) {
         String[] keywords = agentType == AgentType.TECHNICAL
-                ? new String[]{"登录", "401", "认证", "凭证", "报错", "错误", "故障", "崩溃", "查不到", "不可见", "系统"}
-                : new String[]{"扣款", "支付", "退款", "账单", "发票", "流水", "金额", "299元", "多扣"};
-        List<String> relevant = Arrays.stream(original.split("(?<=[，,。；;！？!?])"))
+                ? new String[]{"登录", "401", "认证", "凭证", "报错", "错误", "故障", "闪退", "崩溃", "查不到", "不可见", "系统",
+                        "账号被盗", "账户被盗", "账户安全", "账号安全", "密码被改", "账户保护", "账号保护"}
+                : new String[]{"扣款", "支付", "退款", "账单", "发票", "流水", "金额", "多扣", "扣了两次", "重复收费"};
+        List<String> relevant = Arrays.stream(clauses(original))
                 .map(String::trim)
-                .filter(part -> containsAny(part.toLowerCase(Locale.ROOT), keywords))
+                .filter(part -> countActiveHits(part.toLowerCase(Locale.ROOT), keywords) > 0)
                 .toList();
-        return relevant.isEmpty() ? original : String.join("", relevant);
+        return relevant.isEmpty() ? "本轮没有明确的本领域问题，请勿推断或展开其他领域内容。" : String.join("；", relevant);
     }
 
     private void copyEntity(
@@ -484,7 +492,8 @@ public class AgentOrchestrator {
         if (List.of(
                 IntentCategory.TECHNICAL,
                 IntentCategory.TECHNICAL_LOGIN,
-                IntentCategory.TECHNICAL_CRASH
+                IntentCategory.TECHNICAL_CRASH,
+                IntentCategory.ACCOUNT_SECURITY
         ).contains(req.intent())) {
             scores.merge(AgentType.TECHNICAL, 0.75, Double::sum);
         }
@@ -492,7 +501,6 @@ public class AgentOrchestrator {
         if (List.of(
                 IntentCategory.BILLING,
                 IntentCategory.ACCOUNT,
-                IntentCategory.ACCOUNT_SECURITY,
                 IntentCategory.REFUND,
                 IntentCategory.INVOICE,
                 IntentCategory.PAYMENT_ISSUE
@@ -500,13 +508,22 @@ public class AgentOrchestrator {
             scores.merge(AgentType.BILLING, 0.75, Double::sum);
         }
 
-        long technicalHits = countHits(msg, "崩溃", "报错", "error", "crash", "无法登录", "登录失败", "500", "401", "验证码");
-        long billingHits = countHits(msg, "退款", "退货", "扣款", "发票", "账单", "支付", "订阅", "refund", "invoice", "多扣");
+        long technicalHits = countActiveHits(msg, "崩溃", "报错", "error", "crash", "无法登录", "登录失败", "500", "401", "验证码");
+        long billingHits = countActiveHits(msg, "退款", "退货", "扣款", "发票", "账单", "支付", "订阅", "refund", "invoice", "多扣");
         long generalHits = countHits(msg, "订单", "物流", "快递", "配送", "会员", "积分", "咨询", "帮助");
 
         scores.merge(AgentType.TECHNICAL, Math.min(0.45, technicalHits * 0.18), Double::sum);
         scores.merge(AgentType.BILLING, Math.min(0.45, billingHits * 0.18), Double::sum);
         scores.merge(AgentType.GENERAL, Math.min(0.35, generalHits * 0.12), Double::sum);
+
+        // One explicit, current problem is sufficient evidence for a supporting domain.
+        // This does not lower the threshold for ambiguous words such as "支付" or "系统".
+        if (countActiveHits(msg, TECHNICAL_SIGNALS) > 0) {
+            scores.merge(AgentType.TECHNICAL, 0.35, Math::max);
+        }
+        if (countActiveHits(msg, BILLING_SIGNALS) > 0) {
+            scores.merge(AgentType.BILLING, 0.35, Math::max);
+        }
 
         Map<String, List<String>> entities = req.entities() == null ? Map.of() : req.entities();
         if (!entities.getOrDefault("error_code", List.of()).isEmpty()) {
@@ -576,6 +593,31 @@ public class AgentOrchestrator {
             }
         }
         return hits;
+    }
+
+    private String[] clauses(String text) {
+        return text.split("(?<=[，,。；;！？!?\\n])|(?:而且|并且|同时|另外|但是|不过|但)");
+    }
+
+    private long countActiveHits(String text, String... keywords) {
+        return Arrays.stream(keywords)
+                .filter(keyword -> Arrays.stream(clauses(text)).anyMatch(clause -> hasActiveMention(clause, keyword)))
+                .count();
+    }
+
+    private boolean hasActiveMention(String clause, String keyword) {
+        for (int index = clause.indexOf(keyword); index >= 0; index = clause.indexOf(keyword, index + keyword.length())) {
+            String before = clause.substring(0, index);
+            String after = clause.substring(index + keyword.length());
+            // Deliberately limited to obvious local denial/resolution, not a full language parser.
+            boolean denied = before.matches("(?s).*(?:没有|并未|并无|未出现|不存在|没出现|不是|不再|已经不|现在不).{0,6}")
+                    || before.matches("(?s).*(?:已解决|已修复|已恢复)的?");
+            boolean resolved = after.matches("(?s)^(?:款|费)?(?:的问题|问题|故障|现象)?(?:已经|已|现在|目前)?(?:解决|修复|恢复|消失|正常).*");
+            if (!denied && !resolved) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean needsClarification(AgentRequest req) {

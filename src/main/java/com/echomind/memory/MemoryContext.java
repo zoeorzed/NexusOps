@@ -12,6 +12,11 @@ public record MemoryContext(
         Map<String, Object> userProfile,
         String summary
 ) {
+    /** Current business requests must not inherit another conversation's order or action intent. */
+    public String toConversationPromptText(ObjectMapper objectMapper) {
+        return new MemoryContext(recentMessages, List.of(), Map.of(), summary).toPromptText(objectMapper);
+    }
+
     public String toPromptText(ObjectMapper objectMapper) {
         StringBuilder prompt = new StringBuilder();
         if (summary != null && !summary.isBlank()) {

@@ -1,0 +1,2613 @@
+{
+  "schema_version": 1,
+  "mode": "live_http_business_validation",
+  "synthetic_data": true,
+  "started_at": "2026-09-19T17:27:43.658536+00:00",
+  "dataset_id": "business-scenarios-v1",
+  "dataset_sha256": "251c57ab96ff09efb818120706edb0acb58d592f74532c122306f82df84de06a",
+  "knowledge_import_sha256": "bfb16af9bdeb16baed1cb2796d2691409e5c5a9b09af6c31cd089d7ba6f16ee7",
+  "reference_documents": [
+    {
+      "title": "退款政策",
+      "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+      "origin": "defaultDocuments",
+      "id": "15d82b230e2932c72a135ff3f018e12c",
+      "chunk": 0
+    },
+    {
+      "title": "订单查询",
+      "content": "用户可以通过订单号查询订单状态。订单状态包括待支付、已支付、已发货、运输中、已签收、已完成。物流信息通常在发货后 24 小时内更新。",
+      "origin": "defaultDocuments",
+      "id": "45a335a49b5b3fb74013820fa7a4e929",
+      "chunk": 0
+    },
+    {
+      "title": "账户安全",
+      "content": "建议用户定期修改密码，密码长度至少 8 位，包含字母和数字。如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。",
+      "origin": "defaultDocuments",
+      "id": "6d848c7ad0200c7613e7391795d1b92c",
+      "chunk": 0
+    },
+    {
+      "title": "技术故障排查",
+      "content": "应用崩溃请尝试清除缓存后重启应用。登录失败 401 表示认证失败。500 服务器错误通常是服务端问题，请稍后重试或联系技术支持。",
+      "origin": "defaultDocuments",
+      "id": "409430435d67876b32a6d543a445e9ff",
+      "chunk": 0
+    },
+    {
+      "title": "会员与积分",
+      "content": "每消费 1 元累积 1 积分。100 积分可抵扣 1 元。会员等级包括普通会员、银卡会员和金卡会员，积分有效期为 1 年。",
+      "origin": "defaultDocuments",
+      "id": "794c1020643c66307e97d046cac7513f",
+      "chunk": 0
+    },
+    {
+      "title": "配送说明",
+      "content": "标准配送 3-5 个工作日送达，订单满 99 元免运费。加急配送 1-2 个工作日送达。同城配送可当日达或次日达。",
+      "origin": "defaultDocuments",
+      "id": "b3b86359363f79978a0abfc00bf35e11",
+      "chunk": 0
+    },
+    {
+      "title": "演示补充：401登录排查",
+      "content": "这是虚构企业的面试演示知识，补充默认《技术故障排查》的401场景。确认登录会话是否过期，重新登录后重试；仍失败时由用户保留错误码、发生时间和客户端版本供技术支持排查。客服原型不能创建工单或修复账户。",
+      "origin": "demo/knowledge.json",
+      "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+      "chunk": 0
+    },
+    {
+      "title": "演示补充：重复扣款材料核对",
+      "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+      "origin": "demo/knowledge.json",
+      "id": "ff9ece14c6c6965245d863628b9fbd24",
+      "chunk": 0
+    }
+  ],
+  "chat_records": {
+    "compound_crash_charge": {
+      "started_at": "2026-09-19T17:28:00.087947+00:00",
+      "response": {
+        "conv_id": "business-compound_crash_charge-1789838863658536400",
+        "request_id": "d62d805e",
+        "response": "**结论**：闪退可按缓存排查；重复扣款需先核对订单与两笔交易信息，当前无法查询流水或提交退款。\n\n**闪退排查**\n1. 清除应用缓存后重启应用。\n2. 若仍崩溃或出现 500 错误，稍后重试；持续异常请联系技术支持。\n\n**重复扣款**\n请提供订单号、金额、两笔交易的时间、支付渠道和流水摘要，以便核对。核验反馈、退款申请审核、审核通过后的到账是不同阶段；退款条件与时限以退款政策为准（7 天内可申请，审核 1-3 个工作日，通过后 5-7 个工作日退回原账户）。",
+        "intent": "technical_crash",
+        "intent_group": "technical",
+        "agent_type": "technical",
+        "agent_types": [
+          "technical"
+        ],
+        "primary_agent": "technical",
+        "supporting_agents": [],
+        "routing_reason": "intent=technical_crash, group=technical, primary=technical, supporting=none, scores=[technical=0.75, billing=0.18, general=0.10]",
+        "routing_confidence": 0.75,
+        "escalated": false,
+        "latency_ms": 4775,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [
+            "昨天"
+          ],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [
+            "昨天"
+          ],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [
+            "昨天"
+          ],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.645,
+        "intent_source_scores": {
+          "llm": 0.85,
+          "embedding": 0.10294117647058823,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4816.325,
+      "request": {
+        "message": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-compound_crash_charge-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "d62d805e",
+          "timestamp": "2026-09-19T17:28:03.677008900Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-compound_crash_charge-1789838863658536400",
+          "intent": "technical_crash",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1286,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1245
+        },
+        "found": true
+      }
+    },
+    "compound_delivery_refund": {
+      "started_at": "2026-09-19T17:28:04.937130+00:00",
+      "response": {
+        "conv_id": "business-compound_delivery_refund-1789838863658536400",
+        "request_id": "171c4b88",
+        "response": "**结论**：可以申请退货退款，但商品已发货时需先完成退货流程，退款能否通过需核验订单状态后确认。\n\n**必要步骤**\n1. 请提供订单号、支付时间和支付渠道，我先帮你核实订单与物流状态。\n2. 若确认已发货，需先走退货流程，退回商品后再进入退款审核。\n3. 退款申请提交后，系统在 1-3 个工作日内审核；审核通过后，款项在 5-7 个工作日内退回原支付账户。\n\n物流延迟的具体原因需结合订单信息核实，请先提供订单号。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.11, general=0.22, technical=0.00]",
+        "routing_confidence": 1.0,
+        "escalated": false,
+        "latency_ms": 3873,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.7358,
+        "intent_source_scores": {
+          "llm": 0.9,
+          "embedding": 0.15384615384615385,
+          "pattern": 0.75
+        }
+      },
+      "client_elapsed_ms": 3878.06,
+      "request": {
+        "message": "快递迟迟不到，我想退货退款。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-compound_delivery_refund-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "171c4b88",
+          "timestamp": "2026-09-19T17:28:07.930533600Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-compound_delivery_refund-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1511,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 834
+        },
+        "found": true
+      }
+    },
+    "compound_security_login": {
+      "started_at": "2026-09-19T17:28:08.841379+00:00",
+      "response": {
+        "conv_id": "business-compound_security_login-1789838863658536400",
+        "request_id": "bfa30f41",
+        "response": "**结论：这属于账户安全与登录问题，不在账单服务范围内，需由账户/技术支持方向处理。**\n\n我负责账单查询、退款、发票与订阅管理；陌生设备登录和无法登录请走账户安全入口。\n\n**建议步骤**\n1. 尽快通过绑定手机号或邮箱重置密码。\n2. 若提示 401，确认会话是否过期，重新登录后重试。\n3. 仍失败时保留错误码、发生时间和客户端版本，供技术支持排查。\n\n如后续发现因此产生异常扣款或重复扣款，可再提供订单号，我按账单方向说明核验与退款流程。",
+        "intent": "account_security",
+        "intent_group": "account",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=account_security, group=account, primary=billing, supporting=none, scores=[billing=0.75, general=0.10, technical=0.00]",
+        "routing_confidence": 0.75,
+        "escalated": false,
+        "latency_ms": 4705,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.676,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.0547945205479452,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4709.451,
+      "request": {
+        "message": "账户出现陌生设备登录，现在我自己也登录不进去。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-compound_security_login-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "bfa30f41",
+          "timestamp": "2026-09-19T17:28:12.404378800Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-compound_security_login-1789838863658536400",
+          "intent": "account_security",
+          "intent_group": "account",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1634,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1283
+        },
+        "found": true
+      }
+    },
+    "compound_invoice_handoff": {
+      "started_at": "2026-09-19T17:28:13.577054+00:00",
+      "response": {
+        "conv_id": "business-compound_invoice_handoff-1789838863658536400",
+        "request_id": "532ec60d",
+        "response": "发票税号填错需要人工核验后处理，我这边无法直接修改或重开。\n\n请先准备以下信息，再通过“发票问题—转人工”入口提交：\n\n- 订单号或发票申请单号\n- 原发票抬头与错误税号\n- 正确的税号及接收邮箱\n\n提交后由人工审核处理，具体时效以人工告知为准。",
+        "intent": "human_handoff",
+        "intent_group": "escalation",
+        "agent_type": "general",
+        "agent_types": [
+          "general"
+        ],
+        "primary_agent": "escalation",
+        "supporting_agents": [],
+        "routing_reason": "意图为 human_handoff，触发升级路由",
+        "routing_confidence": 0.8,
+        "escalated": true,
+        "latency_ms": 2664,
+        "knowledge_used": false,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.665,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.1,
+          "pattern": 0.75
+        }
+      },
+      "client_elapsed_ms": 2692.591,
+      "request": {
+        "message": "上次发票税号填错了，请转人工帮我处理。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-compound_invoice_handoff-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "532ec60d",
+          "timestamp": "2026-09-19T17:28:15.216131400Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-compound_invoice_handoff-1789838863658536400",
+          "intent": "human_handoff",
+          "intent_group": "escalation",
+          "agent_type": "general",
+          "primary_agent": "escalation",
+          "supporting_agents": [],
+          "tools_used": [],
+          "tool_calls": [],
+          "knowledge_used": false,
+          "escalated": true,
+          "latency_ms": 1010
+        },
+        "found": true
+      }
+    },
+    "refund_stages": {
+      "started_at": "2026-09-19T17:28:16.276083+00:00",
+      "response": {
+        "conv_id": "business-refund_stages-1789838863658536400",
+        "request_id": "1ff7cc35",
+        "response": "**结论**：购买后 7 天内可申请无理由退款，你的订单未发货，符合申请条件；审核与到账是两个阶段，时限不同。\n\n- **审核**：退款申请提交后，系统在 1-3 个工作日内完成审核。\n- **到账**：审核通过后，款项在 5-7 个工作日内退回原支付账户。\n- **下一步**：请提供订单号、支付时间和支付渠道，以便核对订单状态；实际退款需人工审核后处理。\n\n审核结果与到账时间以核验后的订单状态为准，建议保留支付凭证。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.10, technical=0.00]",
+        "routing_confidence": 0.93,
+        "escalated": false,
+        "latency_ms": 4047,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.7476,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.16304347826086957,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4072.209,
+      "request": {
+        "message": "我买了3天、还没发货，想申请退款。审核要多久，审核通过后多久到账？",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-refund_stages-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "1ff7cc35",
+          "timestamp": "2026-09-19T17:28:19.467096400Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-refund_stages-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1457,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1145
+        },
+        "found": true
+      }
+    },
+    "missing_invoice_policy": {
+      "started_at": "2026-09-19T17:28:20.366854+00:00",
+      "response": {
+        "conv_id": "business-missing_invoice_policy-1789838863658536400",
+        "request_id": "e54a5d46",
+        "response": "**结论**：发票抬头更正没有知识库可引用的固定天数，也不存在可确认的“更正费”标准；抬头修改通常需人工审核，跨月或已报销场景更需核实。\n\n**处理步骤**\n1. 请提供订单号、发票类型（电子普票/专票）、原抬头与正确抬头、税号、开票邮箱。\n2. 说明是否跨月、是否已报销或已抵扣，这会影响能否直接重开。\n3. 更正是否收费、能否重开，需人工审核后确认，我无法在此承诺。\n\n如需继续，请补充上述信息。",
+        "intent": "invoice",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=invoice, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.10, technical=0.00]",
+        "routing_confidence": 0.93,
+        "escalated": false,
+        "latency_ms": 4488,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.7661,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.13043478260869565,
+          "pattern": 0.75
+        }
+      },
+      "client_elapsed_ms": 4517.463,
+      "request": {
+        "message": "电子发票抬头填错后，必须几天内可以改？你们是否收取更正费？",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-missing_invoice_policy-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "e54a5d46",
+          "timestamp": "2026-09-19T17:28:23.710419100Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-missing_invoice_policy-1789838863658536400",
+          "intent": "invoice",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1363,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1366
+        },
+        "found": true
+      }
+    },
+    "refund_execution_boundary": {
+      "started_at": "2026-09-19T17:28:24.892284+00:00",
+      "response": {
+        "conv_id": "business-refund_execution_boundary-1789838863658536400",
+        "request_id": "c50a863d",
+        "response": "**结论**：退款无法在对话中直接执行，需要先核验订单状态并提交申请，通过后由系统原路退回。\n\n**处理步骤**\n1. **核验订单**：订单 B20260919007、金额 299 元已记录。请补充支付时间与支付渠道（微信/支付宝/银行卡等），以便判断订单状态是否已发货。\n2. **提交申请**：购买后 7 天内可申请无理由退款；若商品已发货，需先完成退货流程。\n3. **审核与到账**：申请提交后 1-3 个工作日审核；审核通过后 5-7 个工作日退回原支付账户。实际退款需人工审核，本对话不能直接打款。\n\n请保留支付凭证。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.26, general=0.32, technical=0.00]",
+        "routing_confidence": 1.0,
+        "escalated": false,
+        "latency_ms": 4333,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [
+            "B20260919007"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "current_entities": {
+          "order_id": [
+            "B20260919007"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "resolved_entities": {
+          "order_id": [
+            "B20260919007"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "intent_confidence": 0.715,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.09022556390977443,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4338.311,
+      "request": {
+        "message": "我的订单#B20260919007支付了299元，请你现在直接把退款打到我的银行卡。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-refund_execution_boundary-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "c50a863d",
+          "timestamp": "2026-09-19T17:28:28.191712600Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-refund_execution_boundary-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1330,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1170
+        },
+        "found": true
+      }
+    },
+    "memory_first": {
+      "started_at": "2026-09-19T17:28:29.237329+00:00",
+      "response": {
+        "conv_id": "business-memory_shared-1789838863658536400",
+        "request_id": "efde023e",
+        "response": "**结论**：本轮我会按订单 B20260919008、金额 299 元继续说明；重复扣款需要先核对两笔交易记录，确认后才能进入退款审核，我无法直接执行退款。\n\n**需要您补充的信息**\n1. 两笔扣款各自的支付时间、支付渠道（微信/支付宝/银行卡等）。\n2. 两笔交易的流水号或账单截图摘要。\n\n**处理路径**\n- 若两笔金额、时间高度接近，属疑似重复扣款，需人工与财务核验后处理，不会自动退回。\n- 核验、退款申请审核、审核通过后的到账是不同阶段；审核与到账时限以《退款政策》为准（审核 1-3 个工作日，通过后 5-7 个工作日原路退回）。\n\n另外，您提到的发票抬头修改与更正费用，属于发票问题，由相应协同环节处理，我这边先聚焦重复扣款核验。",
+        "intent": "payment_issue",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+        "routing_confidence": 1.0,
+        "escalated": false,
+        "latency_ms": 5601,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [
+            "B20260919008"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "current_entities": {
+          "order_id": [
+            "B20260919008"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "resolved_entities": {
+          "order_id": [
+            "B20260919008"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "intent_confidence": 0.715,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.08849557522123894,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 5623.446,
+      "request": {
+        "message": "我的订单号是#B20260919008，重复扣款299元，请记住这笔订单。",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-memory_shared-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "efde023e",
+          "timestamp": "2026-09-19T17:28:33.811073700Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-memory_shared-1789838863658536400",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1411,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 2514
+        },
+        "found": true
+      }
+    },
+    "memory_followup": {
+      "started_at": "2026-09-19T17:28:34.879234+00:00",
+      "response": {
+        "conv_id": "business-memory_shared-1789838863658536400",
+        "request_id": "15d3524a",
+        "response": "**结论**：订单 B20260919008 的 299 元目前是疑似重复扣款，需先完成两笔交易核对，确认后才能进入退款申请审核；我无法直接执行退款。\n\n**申请路径**\n1. 提供两笔扣款各自的支付时间、支付渠道、流水号或账单截图摘要。\n2. 核对确认后提交退款申请，由人工审核订单状态与实际支付金额。\n3. 审核通过后原路退回；您希望退到银行卡，需以原支付渠道规则为准，能否改道需人工确认。\n\n**时限**：审核 1-3 个工作日，通过后 5-7 个工作日退回原支付账户。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+        "routing_confidence": 1.0,
+        "escalated": false,
+        "latency_ms": 4354,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [
+            "B20260919008"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [
+            "B20260919008"
+          ],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": [
+            "299元"
+          ]
+        },
+        "intent_confidence": 0.715,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.2727272727272727,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4381.133,
+      "request": {
+        "message": "那这笔订单怎么申请退款？",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-memory_shared-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "15d3524a",
+          "timestamp": "2026-09-19T17:28:38.030699Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-memory_shared-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1280,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1193
+        },
+        "found": true
+      }
+    },
+    "new_conversation": {
+      "started_at": "2026-09-19T17:28:39.289698+00:00",
+      "response": {
+        "conv_id": "business-new_conversation-1789838863658536400",
+        "request_id": "84ddce21",
+        "response": "退款申请需要先核验订单状态和实际支付金额，目前还缺订单信息，暂时无法确认是否符合退款条件。\n\n**请提供**\n1. 订单号\n2. 支付时间与支付渠道（微信/支付宝/银行卡等）\n3. 实付金额，以及是否使用过优惠券或余额\n\n**处理路径**：提交申请后系统在 1-3 个工作日内审核；审核通过后，款项在 5-7 个工作日内退回原支付账户。若商品已发货，需先完成退货流程。\n\n另外，你提到的重复扣款和发票抬头修改属于其他处理环节，需要分别核验，可一并把相关交易记录发我。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.22, technical=0.00]",
+        "routing_confidence": 0.93,
+        "escalated": false,
+        "latency_ms": 4261,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.715,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.2727272727272727,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 4289.612,
+      "request": {
+        "message": "我这笔订单怎么申请退款？",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-new_conversation-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "84ddce21",
+          "timestamp": "2026-09-19T17:28:42.468019200Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-new_conversation-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1032,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1303
+        },
+        "found": true
+      }
+    },
+    "other_user_same_conversation_id": {
+      "started_at": "2026-09-19T17:28:43.587349+00:00",
+      "response": {
+        "conv_id": "business-memory_shared-1789838863658536400",
+        "request_id": "cab36c42",
+        "response": "退款申请需先核验订单状态和实际支付金额，符合条件后提交申请，审核通过再原路退回。\n\n**必要信息**\n- 订单号\n- 支付时间与支付渠道（微信/支付宝/银行卡等）\n- 实付金额、是否使用优惠券或余额\n\n**处理路径**\n1. 提交退款申请后，系统在 1-3 个工作日内审核。\n2. 审核通过后，款项在 5-7 个工作日内退回原支付账户。\n3. 若商品已发货，需先完成退货流程。\n\n当前会话未收到你的订单号，请补充后我按上述规则继续说明。",
+        "intent": "refund",
+        "intent_group": "billing",
+        "agent_type": "billing",
+        "agent_types": [
+          "billing"
+        ],
+        "primary_agent": "billing",
+        "supporting_agents": [],
+        "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.22, technical=0.00]",
+        "routing_confidence": 0.93,
+        "escalated": false,
+        "latency_ms": 3185,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [],
+          "amount": []
+        },
+        "intent_confidence": 0.715,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.2727272727272727,
+          "pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 3189.861,
+      "request": {
+        "message": "我这笔订单怎么申请退款？",
+        "user_id": "business-customer_b-1789838863658536400",
+        "conv_id": "business-memory_shared-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "cab36c42",
+          "timestamp": "2026-09-19T17:28:45.895493800Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_b-1789838863658536400",
+          "conversation_id": "business-memory_shared-1789838863658536400",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1208,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1094
+        },
+        "found": true
+      }
+    },
+    "server_500": {
+      "started_at": "2026-09-19T17:28:46.798261+00:00",
+      "response": {
+        "conv_id": "business-server_500-1789838863658536400",
+        "request_id": "e75e125d",
+        "response": "**结论：500 表示服务端处理异常，不代表订单已提交成功，也不代表已扣款。** 请先按下面三步确认。\n\n1. **确认是否重复提交**：回到订单列表或支付记录，看这笔订单是否已生成、是否出现重复订单；不要连续点击提交。\n2. **保留排查信息**：记录发生时间、订单号（若有）、页面提示原文，以及浏览器或 App 版本；这些是后续定位的必要字段。\n3. **稍后重试一次**：间隔后重新提交一次，若仍报 500，说明不是偶发，需要技术侧查服务端日志。\n\n如果同时出现重复扣款或需要退款，那属于另一条流程，由对应协同 Agent 处理；重复扣款需先核对订单号、金额、两笔交易时间、支付渠道和流水摘要。",
+        "intent": "technical_crash",
+        "intent_group": "technical",
+        "agent_type": "technical",
+        "agent_types": [
+          "technical"
+        ],
+        "primary_agent": "technical",
+        "supporting_agents": [],
+        "routing_reason": "intent=technical_crash, group=technical, primary=technical, supporting=none, scores=[technical=1.13, general=0.22, billing=0.00]",
+        "routing_confidence": 1.0,
+        "escalated": false,
+        "latency_ms": 5195,
+        "knowledge_used": true,
+        "verified": true,
+        "grounded": true,
+        "entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [
+            "500"
+          ],
+          "amount": []
+        },
+        "current_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [
+            "500"
+          ],
+          "amount": []
+        },
+        "resolved_entities": {
+          "order_id": [],
+          "product": [],
+          "date": [],
+          "error_code": [
+            "500"
+          ],
+          "amount": []
+        },
+        "intent_confidence": 0.665,
+        "intent_source_scores": {
+          "llm": 0.95,
+          "embedding": 0.13414634146341464,
+          "pattern": 0.5,
+          "refined_by_pattern": 0.5
+        }
+      },
+      "client_elapsed_ms": 5221.815,
+      "request": {
+        "message": "提交订单时页面提示500服务器错误，现在应该怎么办？",
+        "user_id": "business-customer_a-1789838863658536400",
+        "conv_id": "business-server_500-1789838863658536400"
+      },
+      "trace": {
+        "trace": {
+          "request_id": "e75e125d",
+          "timestamp": "2026-09-19T17:28:50.781364900Z",
+          "endpoint": "chat",
+          "user_id": "business-customer_a-1789838863658536400",
+          "conversation_id": "business-server_500-1789838863658536400",
+          "intent": "technical_crash",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "tools_used": [
+            "knowledge_search"
+          ],
+          "tool_calls": [
+            {
+              "tool_name": "knowledge_search",
+              "success": true,
+              "fallback_used": false,
+              "cached": false,
+              "reranked": true,
+              "latency_ms": 1433,
+              "error": ""
+            }
+          ],
+          "knowledge_used": true,
+          "escalated": false,
+          "latency_ms": 1836
+        },
+        "found": true
+      }
+    }
+  },
+  "retrieval_records": {
+    "refund_timing": {
+      "started_at": "2026-09-19T17:27:43.905424+00:00",
+      "response": {
+        "query": "退款申请提交后审核要多久，审核通过后多久退回原支付账户？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "title": "退款政策",
+            "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+            "score": 0.9649,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "退款政策"
+            }
+          },
+          {
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "title": "演示补充：重复扣款材料核对",
+            "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+            "score": 0.7173,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：重复扣款材料核对"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1940.768,
+      "query": "退款申请提交后审核要多久，审核通过后多久退回原支付账户？"
+    },
+    "order_status": {
+      "started_at": "2026-09-19T17:27:45.848290+00:00",
+      "response": {
+        "query": "订单状态有哪些，发货后物流信息通常多久更新？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "45a335a49b5b3fb74013820fa7a4e929",
+            "title": "订单查询",
+            "content": "用户可以通过订单号查询订单状态。订单状态包括待支付、已支付、已发货、运输中、已签收、已完成。物流信息通常在发货后 24 小时内更新。",
+            "score": 1.0,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "订单查询"
+            }
+          },
+          {
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "title": "配送说明",
+            "content": "标准配送 3-5 个工作日送达，订单满 99 元免运费。加急配送 1-2 个工作日送达。同城配送可当日达或次日达。",
+            "score": 0.5888,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "配送说明"
+            }
+          },
+          {
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "title": "退款政策",
+            "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+            "score": 0.4089,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "退款政策"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1142.798,
+      "query": "订单状态有哪些，发货后物流信息通常多久更新？"
+    },
+    "account_reset": {
+      "started_at": "2026-09-19T17:27:46.992374+00:00",
+      "response": {
+        "query": "忘记登录密码可以通过什么渠道重置，密码有什么要求？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "6d848c7ad0200c7613e7391795d1b92c",
+            "title": "账户安全",
+            "content": "建议用户定期修改密码，密码长度至少 8 位，包含字母和数字。如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。",
+            "score": 1.0,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "账户安全"
+            }
+          },
+          {
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "title": "技术故障排查",
+            "content": "应用崩溃请尝试清除缓存后重启应用。登录失败 401 表示认证失败。500 服务器错误通常是服务端问题，请稍后重试或联系技术支持。",
+            "score": 0.483,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "技术故障排查"
+            }
+          },
+          {
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "title": "演示补充：401登录排查",
+            "content": "这是虚构企业的面试演示知识，补充默认《技术故障排查》的401场景。确认登录会话是否过期，重新登录后重试；仍失败时由用户保留错误码、发生时间和客户端版本供技术支持排查。客服原型不能创建工单或修复账户。",
+            "score": 0.5454,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：401登录排查"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1720.385,
+      "query": "忘记登录密码可以通过什么渠道重置，密码有什么要求？"
+    },
+    "crash_help": {
+      "started_at": "2026-09-19T17:27:48.714542+00:00",
+      "response": {
+        "query": "应用崩溃后先做什么排查？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "title": "技术故障排查",
+            "content": "应用崩溃请尝试清除缓存后重启应用。登录失败 401 表示认证失败。500 服务器错误通常是服务端问题，请稍后重试或联系技术支持。",
+            "score": 0.9506,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "技术故障排查"
+            }
+          },
+          {
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "title": "演示补充：401登录排查",
+            "content": "这是虚构企业的面试演示知识，补充默认《技术故障排查》的401场景。确认登录会话是否过期，重新登录后重试；仍失败时由用户保留错误码、发生时间和客户端版本供技术支持排查。客服原型不能创建工单或修复账户。",
+            "score": 0.427,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：401登录排查"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 3378.208,
+      "query": "应用崩溃后先做什么排查？"
+    },
+    "member_points": {
+      "started_at": "2026-09-19T17:27:52.094589+00:00",
+      "response": {
+        "query": "消费积分怎么累计和抵扣，有效期多长？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "794c1020643c66307e97d046cac7513f",
+            "title": "会员与积分",
+            "content": "每消费 1 元累积 1 积分。100 积分可抵扣 1 元。会员等级包括普通会员、银卡会员和金卡会员，积分有效期为 1 年。",
+            "score": 1.0,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "会员与积分"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1347.924,
+      "query": "消费积分怎么累计和抵扣，有效期多长？"
+    },
+    "delivery_options": {
+      "started_at": "2026-09-19T17:27:53.443979+00:00",
+      "response": {
+        "query": "标准配送和加急配送分别多久，满多少免运费？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "title": "配送说明",
+            "content": "标准配送 3-5 个工作日送达，订单满 99 元免运费。加急配送 1-2 个工作日送达。同城配送可当日达或次日达。",
+            "score": 0.8991,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "配送说明"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1441.963,
+      "query": "标准配送和加急配送分别多久，满多少免运费？"
+    },
+    "login_401_details": {
+      "started_at": "2026-09-19T17:27:54.887488+00:00",
+      "response": {
+        "query": "401重新登录还是失败，应保留哪些信息给技术支持排查？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "title": "演示补充：401登录排查",
+            "content": "这是虚构企业的面试演示知识，补充默认《技术故障排查》的401场景。确认登录会话是否过期，重新登录后重试；仍失败时由用户保留错误码、发生时间和客户端版本供技术支持排查。客服原型不能创建工单或修复账户。",
+            "score": 0.9929,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：401登录排查"
+            }
+          },
+          {
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "title": "技术故障排查",
+            "content": "应用崩溃请尝试清除缓存后重启应用。登录失败 401 表示认证失败。500 服务器错误通常是服务端问题，请稍后重试或联系技术支持。",
+            "score": 0.6781,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "技术故障排查"
+            }
+          },
+          {
+            "id": "6d848c7ad0200c7613e7391795d1b92c",
+            "title": "账户安全",
+            "content": "建议用户定期修改密码，密码长度至少 8 位，包含字母和数字。如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。",
+            "score": 0.5678,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "账户安全"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1029.344,
+      "query": "401重新登录还是失败，应保留哪些信息给技术支持排查？"
+    },
+    "duplicate_charge_materials": {
+      "started_at": "2026-09-19T17:27:55.918112+00:00",
+      "response": {
+        "query": "疑似重复扣款需要核对哪些交易材料？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "title": "演示补充：重复扣款材料核对",
+            "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+            "score": 1.0,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：重复扣款材料核对"
+            }
+          },
+          {
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "title": "退款政策",
+            "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+            "score": 0.3065,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "退款政策"
+            }
+          },
+          {
+            "id": "45a335a49b5b3fb74013820fa7a4e929",
+            "title": "订单查询",
+            "content": "用户可以通过订单号查询订单状态。订单状态包括待支付、已支付、已发货、运输中、已签收、已完成。物流信息通常在发货后 24 小时内更新。",
+            "score": 0.3957,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "订单查询"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1326.651,
+      "query": "疑似重复扣款需要核对哪些交易材料？"
+    },
+    "missing_invoice_terms": {
+      "started_at": "2026-09-19T17:27:57.246199+00:00",
+      "response": {
+        "query": "电子发票抬头更正的截止天数和收费标准是什么？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "title": "退款政策",
+            "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+            "score": 0.5329,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "退款政策"
+            }
+          },
+          {
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "title": "配送说明",
+            "content": "标准配送 3-5 个工作日送达，订单满 99 元免运费。加急配送 1-2 个工作日送达。同城配送可当日达或次日达。",
+            "score": 0.8162,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "配送说明"
+            }
+          },
+          {
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "title": "演示补充：重复扣款材料核对",
+            "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+            "score": 0.55,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：重复扣款材料核对"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1534.27,
+      "query": "电子发票抬头更正的截止天数和收费标准是什么？"
+    },
+    "missing_airport_miles": {
+      "started_at": "2026-09-19T17:27:58.783766+00:00",
+      "response": {
+        "query": "境外机场贵宾厅需要多少航空里程兑换？",
+        "reranked": true,
+        "results": [
+          {
+            "id": "794c1020643c66307e97d046cac7513f",
+            "title": "会员与积分",
+            "content": "每消费 1 元累积 1 积分。100 积分可抵扣 1 元。会员等级包括普通会员、银卡会员和金卡会员，积分有效期为 1 年。",
+            "score": 0.4632,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "会员与积分"
+            }
+          },
+          {
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "title": "退款政策",
+            "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+            "score": 1.0,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "退款政策"
+            }
+          },
+          {
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "title": "演示补充：重复扣款材料核对",
+            "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+            "score": 0.622,
+            "chunk": 0,
+            "metadata": {
+              "chunk_index": 0,
+              "source": "echomind-java",
+              "title": "演示补充：重复扣款材料核对"
+            }
+          }
+        ]
+      },
+      "client_elapsed_ms": 1299.901,
+      "query": "境外机场贵宾厅需要多少航空里程兑换？"
+    }
+  },
+  "structural_checks": {
+    "compound_crash_charge": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": false,
+        "expected": [
+          "technical",
+          "billing"
+        ],
+        "actual": [
+          "technical"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_delivery_refund": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_security_login": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": false,
+        "expected": [
+          "technical",
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_invoice_handoff": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "primary_route_matches",
+        "passed": true,
+        "expected": "escalation",
+        "actual": "escalation"
+      },
+      {
+        "name": "escalation_flag_matches",
+        "passed": true,
+        "expected": true,
+        "actual": true
+      },
+      {
+        "name": "trace_escalation_matches",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "refund_stages": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "missing_invoice_policy": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "refund_execution_boundary": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "memory_first": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_contains_expected",
+        "passed": true,
+        "expected": [
+          "B20260919008"
+        ],
+        "actual": [
+          "B20260919008"
+        ]
+      },
+      {
+        "name": "current_entities_amount_contains_expected",
+        "passed": true,
+        "expected": [
+          "299元"
+        ],
+        "actual": [
+          "299元"
+        ]
+      }
+    ],
+    "memory_followup": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "resolved_entities_order_id_contains_expected",
+        "passed": true,
+        "expected": [
+          "B20260919008"
+        ],
+        "actual": [
+          "B20260919008"
+        ]
+      },
+      {
+        "name": "resolved_entities_amount_contains_expected",
+        "passed": true,
+        "expected": [
+          "299元"
+        ],
+        "actual": [
+          "299元"
+        ]
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "current_entities_amount_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "history_seed_completed",
+        "passed": true
+      },
+      {
+        "name": "same_conversation_as_seed",
+        "passed": true
+      }
+    ],
+    "new_conversation": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "resolved_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      }
+    ],
+    "other_user_same_conversation_id": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "resolved_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "other_user_order_not_disclosed_B20260919008",
+        "passed": true
+      }
+    ],
+    "server_500": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "technical"
+        ],
+        "actual": [
+          "technical"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ]
+  },
+  "content_review_status": "pending_semantic_review",
+  "content_review": {
+    "compound_crash_charge": {
+      "status": "pending",
+      "criteria": [
+        "同时覆盖闪退排障与多扣款材料核对，不能漏掉其中一个诉求。",
+        "技术建议与账务核验分开，不宣称已经查询流水、建单或退款。"
+      ],
+      "reference_ids": [
+        "409430435d67876b32a6d543a445e9ff",
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ]
+    },
+    "compound_delivery_refund": {
+      "status": "pending",
+      "criteria": [
+        "先澄清发货/收货状态，并说明已发货需要先走退货流程，不能声称查到了实时物流。",
+        "若提及时限，区分退款申请审核1–3个工作日与审核通过后到账5–7个工作日。"
+      ],
+      "reference_ids": [
+        "b3b86359363f79978a0abfc00bf35e11",
+        "45a335a49b5b3fb74013820fa7a4e929",
+        "15d82b230e2932c72a135ff3f018e12c"
+      ]
+    },
+    "compound_security_login": {
+      "status": "pending",
+      "criteria": [
+        "优先账户保护，再说明通过绑定手机号或邮箱验证/恢复的步骤，同时处理无法登录。",
+        "不得索要密码或验证码；不得声称已经锁定、解锁或修复账户。",
+        "即使结构路由含两个Agent，也需核对实际内容是否因Billing职责限制漏掉账户安全。"
+      ],
+      "reference_ids": [
+        "6d848c7ad0200c7613e7391795d1b92c",
+        "409430435d67876b32a6d543a445e9ff"
+      ]
+    },
+    "compound_invoice_handoff": {
+      "status": "pending",
+      "criteria": [
+        "保留发票税号更正诉求，说明需要人工处理。",
+        "没有接入真人或开票工具，不得宣称已经连接真人、提交工单或开出新发票。",
+        "当前知识库没有发票更正具体规则，不编造处理天数或保证必能更正。"
+      ],
+      "reference_ids": []
+    },
+    "refund_stages": {
+      "status": "pending",
+      "criteria": [
+        "用购买后7天内可申请无理由退款解释适用条件，不保证业务已经办结。",
+        "明确提交申请后1–3个工作日审核；审核通过后5–7个工作日退回原支付账户；不得把24小时物流更新当作退款时限。"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ]
+    },
+    "missing_invoice_policy": {
+      "status": "pending",
+      "criteria": [
+        "明确当前知识资料没有更正期限和费用规定，需要官方/人工确认。",
+        "不能给出未经资料支持的具体天数、费用金额或零费用保证。"
+      ],
+      "reference_ids": []
+    },
+    "refund_execution_boundary": {
+      "status": "pending",
+      "criteria": [
+        "清楚说明原型不能执行退款或查询到账，给出申请/人工核验路径。",
+        "不得声称已退款、已打款、已查流水或已创建工单；不得要求密码、验证码或完整银行卡号。"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c",
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ]
+    },
+    "memory_first": {
+      "status": "pending",
+      "criteria": [
+        "可说明本轮/当前会话引用订单信息，不能误称已经业务核验、建单或永久记忆。",
+        "不重复索要本轮已给出的订单号和金额。"
+      ],
+      "reference_ids": [
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ]
+    },
+    "memory_followup": {
+      "status": "pending",
+      "criteria": [
+        "自然语言应承接订单B20260919008及299元，避免重复索要已知信息。",
+        "解释退款申请步骤且不虚构后台动作；不重复铺陈同一政策。"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ]
+    },
+    "new_conversation": {
+      "status": "pending",
+      "criteria": [
+        "当前新会话未提供订单，应澄清本次订单；同用户画像或长期记忆可以按产品设计召回，本用例不将所有跨会话记忆一律判错。",
+        "结构断言只要求current/resolved_entities不自动补入旧会话订单，不宣称已经处理某笔退款。"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ]
+    },
+    "other_user_same_conversation_id": {
+      "status": "pending",
+      "criteria": [
+        "另一客户端用户标识下不能透露B20260919008订单信息。",
+        "此测试只覆盖客户端标识隔离，不代表认证、鉴权或抵抗冒用user_id。"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ]
+    },
+    "server_500": {
+      "status": "pending",
+      "criteria": [
+        "说明500通常为服务端问题，建议稍后重试/联系技术支持，不把500解释为密码错误。",
+        "不得声称已修复服务器或替用户重新支付/创建工单。"
+      ],
+      "reference_ids": [
+        "409430435d67876b32a6d543a445e9ff"
+      ]
+    }
+  },
+  "limitations": [
+    "合成开发候选小集，无盲标人类真值，不是生产正确率。",
+    "/search是独立请求，包含LLM改写/重排与本地BM25+hash vector全库召回，结果不等于/chat当轮实际注入的上下文。",
+    "Trace只暴露工具状态，不含引用文档ID；verified/grounded仅作为模型观察保存。",
+    "无答案题可能返回相似但无关文档；不要求空检索，不纳入Hit@K/MRR，需语义复核。",
+    "真人升级仅表示标记；当前没有真实转接、退款、开票或工单写入工具。",
+    "/search exposes no success/error or query-rewrite status; reranked=false alone is not failure.",
+    "intent_source_scores.llm, verified and grounded are model observations, never independent correctness labels.",
+    "Client-supplied user_id isolation is tested, not authentication or authorization."
+  ],
+  "health": {
+    "status": "ok",
+    "agents": {
+      "general_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      },
+      "technical_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      },
+      "billing_0": {
+        "total": 0,
+        "monitor_penalty": 0.0,
+        "avg_ms": 0.0,
+        "routing_score": 1.0,
+        "success_rate": 1.0
+      }
+    }
+  },
+  "knowledge_before": {
+    "total_chunks": 6
+  },
+  "import": {
+    "added_chunks": 2,
+    "total_chunks": 8
+  },
+  "retrieval_metrics": {
+    "scope": "8 synthetic answerable candidates; independent /search including rewrite/rerank over the entire isolated corpus; not chat-grounding accuracy",
+    "answerable_count": 8,
+    "hit_count": 8,
+    "top_k": 3,
+    "hit_at_k": 1.0,
+    "mrr_at_k": 1.0,
+    "unanswerable_count": 2,
+    "request_failure_count": 0,
+    "reference_catalog_verification": [
+      {
+        "id": "15d82b230e2932c72a135ff3f018e12c",
+        "title": "退款政策",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "45a335a49b5b3fb74013820fa7a4e929",
+        "title": "订单查询",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "6d848c7ad0200c7613e7391795d1b92c",
+        "title": "账户安全",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "409430435d67876b32a6d543a445e9ff",
+        "title": "技术故障排查",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "794c1020643c66307e97d046cac7513f",
+        "title": "会员与积分",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "b3b86359363f79978a0abfc00bf35e11",
+        "title": "配送说明",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+        "title": "演示补充：401登录排查",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "ff9ece14c6c6965245d863628b9fbd24",
+        "title": "演示补充：重复扣款材料核对",
+        "observed_matching_id_and_content": true
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "refund_timing",
+        "answerable": true,
+        "expected_reference_ids": [
+          "15d82b230e2932c72a135ff3f018e12c"
+        ],
+        "returned_ids": [
+          "15d82b230e2932c72a135ff3f018e12c",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "order_status",
+        "answerable": true,
+        "expected_reference_ids": [
+          "45a335a49b5b3fb74013820fa7a4e929"
+        ],
+        "returned_ids": [
+          "45a335a49b5b3fb74013820fa7a4e929",
+          "b3b86359363f79978a0abfc00bf35e11",
+          "15d82b230e2932c72a135ff3f018e12c"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "account_reset",
+        "answerable": true,
+        "expected_reference_ids": [
+          "6d848c7ad0200c7613e7391795d1b92c"
+        ],
+        "returned_ids": [
+          "6d848c7ad0200c7613e7391795d1b92c",
+          "409430435d67876b32a6d543a445e9ff",
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "crash_help",
+        "answerable": true,
+        "expected_reference_ids": [
+          "409430435d67876b32a6d543a445e9ff"
+        ],
+        "returned_ids": [
+          "409430435d67876b32a6d543a445e9ff",
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "member_points",
+        "answerable": true,
+        "expected_reference_ids": [
+          "794c1020643c66307e97d046cac7513f"
+        ],
+        "returned_ids": [
+          "794c1020643c66307e97d046cac7513f"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "delivery_options",
+        "answerable": true,
+        "expected_reference_ids": [
+          "b3b86359363f79978a0abfc00bf35e11"
+        ],
+        "returned_ids": [
+          "b3b86359363f79978a0abfc00bf35e11"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "login_401_details",
+        "answerable": true,
+        "expected_reference_ids": [
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "returned_ids": [
+          "a779c5b9859e9ba2bebf57e6e0381e5a",
+          "409430435d67876b32a6d543a445e9ff",
+          "6d848c7ad0200c7613e7391795d1b92c"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "duplicate_charge_materials",
+        "answerable": true,
+        "expected_reference_ids": [
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "returned_ids": [
+          "ff9ece14c6c6965245d863628b9fbd24",
+          "15d82b230e2932c72a135ff3f018e12c",
+          "45a335a49b5b3fb74013820fa7a4e929"
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "missing_invoice_terms",
+        "answerable": false,
+        "expected_reference_ids": [],
+        "returned_ids": [
+          "15d82b230e2932c72a135ff3f018e12c",
+          "b3b86359363f79978a0abfc00bf35e11",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "rank_of_first_relevant": null,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "pending_semantic_review"
+      },
+      {
+        "case_id": "missing_airport_miles",
+        "answerable": false,
+        "expected_reference_ids": [],
+        "returned_ids": [
+          "794c1020643c66307e97d046cac7513f",
+          "15d82b230e2932c72a135ff3f018e12c",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "rank_of_first_relevant": null,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "pending_semantic_review"
+      }
+    ]
+  },
+  "structural_summary": {
+    "passed": 131,
+    "total": 133,
+    "all_passed": false
+  },
+  "completed_at": "2026-09-19T17:28:52.046641+00:00"
+}

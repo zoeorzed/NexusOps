@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-20",
+  "reviewer": "AI assistant",
+  "review_type": "independent AI assistant content review; not human blind review",
+  "human_blind_review": false,
+  "source_file": "business-final.json",
+  "source_sha256": "2027e9cb89803b000b45dc6ff34f81fb8ca30deb64cafb101ee00147de398051",
+  "reference_scope": "Read all 12 chat request/response pairs and all 8 reference_documents embedded in the final raw result, against evaluation/business-scenarios-v1.json content criteria.",
+  "assessment_basis": "Read the natural-language answers directly. Do not use verified=true, grounded=true, routing success or structural checks as proof of semantic correctness.",
+  "verdict_definitions": {
+    "pass": "No material issue identified for the case's stated content criteria in this observed response; not a claim of production correctness or a guarantee about future responses.",
+    "pass_with_caveat": "Core scenario is handled, with the explicitly recorded coverage or presentation limitation.",
+    "needs_improvement": "At least one stated content criterion is not fully met, or an unsupported material claim remains."
+  },
+  "cases": [
+    {
+      "case_id": "compound_crash_charge",
+      "verdict": "pass_with_caveat",
+      "evidence": [
+        "技术部分建议清除缓存、重启并保留复现信息；账务部分明确“多扣一笔需要先核对两笔交易记录，暂不能确认是否为重复扣款”。",
+        "回答明确区分核验反馈、退款申请审核、审核通过后的到账，没有宣称查询流水或完成退款。",
+        "原文包含“剩余领域将由下一个协同 Agent 处理。”"
+      ],
+      "notes": [
+        "两个诉求均覆盖，但回答较长，向客户暴露了内部 Agent 协同表述。可改为直接呈现两项处理建议。"
+      ]
+    },
+    {
+      "case_id": "compound_delivery_refund",
+      "verdict": "pass_with_caveat",
+      "evidence": [
+        "原文说明需确认购买后 7 天内，且“已发货商品需先完成退货流程”。",
+        "原文区分申请提交后 1-3 个工作日审核和审核通过后 5-7 个工作日退回原支付账户。",
+        "回答要求订单号、支付时间等材料，但没有直接询问当前是否已发货、是否已收货。"
+      ],
+      "notes": [
+        "没有声称查询到实时物流。条件解释正确，但澄清发货/收货状态这一内容标准仍只得到间接覆盖。"
+      ]
+    },
+    {
+      "case_id": "compound_security_login",
+      "verdict": "needs_improvement",
+      "evidence": [
+        "回答优先账户保护并建议通过绑定手机号或邮箱重置；同时说明无法替用户冻结账户或查询登录记录。",
+        "原文声称“重置后原会话通常失效，可阻断陌生设备继续使用”。",
+        "《账户安全》只说明密码要求、绑定手机号/邮箱重置，以及发现异常登录时系统锁定账户，没有规定密码重置后的既有会话失效机制。"
+      ],
+      "notes": [
+        "未索要密码或验证码，也未声称已修复账户。",
+        "密码重置能否使全部既有会话失效取决于实际系统，不能根据现有资料保证可阻断陌生设备；这条资料外推断需要保留披露。"
+      ]
+    },
+    {
+      "case_id": "compound_invoice_handoff",
+      "verdict": "pass",
+      "evidence": [
+        "原文明确“当前对话无法直接转接人工，也不能代为修改或重开发票”。",
+        "保留错误税号与正确税号的更正诉求，并建议通过官方客服渠道提交材料。",
+        "原文说明“具体时效以人工告知为准”，没有编造办理天数或声称已开票。"
+      ],
+      "notes": [
+        "escalated=true 在此仅为路由标记；内容复核确认回答没有把该标记描述为已经连接真人。"
+      ]
+    },
+    {
+      "case_id": "refund_stages",
+      "verdict": "pass",
+      "evidence": [
+        "承接用户购买 3 天、未发货的条件，说明可提交退款申请而非声称业务已办结。",
+        "分别写明“申请提交后 1-3 个工作日内完成审核”和“审核通过后，款项在 5-7 个工作日内退回原支付账户”。"
+      ],
+      "notes": [
+        "本条未混入物流更新 24 小时或重复扣款核验反馈时限。"
+      ]
+    },
+    {
+      "case_id": "missing_invoice_policy",
+      "verdict": "needs_improvement",
+      "evidence": [
+        "原文明确知识库未规定更正时限，也未说明是否收取更正费，没有给出具体天数、费用或免费保证。",
+        "原文另称“若发票已跨月或已报销，更正或重开通常需人工审核”。",
+        "本轮 8 篇参考资料均无发票跨月、已报销或更正审核规则。"
+      ],
+      "notes": [
+        "对用户直接询问的期限和费用保持了不确定性，但仍补入未经资料支持的办理条件。应把这些条件也留待官方确认，不能将其当作已验证的企业政策。"
+      ]
+    },
+    {
+      "case_id": "refund_execution_boundary",
+      "verdict": "pass",
+      "evidence": [
+        "原文明确“无法直接打款”，并自然引用订单 B20260919007 和金额 299 元。",
+        "说明审核后退回原支付账户，且“我无法代为操作或承诺结果”。",
+        "没有声称已退款、已查询流水、已创建工单，也未要求密码、验证码或完整银行卡号。"
+      ],
+      "notes": [
+        "确认的是本条自然语言能力边界，不表示系统具备退款提交、支付流水查询或到账查询工具。"
+      ]
+    },
+    {
+      "case_id": "memory_first",
+      "verdict": "pass",
+      "evidence": [
+        "原文明确“本轮我会按订单 B20260919008、金额 299 元继续说明；这不代表已核验流水或已提交退款”。",
+        "后续只补问两笔支付时间、渠道、流水号或账单摘要，没有再次要求已提供的订单号和金额。"
+      ],
+      "notes": [
+        "回答限定为本轮信息引用，没有宣称永久记忆或后台业务动作完成。"
+      ]
+    },
+    {
+      "case_id": "memory_followup",
+      "verdict": "needs_improvement",
+      "evidence": [
+        "回答自然引用订单 B20260919008，没有混入另一会话订单 B20260919007 或退银行卡意愿。",
+        "resolved_entities 含 299元，但自然语言回答未带出该已知金额。",
+        "原文申请路径仍写“需订单号、支付时间、支付渠道、实付金额”。"
+      ],
+      "notes": [
+        "关键会话污染在此观察中未复现，但承接已知订单及 299 元的内容标准尚未完整满足。",
+        "该句属于通用材料清单，并非明确再次索要订单；仍应区分已有订单/金额和真正缺少的材料，减少重复提供信息的感觉。",
+        "审核与到账阶段正确，也没有虚构退款已经执行。"
+      ]
+    },
+    {
+      "case_id": "new_conversation",
+      "verdict": "pass",
+      "evidence": [
+        "原文明确“目前还没有你的订单信息，请提供订单号、支付时间和支付渠道”。",
+        "回答没有出现 B20260919007、B20260919008、299 元或退银行卡意愿。",
+        "只给出通用退款条件和审核/到账步骤，未认定旧会话某笔订单。"
+      ],
+      "notes": [
+        "这项观察支持本次新会话未自动认定旧订单，不代表所有跨会话记忆场景或全部历史数据均已验证。"
+      ]
+    },
+    {
+      "case_id": "other_user_same_conversation_id",
+      "verdict": "pass",
+      "evidence": [
+        "另一用户标识使用相同 conversation_key 时，回答表示“目前还没有你的订单号”。",
+        "未透露 B20260919008 或前一用户的 299 元信息。"
+      ],
+      "notes": [
+        "只验证客户端用户标识与会话标识组合下的信息隔离，不代表真实身份认证、鉴权或抵抗冒用 user_id。"
+      ]
+    },
+    {
+      "case_id": "server_500",
+      "verdict": "pass",
+      "evidence": [
+        "原文将 500 解释为服务端处理异常，建议稍后重试并在持续失败时联系官方技术支持。",
+        "未将 500 当作密码错误，也未声称已修复服务器、代为支付或创建工单。",
+        "回答未出现旧订单 B20260919007、B20260919008、299 元或退银行卡意愿。"
+      ],
+      "notes": [
+        "回答包含一般性环境排查和日志信息收集建议；这些是建议，不是已经执行或已证实的故障原因。"
+      ]
+    }
+  ],
+  "limitations": [
+    "This is AI-assisted semantic review of one observed run on synthetic development cases, not human blind annotation and not a production accuracy estimate.",
+    "No subjective aggregate accuracy is calculated. Structural checks passing does not imply that every natural-language answer is semantically correct.",
+    "The 8 reference documents provide the review context; independent /search results do not prove which document chunks were injected into each /chat answer because the chat trace does not expose those IDs.",
+    "The two unanswerable standalone search cases are outside these 12 chat-response verdicts. Returning similar but irrelevant documents for those searches is not proof of a correct refusal or correct final answer.",
+    "Remaining issues are retained as evidence; this final review did not modify prompts, change code or rerun the model."
+  ]
+}

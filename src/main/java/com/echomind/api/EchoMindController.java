@@ -107,7 +107,8 @@ public class EchoMindController {
                 : request.conversationId();
         String requestId = UUID.randomUUID().toString().substring(0, 8);
         MemoryContext memoryContext = memoryManager.getContext(userId, conversationId, request.message());
-        String memoryText = memoryContext.toPromptText(objectMapper);
+        // Keep cross-conversation profiles/recall stored, but do not treat them as this request's facts.
+        String memoryText = memoryContext.toConversationPromptText(objectMapper);
         List<Map<String, String>> history = memoryContext.recentMessages().stream()
                 .skip(Math.max(0, memoryContext.recentMessages().size() - 5))
                 .map(m -> Map.of("role", m.role().name().toLowerCase(), "content", m.content()))

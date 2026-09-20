@@ -59,4 +59,48 @@ class AgentPromptContractTest {
             assertThat(result.content()).isEqualTo(detailedAnswer);
         }
     }
+
+    @Test
+    void allAgentsReceiveCapabilityAndHistoricalProfileBoundaries() {
+        EchoMindProperties properties = new EchoMindProperties();
+        properties.getSkills().setRootDir("skills");
+        SkillManager manager = new SkillManager(properties, new ObjectMapper());
+        manager.load();
+        AtomicReference<String> system = new AtomicReference<>();
+        AtomicReference<String> prompt = new AtomicReference<>();
+        LlmGateway capture = (s, p, t, m) -> {
+            system.set(s);
+            prompt.set(p);
+            return "capture only";
+        };
+        AgentRequest request = AgentRequest.of("查询本次订单物流", "demo", "new-conversation",
+                "[用户画像]历史话题：旧订单退款到银行卡、补发票", List.of());
+        for (BaseAgent agent : List.of(new GeneralAgent(capture, manager),
+                new TechnicalAgent(capture, manager), new BillingAgent(capture, manager))) {
+            agent.handle(request);
+            assertThat(prompt.get()).contains("旧订单退款到银行卡", "查询本次订单物流");
+            assertThat(system.get()).contains("系统没有真实工单写入能力，也不能执行退款",
+                    "没有实时订单、物流或支付查询工具", "不能修改账户、连接真人客服或代用户操作",
+                    "按钮、菜单和客服入口不得编造", "用户画像中的历史话题不等于当前诉求",
+                    "不得把其他订单的支付渠道、退款意愿或状态套用到当前订单",
+                    "仅指当前会话中的信息引用", "只有收到明确的协同子任务说明时",
+                    "单领域请求不得声称另一 Agent 将处理");
+        }
+    }
+
+    @Test
+    void accountSecurityPromptIncludesProtectionAndLoginRecoverySkill() {
+        EchoMindProperties properties = new EchoMindProperties();
+        properties.getSkills().setRootDir("skills");
+        SkillManager manager = new SkillManager(properties, new ObjectMapper());
+        manager.load();
+        AtomicReference<String> captured = new AtomicReference<>();
+        LlmGateway capture = (s, p, t, m) -> { captured.set(s); return "capture only"; };
+
+        new TechnicalAgent(capture, manager).handle(
+                AgentRequest.of("账号被盗，登录不进去", "demo", "c", "", List.of()));
+
+        assertThat(captured.get()).contains("账户保护和登录恢复", "账户安全不等于账务问题",
+                "[动态 Skills]", "不能修改密码、冻结账户、踢出会话或查询登录记录");
+    }
 }

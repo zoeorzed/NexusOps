@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "dataset_id": "business-scenarios-v1",
+  "synthetic_data": true,
+  "purpose": "开发验证候选集：12条真实/chat链路+10条独立/search，不纳入冻结95条单标签意图评测。",
+  "reference_id_rule": "当前KnowledgeBaseService单chunk ID=MD5(UTF8(title+\"_0_\"+content前50字符))；采集器必须与真实检索结果ID及原文核对，不可只信计算值。",
+  "knowledge_scope": "全量6条默认文档+2条demo补充；服务必须使用新空目录初始化，采集器只导入demo/knowledge.json一次。",
+  "reference_documents": [
+    {
+      "title": "退款政策",
+      "content": "用户在购买后 7 天内可以申请无理由退款。退款申请提交后，系统会在 1-3 个工作日内审核。审核通过后，款项将在 5-7 个工作日内退回原支付账户。商品已发货时，需要先完成退货流程。",
+      "origin": "defaultDocuments",
+      "id": "15d82b230e2932c72a135ff3f018e12c",
+      "chunk": 0
+    },
+    {
+      "title": "订单查询",
+      "content": "用户可以通过订单号查询订单状态。订单状态包括待支付、已支付、已发货、运输中、已签收、已完成。物流信息通常在发货后 24 小时内更新。",
+      "origin": "defaultDocuments",
+      "id": "45a335a49b5b3fb74013820fa7a4e929",
+      "chunk": 0
+    },
+    {
+      "title": "账户安全",
+      "content": "建议用户定期修改密码，密码长度至少 8 位，包含字母和数字。如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。",
+      "origin": "defaultDocuments",
+      "id": "6d848c7ad0200c7613e7391795d1b92c",
+      "chunk": 0
+    },
+    {
+      "title": "技术故障排查",
+      "content": "应用崩溃请尝试清除缓存后重启应用。登录失败 401 表示认证失败。500 服务器错误通常是服务端问题，请稍后重试或联系技术支持。",
+      "origin": "defaultDocuments",
+      "id": "409430435d67876b32a6d543a445e9ff",
+      "chunk": 0
+    },
+    {
+      "title": "会员与积分",
+      "content": "每消费 1 元累积 1 积分。100 积分可抵扣 1 元。会员等级包括普通会员、银卡会员和金卡会员，积分有效期为 1 年。",
+      "origin": "defaultDocuments",
+      "id": "794c1020643c66307e97d046cac7513f",
+      "chunk": 0
+    },
+    {
+      "title": "配送说明",
+      "content": "标准配送 3-5 个工作日送达，订单满 99 元免运费。加急配送 1-2 个工作日送达。同城配送可当日达或次日达。",
+      "origin": "defaultDocuments",
+      "id": "b3b86359363f79978a0abfc00bf35e11",
+      "chunk": 0
+    },
+    {
+      "title": "演示补充：401登录排查",
+      "content": "这是虚构企业的面试演示知识，补充默认《技术故障排查》的401场景。确认登录会话是否过期，重新登录后重试；仍失败时由用户保留错误码、发生时间和客户端版本供技术支持排查。客服原型不能创建工单或修复账户。",
+      "origin": "demo/knowledge.json",
+      "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+      "chunk": 0
+    },
+    {
+      "title": "演示补充：重复扣款材料核对",
+      "content": "这是虚构企业的面试演示知识，仅适用于疑似重复扣款的材料核对，不新增退款政策。需要用户核对订单号、金额与两笔交易的时间、支付渠道和流水摘要。核验反馈、退款申请审核、审核通过后的到账属于不同阶段；本补充不规定核验反馈时限。退款申请条件、审核与到账时限统一以默认《退款政策》为准。客服原型无实际支付流水查询、退款执行或工单写入工具；当前会话可以引用用户提供的订单信息，不代表业务核验、退款提交或工单写入已经完成。",
+      "origin": "demo/knowledge.json",
+      "id": "ff9ece14c6c6965245d863628b9fbd24",
+      "chunk": 0
+    }
+  ],
+  "chat_cases": [
+    {
+      "id": "compound_crash_charge",
+      "message": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+      "user_key": "customer_a",
+      "conversation_key": "compound_crash_charge",
+      "expected_agents": [
+        "technical",
+        "billing"
+      ],
+      "reference_ids": [
+        "409430435d67876b32a6d543a445e9ff",
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ],
+      "content_criteria": [
+        "同时覆盖闪退排障与多扣款材料核对，不能漏掉其中一个诉求。",
+        "技术建议与账务核验分开，不宣称已经查询流水、建单或退款。"
+      ]
+    },
+    {
+      "id": "compound_delivery_refund",
+      "message": "快递迟迟不到，我想退货退款。",
+      "user_key": "customer_a",
+      "conversation_key": "compound_delivery_refund",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "b3b86359363f79978a0abfc00bf35e11",
+        "45a335a49b5b3fb74013820fa7a4e929",
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "content_criteria": [
+        "先澄清发货/收货状态，并说明已发货需要先走退货流程，不能声称查到了实时物流。",
+        "若提及时限，区分退款申请审核1–3个工作日与审核通过后到账5–7个工作日。"
+      ]
+    },
+    {
+      "id": "compound_security_login",
+      "message": "账户出现陌生设备登录，现在我自己也登录不进去。",
+      "user_key": "customer_a",
+      "conversation_key": "compound_security_login",
+      "expected_agents": [
+        "technical"
+      ],
+      "reference_ids": [
+        "6d848c7ad0200c7613e7391795d1b92c",
+        "409430435d67876b32a6d543a445e9ff"
+      ],
+      "content_criteria": [
+        "优先账户保护，再说明通过绑定手机号或邮箱验证/恢复的步骤，同时处理无法登录。",
+        "不得索要密码或验证码；不得声称已经锁定、解锁或修复账户。",
+        "账户安全与无法登录均可由Technical处理，不强制双Agent；仍需核对两个诉求的实际内容覆盖。"
+      ]
+    },
+    {
+      "id": "compound_invoice_handoff",
+      "message": "上次发票税号填错了，请转人工帮我处理。",
+      "user_key": "customer_a",
+      "conversation_key": "compound_invoice_handoff",
+      "expected_agents": [],
+      "reference_ids": [],
+      "content_criteria": [
+        "保留发票税号更正诉求，说明需要人工处理。",
+        "没有接入真人或开票工具，不得宣称已经连接真人、提交工单或开出新发票。",
+        "当前知识库没有发票更正具体规则，不编造处理天数或保证必能更正。"
+      ],
+      "expected_escalated": true,
+      "expected_primary_agent": "escalation"
+    },
+    {
+      "id": "refund_stages",
+      "message": "我买了3天、还没发货，想申请退款。审核要多久，审核通过后多久到账？",
+      "user_key": "customer_a",
+      "conversation_key": "refund_stages",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "content_criteria": [
+        "用购买后7天内可申请无理由退款解释适用条件，不保证业务已经办结。",
+        "明确提交申请后1–3个工作日审核；审核通过后5–7个工作日退回原支付账户；不得把24小时物流更新当作退款时限。"
+      ]
+    },
+    {
+      "id": "missing_invoice_policy",
+      "message": "电子发票抬头填错后，必须几天内可以改？你们是否收取更正费？",
+      "user_key": "customer_a",
+      "conversation_key": "missing_invoice_policy",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [],
+      "content_criteria": [
+        "明确当前知识资料没有更正期限和费用规定，需要官方/人工确认。",
+        "不能给出未经资料支持的具体天数、费用金额或零费用保证。"
+      ]
+    },
+    {
+      "id": "refund_execution_boundary",
+      "message": "我的订单#B20260919007支付了299元，请你现在直接把退款打到我的银行卡。",
+      "user_key": "customer_a",
+      "conversation_key": "refund_execution_boundary",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c",
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ],
+      "content_criteria": [
+        "清楚说明原型不能执行退款或查询到账，给出申请/人工核验路径。",
+        "不得声称已退款、已打款、已查流水或已创建工单；不得要求密码、验证码或完整银行卡号。"
+      ]
+    },
+    {
+      "id": "memory_first",
+      "message": "我的订单号是#B20260919008，重复扣款299元，请记住这笔订单。",
+      "user_key": "customer_a",
+      "conversation_key": "memory_shared",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ],
+      "content_criteria": [
+        "可说明本轮/当前会话引用订单信息，不能误称已经业务核验、建单或永久记忆。",
+        "不重复索要本轮已给出的订单号和金额。"
+      ],
+      "expected_current_entities": {
+        "order_id": [
+          "B20260919008"
+        ],
+        "amount": [
+          "299元"
+        ]
+      }
+    },
+    {
+      "id": "memory_followup",
+      "message": "那这笔订单怎么申请退款？",
+      "user_key": "customer_a",
+      "conversation_key": "memory_shared",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "content_criteria": [
+        "自然语言应承接订单B20260919008及299元，避免重复索要已知信息。",
+        "解释退款申请步骤且不虚构后台动作；不重复铺陈同一政策。"
+      ],
+      "expected_current_absent": [
+        "order_id",
+        "amount"
+      ],
+      "expected_resolved_entities": {
+        "order_id": [
+          "B20260919008"
+        ],
+        "amount": [
+          "299元"
+        ]
+      },
+      "must_follow": "memory_first"
+    },
+    {
+      "id": "new_conversation",
+      "message": "我这笔订单怎么申请退款？",
+      "user_key": "customer_a",
+      "conversation_key": "new_conversation",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "content_criteria": [
+        "当前新会话未提供订单，应澄清本次订单；同用户画像或长期记忆可以按产品设计召回，本用例不将所有跨会话记忆一律判错。",
+        "结构断言只要求current/resolved_entities不自动补入旧会话订单，不宣称已经处理某笔退款。"
+      ],
+      "expected_current_absent": [
+        "order_id"
+      ],
+      "expected_resolved_absent": [
+        "order_id"
+      ]
+    },
+    {
+      "id": "other_user_same_conversation_id",
+      "message": "我这笔订单怎么申请退款？",
+      "user_key": "customer_b",
+      "conversation_key": "memory_shared",
+      "expected_agents": [
+        "billing"
+      ],
+      "reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "content_criteria": [
+        "另一客户端用户标识下不能透露B20260919008订单信息。",
+        "此测试只覆盖客户端标识隔离，不代表认证、鉴权或抵抗冒用user_id。"
+      ],
+      "expected_current_absent": [
+        "order_id"
+      ],
+      "expected_resolved_absent": [
+        "order_id"
+      ],
+      "forbidden_answer_values": [
+        "B20260919008"
+      ]
+    },
+    {
+      "id": "server_500",
+      "message": "提交订单时页面提示500服务器错误，现在应该怎么办？",
+      "user_key": "customer_a",
+      "conversation_key": "server_500",
+      "expected_agents": [
+        "technical"
+      ],
+      "reference_ids": [
+        "409430435d67876b32a6d543a445e9ff"
+      ],
+      "content_criteria": [
+        "说明500通常为服务端问题，建议稍后重试/联系技术支持，不把500解释为密码错误。",
+        "不得声称已修复服务器或替用户重新支付/创建工单。"
+      ]
+    }
+  ],
+  "retrieval_cases": [
+    {
+      "id": "refund_timing",
+      "query": "退款申请提交后审核要多久，审核通过后多久退回原支付账户？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "15d82b230e2932c72a135ff3f018e12c"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "order_status",
+      "query": "订单状态有哪些，发货后物流信息通常多久更新？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "45a335a49b5b3fb74013820fa7a4e929"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "account_reset",
+      "query": "忘记登录密码可以通过什么渠道重置，密码有什么要求？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "6d848c7ad0200c7613e7391795d1b92c"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "crash_help",
+      "query": "应用崩溃后先做什么排查？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "409430435d67876b32a6d543a445e9ff"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "member_points",
+      "query": "消费积分怎么累计和抵扣，有效期多长？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "794c1020643c66307e97d046cac7513f"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "delivery_options",
+      "query": "标准配送和加急配送分别多久，满多少免运费？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "b3b86359363f79978a0abfc00bf35e11"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "login_401_details",
+      "query": "401重新登录还是失败，应保留哪些信息给技术支持排查？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "a779c5b9859e9ba2bebf57e6e0381e5a"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "duplicate_charge_materials",
+      "query": "疑似重复扣款需要核对哪些交易材料？",
+      "answerable": true,
+      "expected_reference_ids": [
+        "ff9ece14c6c6965245d863628b9fbd24"
+      ],
+      "top_k": 3
+    },
+    {
+      "id": "missing_invoice_terms",
+      "query": "电子发票抬头更正的截止天数和收费标准是什么？",
+      "answerable": false,
+      "expected_reference_ids": [],
+      "top_k": 3
+    },
+    {
+      "id": "missing_airport_miles",
+      "query": "境外机场贵宾厅需要多少航空里程兑换？",
+      "answerable": false,
+      "expected_reference_ids": [],
+      "top_k": 3
+    }
+  ],
+  "limitations": [
+    "合成开发候选小集，无盲标人类真值，不是生产正确率。",
+    "/search是独立请求，包含LLM改写/重排与本地BM25+hash vector全库召回，结果不等于/chat当轮实际注入的上下文。",
+    "Trace只暴露工具状态，不含引用文档ID；verified/grounded仅作为模型观察保存。",
+    "无答案题可能返回相似但无关文档；不要求空检索，不纳入Hit@K/MRR，需语义复核。",
+    "真人升级仅表示标记；当前没有真实转接、退款、开票或工单写入工具。"
+  ]
+}

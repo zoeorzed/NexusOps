@@ -37,6 +37,9 @@ jobs:
         run: ./scripts/verify.ps1 -RedisPort 6379
       - name: Check demo evidence validator
         run: python -m unittest discover -s demo -p 'test_*.py'
+      - name: Run controlled orchestrator load scenarios
+        shell: pwsh
+        run: ./scripts/run-load-test.ps1
       - name: Upload verification evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,3 +49,4 @@ jobs:
           path: |
             target/surefire-reports/
             target/verification-summary.json
+            target/load-test-result.json

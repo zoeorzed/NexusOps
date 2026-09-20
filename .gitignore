@@ -4,6 +4,8 @@ target/
 .DS_Store
 .env
 *.log
+__pycache__/
+*.py[cod]
 data/
 .mvn/apache-maven-*/
 .mvn/*.zip

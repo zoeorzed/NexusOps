@@ -1,0 +1,18 @@
+{
+  "started_at_utc": "2026-09-19T17:27:35Z",
+  "model": "deepseek-chat",
+  "profile": "deepseek",
+  "model_fallback_enabled": false,
+  "synthetic_data": true,
+  "new_empty_data_directory": true,
+  "base_commit": "46d1d1e6e5c81fac945cb6309c010d2752884d8d",
+  "jar_sha256": "01f8c19f8d4e3397d8e81c04d9441a476376be3462b50ef784431f48127a93ed",
+  "java": "25.0.2, compiled with release 21",
+  "scenario_sha256": "251c57ab96ff09efb818120706edb0acb58d592f74532c122306f82df84de06a",
+  "collector_sha256": "623fb48f8c025b21f51f6e85b9df37715b3857adae995bd2806f1d470236bbc0",
+  "demo_knowledge_sha256": "bfb16af9bdeb16baed1cb2796d2691409e5c5a9b09af6c31cd089d7ba6f16ee7",
+  "redis": "3.2.100, isolated loopback instance",
+  "scope": "Real local HTTP /chat, /search and trace collection; no production benchmark or independent human assessment",
+  "collector_exit_code": 1,
+  "elapsed_seconds": 76.33
+}

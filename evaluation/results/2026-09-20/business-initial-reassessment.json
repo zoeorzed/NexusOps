@@ -1,0 +1,1031 @@
+{
+  "mode": "offline_reassessment_of_saved_responses",
+  "assessment_version": 2,
+  "source_sha256": "00cb469aa505d62c30fa403289c09b4686f4af0d00ce32d7e40560071a7ab542",
+  "dataset_sha256": "251c57ab96ff09efb818120706edb0acb58d592f74532c122306f82df84de06a",
+  "structural_summary": {
+    "passed": 131,
+    "total": 133
+  },
+  "structural_checks": {
+    "compound_crash_charge": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": false,
+        "expected": [
+          "technical",
+          "billing"
+        ],
+        "actual": [
+          "technical"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_delivery_refund": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_security_login": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": false,
+        "expected": [
+          "technical",
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "compound_invoice_handoff": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "primary_route_matches",
+        "passed": true,
+        "expected": "escalation",
+        "actual": "escalation"
+      },
+      {
+        "name": "escalation_flag_matches",
+        "passed": true,
+        "expected": true,
+        "actual": true
+      },
+      {
+        "name": "trace_escalation_matches",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "refund_stages": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "missing_invoice_policy": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "refund_execution_boundary": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ],
+    "memory_first": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_contains_expected",
+        "passed": true,
+        "expected": [
+          "B20260919008"
+        ],
+        "actual": [
+          "B20260919008"
+        ]
+      },
+      {
+        "name": "current_entities_amount_contains_expected",
+        "passed": true,
+        "expected": [
+          "299元"
+        ],
+        "actual": [
+          "299元"
+        ]
+      }
+    ],
+    "memory_followup": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "resolved_entities_order_id_contains_expected",
+        "passed": true,
+        "expected": [
+          "B20260919008"
+        ],
+        "actual": [
+          "B20260919008"
+        ]
+      },
+      {
+        "name": "resolved_entities_amount_contains_expected",
+        "passed": true,
+        "expected": [
+          "299元"
+        ],
+        "actual": [
+          "299元"
+        ]
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "current_entities_amount_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "history_seed_completed",
+        "passed": true
+      },
+      {
+        "name": "same_conversation_as_seed",
+        "passed": true
+      }
+    ],
+    "new_conversation": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "resolved_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      }
+    ],
+    "other_user_same_conversation_id": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "billing"
+        ],
+        "actual": [
+          "billing"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      },
+      {
+        "name": "current_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "resolved_entities_order_id_empty",
+        "passed": true,
+        "expected": [],
+        "actual": []
+      },
+      {
+        "name": "other_user_order_not_disclosed_B20260919008",
+        "passed": true
+      }
+    ],
+    "server_500": [
+      {
+        "name": "response_present",
+        "passed": true
+      },
+      {
+        "name": "request_completed",
+        "passed": true
+      },
+      {
+        "name": "conversation_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_found",
+        "passed": true
+      },
+      {
+        "name": "trace_request_matches",
+        "passed": true
+      },
+      {
+        "name": "trace_client_identifiers_match",
+        "passed": true
+      },
+      {
+        "name": "executed_agents_cover_expected_domains",
+        "passed": true,
+        "expected": [
+          "technical"
+        ],
+        "actual": [
+          "technical"
+        ]
+      },
+      {
+        "name": "knowledge_trace_present",
+        "passed": true
+      },
+      {
+        "name": "knowledge_trace_success_without_reported_fallback",
+        "passed": true
+      },
+      {
+        "name": "no_reported_agent_execution_failure",
+        "passed": true
+      }
+    ]
+  },
+  "retrieval_metrics": {
+    "assessment_version": 2,
+    "scope": "8 synthetic answerable candidates; independent /search including rewrite/rerank over the entire isolated corpus; not chat-grounding accuracy",
+    "answerable_count": 8,
+    "hit_count": 8,
+    "top_k": 3,
+    "hit_at_k": 1.0,
+    "mrr_at_k": 1.0,
+    "unanswerable_count": 2,
+    "request_failure_count": 0,
+    "reference_catalog_verification": [
+      {
+        "id": "15d82b230e2932c72a135ff3f018e12c",
+        "title": "退款政策",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "45a335a49b5b3fb74013820fa7a4e929",
+        "title": "订单查询",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "6d848c7ad0200c7613e7391795d1b92c",
+        "title": "账户安全",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "409430435d67876b32a6d543a445e9ff",
+        "title": "技术故障排查",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "794c1020643c66307e97d046cac7513f",
+        "title": "会员与积分",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "b3b86359363f79978a0abfc00bf35e11",
+        "title": "配送说明",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+        "title": "演示补充：401登录排查",
+        "observed_matching_id_and_content": true
+      },
+      {
+        "id": "ff9ece14c6c6965245d863628b9fbd24",
+        "title": "演示补充：重复扣款材料核对",
+        "observed_matching_id_and_content": true
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "refund_timing",
+        "answerable": true,
+        "expected_reference_ids": [
+          "15d82b230e2932c72a135ff3f018e12c"
+        ],
+        "returned_ids": [
+          "15d82b230e2932c72a135ff3f018e12c",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "order_status",
+        "answerable": true,
+        "expected_reference_ids": [
+          "45a335a49b5b3fb74013820fa7a4e929"
+        ],
+        "returned_ids": [
+          "45a335a49b5b3fb74013820fa7a4e929",
+          "b3b86359363f79978a0abfc00bf35e11",
+          "15d82b230e2932c72a135ff3f018e12c"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "45a335a49b5b3fb74013820fa7a4e929",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "account_reset",
+        "answerable": true,
+        "expected_reference_ids": [
+          "6d848c7ad0200c7613e7391795d1b92c"
+        ],
+        "returned_ids": [
+          "6d848c7ad0200c7613e7391795d1b92c",
+          "409430435d67876b32a6d543a445e9ff",
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "6d848c7ad0200c7613e7391795d1b92c",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "crash_help",
+        "answerable": true,
+        "expected_reference_ids": [
+          "409430435d67876b32a6d543a445e9ff"
+        ],
+        "returned_ids": [
+          "409430435d67876b32a6d543a445e9ff",
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "member_points",
+        "answerable": true,
+        "expected_reference_ids": [
+          "794c1020643c66307e97d046cac7513f"
+        ],
+        "returned_ids": [
+          "794c1020643c66307e97d046cac7513f"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "794c1020643c66307e97d046cac7513f",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "delivery_options",
+        "answerable": true,
+        "expected_reference_ids": [
+          "b3b86359363f79978a0abfc00bf35e11"
+        ],
+        "returned_ids": [
+          "b3b86359363f79978a0abfc00bf35e11"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "login_401_details",
+        "answerable": true,
+        "expected_reference_ids": [
+          "a779c5b9859e9ba2bebf57e6e0381e5a"
+        ],
+        "returned_ids": [
+          "a779c5b9859e9ba2bebf57e6e0381e5a",
+          "409430435d67876b32a6d543a445e9ff",
+          "6d848c7ad0200c7613e7391795d1b92c"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "a779c5b9859e9ba2bebf57e6e0381e5a",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "409430435d67876b32a6d543a445e9ff",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "6d848c7ad0200c7613e7391795d1b92c",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "duplicate_charge_materials",
+        "answerable": true,
+        "expected_reference_ids": [
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "returned_ids": [
+          "ff9ece14c6c6965245d863628b9fbd24",
+          "15d82b230e2932c72a135ff3f018e12c",
+          "45a335a49b5b3fb74013820fa7a4e929"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "45a335a49b5b3fb74013820fa7a4e929",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": 1,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "not_applicable"
+      },
+      {
+        "case_id": "missing_invoice_terms",
+        "answerable": false,
+        "expected_reference_ids": [],
+        "returned_ids": [
+          "15d82b230e2932c72a135ff3f018e12c",
+          "b3b86359363f79978a0abfc00bf35e11",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "b3b86359363f79978a0abfc00bf35e11",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": null,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "pending_semantic_review"
+      },
+      {
+        "case_id": "missing_airport_miles",
+        "answerable": false,
+        "expected_reference_ids": [],
+        "returned_ids": [
+          "794c1020643c66307e97d046cac7513f",
+          "15d82b230e2932c72a135ff3f018e12c",
+          "ff9ece14c6c6965245d863628b9fbd24"
+        ],
+        "returned_positions": [
+          {
+            "position": 1,
+            "id": "794c1020643c66307e97d046cac7513f",
+            "reference_verified": true
+          },
+          {
+            "position": 2,
+            "id": "15d82b230e2932c72a135ff3f018e12c",
+            "reference_verified": true
+          },
+          {
+            "position": 3,
+            "id": "ff9ece14c6c6965245d863628b9fbd24",
+            "reference_verified": true
+          }
+        ],
+        "rank_of_first_relevant": null,
+        "request_failed": false,
+        "fallback_document_seen": false,
+        "reference_content_mismatches": [],
+        "no_answer_content_review": "pending_semantic_review"
+      }
+    ]
+  }
+}

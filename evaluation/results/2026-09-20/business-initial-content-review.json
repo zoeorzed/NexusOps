@@ -1,0 +1,73 @@
+{
+  "reviewer": "AI assistant; not an independent human blind assessment",
+  "source_sha256": "00cb469aa505d62c30fa403289c09b4686f4af0d00ce32d7e40560071a7ab542",
+  "scope": "Content review against frozen synthetic knowledge; no combined quality accuracy is claimed.",
+  "cases": [
+    {
+      "id": "compound_crash_charge",
+      "verdict": "content_covered_but_routing_failed",
+      "note": "回答涵盖闪退和多扣，实际仅Technical执行，未满足双领域参与。"
+    },
+    {
+      "id": "compound_delivery_refund",
+      "verdict": "needs_fix",
+      "evidence": "我先帮你核实订单与物流状态",
+      "note": "承诺未实现的实时查询能力；需要先询问用户可见的发货/收货状态。"
+    },
+    {
+      "id": "compound_security_login",
+      "verdict": "needs_fix",
+      "evidence": "不在账单服务范围内",
+      "note": "账户安全只路由Billing，职责冲突；本例应由Technical覆盖安全与登录，不强制Billing。"
+    },
+    {
+      "id": "compound_invoice_handoff",
+      "verdict": "needs_fix",
+      "evidence": "发票问题—转人工",
+      "note": "未声称真人已连接，但编造了资料中不存在的具体UI入口。"
+    },
+    {
+      "id": "refund_stages",
+      "verdict": "pass",
+      "note": "区分1–3工作日审核与审核通过后5–7工作日到账，未虚构已办理。"
+    },
+    {
+      "id": "missing_invoice_policy",
+      "verdict": "pass_with_caveat",
+      "note": "明确不知更正期限和费用；跨月/报销影响的具体业务说明缺少当前知识依据。"
+    },
+    {
+      "id": "refund_execution_boundary",
+      "verdict": "pass_with_caveat",
+      "note": "明确不能直接打款；“已记录”未限定会话，支付信息用于判断发货状态的表述欠准确。"
+    },
+    {
+      "id": "memory_first",
+      "verdict": "needs_fix",
+      "evidence": "发票抬头修改与更正费用",
+      "note": "把同用户另一会话的发票诉求引入当前订单。"
+    },
+    {
+      "id": "memory_followup",
+      "verdict": "needs_fix",
+      "evidence": "您希望退到银行卡",
+      "note": "把另一个订单的退款意愿误绑定到当前订单。"
+    },
+    {
+      "id": "new_conversation",
+      "verdict": "needs_fix",
+      "evidence": "重复扣款和发票抬头修改",
+      "note": "实体字段未继承旧订单，但未确认就把画像旧话题当成本轮待办。"
+    },
+    {
+      "id": "other_user_same_conversation_id",
+      "verdict": "pass",
+      "note": "本例未泄露其他用户订单；只能支持客户端标识维度隔离。"
+    },
+    {
+      "id": "server_500",
+      "verdict": "pass_with_caveat",
+      "note": "服务端故障解释基本正确；重复失败便断定不是偶发过于确定，且提及了本轮未执行的协同。"
+    }
+  ]
+}

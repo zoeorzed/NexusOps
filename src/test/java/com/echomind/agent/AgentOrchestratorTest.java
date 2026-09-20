@@ -95,7 +95,7 @@ class AgentOrchestratorTest {
             assertThat(prompt).doesNotContain("amount=[299元]", "重复扣款299元");
         });
         assertThat(prompts).anySatisfy(prompt -> {
-            assertThat(prompt).contains("[账务子任务]", "当前就是 Billing Agent", "24小时只能用于核验时限");
+            assertThat(prompt).contains("[账务子任务]", "当前就是 Billing Agent", "核验、退款申请审核和审核通过后到账", "不得将审核时限当作到账承诺");
             assertThat(prompt).doesNotContain("error_code=[401]", "登录失败", "提示401", "查不到");
         });
     }

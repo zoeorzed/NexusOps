@@ -22,7 +22,9 @@ class ChatMemoryFlowTest {
         var tools = mock(KnowledgeToolManager.class);
         var verifier = mock(AnswerVerifier.class);
         var history = List.of(new ConversationMessage(MessageRole.USER,"订单#A20260914001重复扣款299元",Instant.now(),Map.of()));
-        when(memory.getContext(anyString(),anyString(),anyString())).thenReturn(new MemoryContext(history,List.of(),Map.of(),""));
+        when(memory.getContext(anyString(),anyString(),anyString())).thenReturn(new MemoryContext(history,
+                List.of("另一会话的订单 OLD999 要求退款到银行卡"),
+                Map.of("preferences", List.of("此前另一笔订单希望退到银行卡")), "当前会话摘要"));
         when(intent.recognize(anyString(),anyList())).thenReturn(new IntentResult(IntentCategory.REFUND,.9,UrgencyLevel.MEDIUM,
                 "billing",Map.of(),"test",0,Map.of()));
         when(intent.extractEntities(anyString())).thenReturn(Map.of("order_id",List.of("A20260914001"),"amount",List.of("299元")));
@@ -37,6 +39,8 @@ class ChatMemoryFlowTest {
         var captured = ArgumentCaptor.forClass(AgentRequest.class);
         verify(orchestrator).run(captured.capture(),anyList());
         assertThat(captured.getValue().entities()).containsEntry("order_id",List.of("A20260914001"));
+        assertThat(captured.getValue().context()).contains("A20260914001", "当前会话摘要")
+                .doesNotContain("OLD999", "退到银行卡", "用户画像", "相关历史");
         assertThat(response.currentEntities()).isEmpty();
         assertThat(response.resolvedEntities()).containsEntry("order_id",List.of("A20260914001"));
         verify(memory).addMessage("demo","c",MessageRole.USER,"那这笔订单怎么退款？");
