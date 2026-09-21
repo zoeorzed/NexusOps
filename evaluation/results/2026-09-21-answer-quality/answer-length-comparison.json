@@ -1,0 +1,118 @@
+{
+  "metric": "Unicode code point count of complete answer, including Markdown, punctuation and whitespace; not token count or semantic quality score.",
+  "scope": "Same 12 development requests; different live model responses, not a controlled production benchmark.",
+  "source_sha256": {
+    "previous_baseline": "2027e9cb89803b000b45dc6ff34f81fb8ca30deb64cafb101ee00147de398051",
+    "first": "bfac97d27c122e510d889a749b7654773eb3851d6f775e3a040eaf6afc2d6acf",
+    "second": "35d71f9780d5c6eee0e5fbd0ca338ee7224f00ea74a20693b79256e2e34dfc3c",
+    "third": "4aa6e53c9d4977f9a95be5de48545fb57eb1da0d484c15948f454742389d531b"
+  },
+  "cases": [
+    {
+      "case_id": "compound_crash_charge",
+      "previous_baseline": 564,
+      "first": 561,
+      "second": 303,
+      "third": 182
+    },
+    {
+      "case_id": "compound_delivery_refund",
+      "previous_baseline": 211,
+      "first": 219,
+      "second": 156,
+      "third": 155
+    },
+    {
+      "case_id": "compound_security_login",
+      "previous_baseline": 274,
+      "first": 389,
+      "second": 141,
+      "third": 116
+    },
+    {
+      "case_id": "compound_invoice_handoff",
+      "previous_baseline": 154,
+      "first": 150,
+      "second": 142,
+      "third": 64
+    },
+    {
+      "case_id": "refund_stages",
+      "previous_baseline": 191,
+      "first": 190,
+      "second": 139,
+      "third": 131
+    },
+    {
+      "case_id": "missing_invoice_policy",
+      "previous_baseline": 224,
+      "first": 165,
+      "second": 139,
+      "third": 149
+    },
+    {
+      "case_id": "refund_execution_boundary",
+      "previous_baseline": 271,
+      "first": 317,
+      "second": 163,
+      "third": 178
+    },
+    {
+      "case_id": "memory_first",
+      "previous_baseline": 263,
+      "first": 257,
+      "second": 124,
+      "third": 163
+    },
+    {
+      "case_id": "memory_followup",
+      "previous_baseline": 258,
+      "first": 279,
+      "second": 153,
+      "third": 215
+    },
+    {
+      "case_id": "new_conversation",
+      "previous_baseline": 198,
+      "first": 207,
+      "second": 176,
+      "third": 162
+    },
+    {
+      "case_id": "other_user_same_conversation_id",
+      "previous_baseline": 172,
+      "first": 219,
+      "second": 150,
+      "third": 126
+    },
+    {
+      "case_id": "server_500",
+      "previous_baseline": 236,
+      "first": 291,
+      "second": 211,
+      "third": 112
+    }
+  ],
+  "summary": {
+    "previous_baseline": {
+      "total": 3016,
+      "mean": 251.33,
+      "median": 230.0
+    },
+    "first": {
+      "total": 3244,
+      "mean": 270.33,
+      "median": 238.0
+    },
+    "second": {
+      "total": 1997,
+      "mean": 166.42,
+      "median": 151.5
+    },
+    "third": {
+      "total": 1753,
+      "mean": 146.08,
+      "median": 152.0
+    }
+  }
+}

@@ -72,8 +72,8 @@ class AgentOrchestratorConcurrencyTest {
             assertThat(primaryStarted.getCount()).isZero();
             assertThat(primaryFinished.getCount()).isOne();
             assertThat(workerName.get()).startsWith("echomind-agent-");
-            assertThat(result.response()).contains("账务答复已完成", "技术问题处理超时");
-            assertThat(result.response()).doesNotContain("late response");
+            assertThat(result.response()).contains("## 账务问题\n\n账务答复已完成", "技术问题处理超时");
+            assertThat(result.response()).doesNotContain("late response", "Agent", "billing", "technical", "主处理", "辅助处理");
             assertThat(result.agentTypes()).containsExactly(AgentType.BILLING);
             assertThat(result.toolCalls()).anySatisfy(call -> {
                 assertThat(call.toolName()).isEqualTo("agent_execution:technical");
@@ -98,7 +98,7 @@ class AgentOrchestratorConcurrencyTest {
         OrchestratorResult result = orchestrator.run(compositeRequest());
 
         assertThat(result.response()).contains("账务答复已完成", "技术问题暂时处理失败");
-        assertThat(result.response()).doesNotContain("internal diagnostic");
+        assertThat(result.response()).doesNotContain("internal diagnostic", "Agent", "billing", "technical", "主处理", "辅助处理");
         assertThat(result.toolCalls()).anySatisfy(call -> assertThat(call.error()).isEqualTo("failed"));
     }
 
@@ -110,7 +110,8 @@ class AgentOrchestratorConcurrencyTest {
 
         OrchestratorResult result = orchestrator.run(compositeRequest());
 
-        assertThat(result.response()).contains("所有 Agent 均处理失败", "技术问题暂时处理失败", "账务问题暂时处理失败");
+        assertThat(result.response()).contains("暂时无法完成这些问题的处理", "技术问题暂时处理失败", "账务问题暂时处理失败");
+        assertThat(result.response()).doesNotContain("Agent", "technical", "billing");
         assertThat(result.toolCalls()).hasSize(2).allSatisfy(call -> {
             assertThat(call.success()).isFalse();
             assertThat(call.error()).isEqualTo("failed");
@@ -120,13 +121,14 @@ class AgentOrchestratorConcurrencyTest {
     @Test
     void recordsRealBaseAgentFailureAndPreservesCompletedDomainWithoutGeneralRetry() {
         AtomicBoolean generalInvoked = new AtomicBoolean();
+        String billingAnswer = "账务答复已完成。\n\n请核对两笔扣款的交易时间。\n\n保留付款凭证，供后续人工核验。";
         LlmGateway failingLlm = (system, prompt, temperature, maxTokens) -> {
             throw new IllegalStateException("private backend diagnostic");
         };
         RequestTraceStore trace = new RequestTraceStore();
         AgentOrchestrator orchestrator = orchestrator(executor(2, 2), 2_000, trace,
                 new TechnicalAgent(failingLlm, null),
-                new BillingAgent((system, prompt, temperature, maxTokens) -> "账务答复已完成", null),
+                new BillingAgent((system, prompt, temperature, maxTokens) -> billingAnswer, null),
                 new GeneralAgent((system, prompt, temperature, maxTokens) -> {
                     generalInvoked.set(true);
                     return "unrequested domain retry";
@@ -134,10 +136,13 @@ class AgentOrchestratorConcurrencyTest {
 
         OrchestratorResult result = orchestrator.run(compositeRequest());
 
-        assertThat(result.response()).contains("账务答复已完成", "技术问题暂时处理失败");
-        assertThat(result.response()).doesNotContain("private backend", "unrequested domain retry");
+        assertThat(result.response()).isEqualTo("## 账务问题\n\n" + billingAnswer
+                + "\n\n技术问题暂时处理失败，请稍后重试。");
+        assertThat(result.response()).doesNotContain("private backend", "unrequested domain retry", "Agent", "technical", "billing");
         assertThat(generalInvoked).isFalse();
         assertThat(result.agentTypes()).containsExactly(AgentType.BILLING);
+        assertThat(trace.find("req-concurrency").orElseThrow().primaryAgent()).isEqualTo("technical");
+        assertThat(trace.find("req-concurrency").orElseThrow().supportingAgents()).containsExactly("billing");
         assertThat(trace.find("req-concurrency").orElseThrow().toolCalls()).singleElement().satisfies(call -> {
             assertThat(call.toolName()).isEqualTo("agent_execution:technical");
             assertThat(call.error()).isEqualTo("failed");
@@ -157,8 +162,12 @@ class AgentOrchestratorConcurrencyTest {
 
         OrchestratorResult result = orchestrator.run(compositeRequest());
 
-        assertThat(result.response()).contains("所有 Agent 均处理失败", "技术问题暂时处理失败", "账务问题暂时处理失败");
-        assertThat(result.response()).doesNotContain("private backend diagnostic");
+        assertThat(result.response()).isEqualTo("抱歉，暂时无法完成这些问题的处理。"
+                + "\n\n技术问题暂时处理失败，请稍后重试。\n账务问题暂时处理失败，请稍后重试。");
+        assertThat(result.response()).doesNotContain("private backend diagnostic", "Agent", "technical", "billing");
+        assertThat(result.agentTypes()).containsExactly(AgentType.TECHNICAL, AgentType.BILLING);
+        assertThat(trace.find("req-concurrency").orElseThrow().toolCalls())
+                .extracting(call -> call.toolName()).containsExactly("agent_execution:technical", "agent_execution:billing");
         assertThat(trace.find("req-concurrency").orElseThrow().toolCalls()).hasSize(2).allSatisfy(call -> {
             assertThat(call.success()).isFalse();
             assertThat(call.fallbackUsed()).isFalse();
@@ -177,7 +186,8 @@ class AgentOrchestratorConcurrencyTest {
             awaitIgnoringInterrupts(releaseBlocker);
         });
         assertThat(blockerStarted.await(2, TimeUnit.SECONDS)).isTrue();
-        AgentOrchestrator orchestrator = orchestrator(executor, 200, new RequestTraceStore(),
+        RequestTraceStore trace = new RequestTraceStore();
+        AgentOrchestrator orchestrator = orchestrator(executor, 200, trace,
                 agent(AgentType.TECHNICAL, () -> {
                     invoked.set(true);
                     return success(AgentType.TECHNICAL, "should not run");
@@ -186,7 +196,12 @@ class AgentOrchestratorConcurrencyTest {
         try {
             OrchestratorResult result = orchestrator.run(singleRequest());
 
-            assertThat(result.response()).contains("处理超时");
+            assertThat(result.response()).isEqualTo("技术问题处理超时，请稍后重试。");
+            assertThat(trace.find("req-single").orElseThrow().toolCalls()).singleElement().satisfies(call -> {
+                assertThat(call.toolName()).isEqualTo("agent_execution:technical");
+                assertThat(call.error()).isEqualTo("timeout");
+                assertThat(call.success()).isFalse();
+            });
             assertThat(invoked).isFalse();
             assertThat(executor.getQueue()).isEmpty();
             releaseBlocker.countDown();
@@ -209,7 +224,8 @@ class AgentOrchestratorConcurrencyTest {
         });
         assertThat(blockerStarted.await(2, TimeUnit.SECONDS)).isTrue();
         executor.submit(() -> { });
-        AgentOrchestrator orchestrator = orchestrator(executor, 2_000, new RequestTraceStore(),
+        RequestTraceStore trace = new RequestTraceStore();
+        AgentOrchestrator orchestrator = orchestrator(executor, 2_000, trace,
                 agent(AgentType.TECHNICAL, () -> {
                     invoked.set(true);
                     return success(AgentType.TECHNICAL, "should not run");
@@ -218,12 +234,15 @@ class AgentOrchestratorConcurrencyTest {
         try {
             OrchestratorResult result = orchestrator.run(singleRequest());
 
-            assertThat(result.response()).contains("服务繁忙");
+            assertThat(result.response()).isEqualTo("技术问题处理服务繁忙，请稍后重试。");
+            assertThat(result.response()).doesNotContain("Agent", "technical", "billing");
             assertThat(invoked).isFalse();
             assertThat(result.toolCalls()).singleElement().satisfies(call -> {
                 assertThat(call.toolName()).isEqualTo("agent_execution:technical");
                 assertThat(call.error()).isEqualTo("rejected");
+                assertThat(call.success()).isFalse();
             });
+            assertThat(trace.find("req-single").orElseThrow().toolCalls()).isEqualTo(result.toolCalls());
         } finally {
             releaseBlocker.countDown();
         }
@@ -255,7 +274,8 @@ class AgentOrchestratorConcurrencyTest {
         try {
             OrchestratorResult result = orchestrator.run(compositeRequest());
 
-            assertThat(result.response()).contains("技术答复已完成", "账务问题处理服务繁忙");
+            assertThat(result.response()).contains("## 技术问题\n\n技术答复已完成", "账务问题处理服务繁忙");
+            assertThat(result.response()).doesNotContain("Agent", "technical", "billing", "主处理", "辅助处理");
             assertThat(result.agentTypes()).containsExactly(AgentType.TECHNICAL);
             assertThat(billingInvoked).isFalse();
             assertThat(result.toolCalls()).singleElement().satisfies(call -> {

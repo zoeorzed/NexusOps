@@ -1,0 +1,28 @@
+{
+  "started_at_utc": "2026-09-20T11:15:22Z",
+  "model": "deepseek-chat",
+  "profile": "deepseek",
+  "model_fallback_enabled": false,
+  "synthetic_data": true,
+  "new_empty_data_directory": true,
+  "base_commit": "de51d31088f9c63a2c3c116ecdd34f22ac92b120",
+  "jar_sha256": "849b81466a404484729a66c35ce018265dce36cc76f75e0b4f4de4ba021f242b",
+  "java": "25.0.2, compiled with release 21",
+  "scenario_sha256": "7eebbcde0f8201a5e8fc0a58b9f2d2293c9a91c25d4b475e5d2448016471872c",
+  "collector_sha256": "1a89da65d38f458e29e6427b7eb8c10fb10f4f60d29c3db9e10ef57b285018dc",
+  "demo_knowledge_sha256": "bfb16af9bdeb16baed1cb2796d2691409e5c5a9b09af6c31cd089d7ba6f16ee7",
+  "quality_checklist_sha256": "eb89afd42abb7dbe50bc2b86843fd6a055772e042a6b6bf30c7b58ff3327e2b2",
+  "source_sha256": {
+    "src/main/java/com/echomind/agent/BaseAgent.java": "0ee8f7e58aaa25d4ccab3d26a4c7c19757e71c2e45abf524a0d3159cf35cf60c",
+    "src/main/java/com/echomind/agent/BillingAgent.java": "8e147f769dc54d3a4e3904eea71b42dc70f106158e954625d4cbae3b73a44cb1",
+    "src/main/java/com/echomind/agent/AgentOrchestrator.java": "479fab2497425e486d72977a9cec50388ee7464f6779aa79bdddba25560bd5e4",
+    "src/main/java/com/echomind/agent/AnswerVerifier.java": "e8797727244e87d955a99ad046fcd1160a019760e2775f5c34c96c8668034d6b",
+    "skills/billing_support/SKILL.md": "9b037aced74cf1dc61716c6205e469c256f55adb9e9660a7ba625745aa9a9c32",
+    "skills/technical_support/SKILL.md": "b66b3774af94f16a15724af1e21af31968eb97683618af59469a821e6be76887",
+    "skills/general_customer_service/SKILL.md": "7105df11174b5cf5d22619005f7f747c687e855fe9e27e17437a5b04de97cf05"
+  },
+  "redis": "3.2.100, isolated loopback instance",
+  "scope": "Real local HTTP /chat, /search and trace collection; no production benchmark or independent human assessment",
+  "collector_exit_code": 0,
+  "elapsed_seconds": 71.98
+}

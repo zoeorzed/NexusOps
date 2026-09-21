@@ -83,8 +83,8 @@ class AgentPromptContractTest {
                     "没有实时订单、物流或支付查询工具", "不能修改账户、连接真人客服或代用户操作",
                     "按钮、菜单和客服入口不得编造", "用户画像中的历史话题不等于当前诉求",
                     "不得把其他订单的支付渠道、退款意愿或状态套用到当前订单",
-                    "仅指当前会话中的信息引用", "只有收到明确的协同子任务说明时",
-                    "单领域请求不得声称另一 Agent 将处理");
+                    "仅指当前会话中的信息引用", "协同子任务只供内部划分职责",
+                    "无论单领域还是多领域，用户回答都不得介绍内部 Agent");
         }
     }
 
@@ -102,5 +102,26 @@ class AgentPromptContractTest {
 
         assertThat(captured.get()).contains("账户保护和登录恢复", "账户安全不等于账务问题",
                 "[动态 Skills]", "不能修改密码、冻结账户、踢出会话或查询登录记录");
+    }
+
+    @Test
+    void finalGuardrailsOverrideSkillChecklistsAndUnverifiedPlatformAssumptions() {
+        EchoMindProperties properties = new EchoMindProperties();
+        properties.getSkills().setRootDir("skills");
+        SkillManager manager = new SkillManager(properties, new ObjectMapper());
+        manager.load();
+        AtomicReference<String> captured = new AtomicReference<>();
+        LlmGateway capture = (s, p, t, m) -> { captured.set(s); return "capture only"; };
+        new BillingAgent(capture, manager).handle(
+                AgentRequest.of("跨月发票更正收费吗？订单没收到也想退款", "demo", "c", "", List.of()));
+        String system = captured.get();
+        assertThat(system.indexOf("[统一回答规则]")).isGreaterThan(system.indexOf("[动态 Skills]"));
+        assertThat(system).contains("不是平台业务政策的事实来源", "是否已发货、是否已收货",
+                "不把已有字段重新列入", "解释政策或流程时不要求先提供全套核验材料");
+        assertThat(system).doesNotContain("尤其是跨月或已报销场景", "涉及资金处理必须提示需要订单号");
+
+        new TechnicalAgent(capture, manager).handle(
+                AgentRequest.of("异地登录，重置密码能踢掉陌生设备吗", "demo", "c", "", List.of()));
+        assertThat(captured.get()).contains("知识未说明时必须明确无法确认", "不构成政策依据");
     }
 }

@@ -1,0 +1,2 @@
+# Preserve captured evidence bytes so recorded SHA-256 values survive checkout.
+evaluation/results/2026-09-21-answer-quality/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

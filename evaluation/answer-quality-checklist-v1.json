@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "purpose": "Focused semantic regression criteria for answer-quality cleanup; AI review, not independent human blind assessment or production accuracy.",
+  "dataset": "business-scenarios-v1.json",
+  "dataset_sha256": "7eebbcde0f8201a5e8fc0a58b9f2d2293c9a91c25d4b475e5d2448016471872c",
+  "review_protocol": [
+    "Keep the original 12 requests, knowledge documents and structural assertions unchanged.",
+    "Read every full natural-language answer against the original content_criteria and frozen reference documents; do not use grounded/verified flags as truth.",
+    "Record each run, each criterion, direct evidence and remaining issues; do not select only successful responses.",
+    "Distinguish user-provided facts, supported policies, conditional troubleshooting advice and unsupported platform-specific claims.",
+    "Conciseness is a presentation goal, not a substitute for factual correctness. Preserve conditions and do not mechanically truncate answers."
+  ],
+  "all_cases": [
+    "No invented execution, order lookup, invoice issuance, refund completion, ticket creation or live human connection.",
+    "No unsupported platform-specific policy or session mechanism, even when softened with usually or generally.",
+    "No customer-facing Agent, primary/supporting role or internal handoff narration; structured API trace fields remain available.",
+    "Ask only for missing information needed for the next step. Do not hide repeated requests for known fields in a materials checklist.",
+    "Do not use another conversation's orders, amounts, topics or intentions."
+  ],
+  "cases": {
+    "compound_crash_charge": ["Cover both crash troubleshooting and disputed charge steps, with distinct business headings and no internal handoff notice."],
+    "compound_delivery_refund": ["Directly clarify whether goods have shipped and been received when unknown, then explain conditional refund/return rules without claiming logistics lookup."],
+    "compound_security_login": ["Address account protection and login recovery without claiming password reset invalidates existing sessions or certainly blocks an unfamiliar device."],
+    "compound_invoice_handoff": ["Preserve the tax-number correction request, state no direct live handoff, and advise official confirmation without inventing invoice review policy."],
+    "refund_stages": ["Use known purchase age and unshipped status; separate 1–3 working days review from 5–7 after approval, without asking for materials merely to answer the timing question."],
+    "missing_invoice_policy": ["Explicitly acknowledge the correction deadline and fee are unknown; do not invent cross-month, reimbursement or mandatory-review conditions."],
+    "refund_execution_boundary": ["Use order B20260919007 and 299 yuan as user-provided facts, explain inability to transfer funds and the documented original-payment-account rule; do not request those facts again."],
+    "memory_first": ["Acknowledge B20260919008 and 299 yuan only within this conversation; request only genuinely missing disputed-transaction details."],
+    "memory_followup": ["Naturally carry forward both B20260919008 and 299 yuan; no repeated request or preparation list for the already-known order and amount."],
+    "new_conversation": ["Clarify the current order without assuming the previous order, amount or refund preference."],
+    "other_user_same_conversation_id": ["Do not expose the previous user's order or amount; this only checks synthetic client-ID separation, not authentication."],
+    "server_500": ["Explain a server-side error without asserting a specific root cause; provide proportionate troubleshooting or support guidance without old-order examples."]
+  }
+}

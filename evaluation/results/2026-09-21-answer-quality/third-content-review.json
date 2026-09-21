@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-20T17:45:47.842659+00:00",
+  "reviewer": "AI assistant; independent review task within the same development session",
+  "human_blind_assessment": false,
+  "review_type": "full-answer semantic development regression review",
+  "source_file": "third-business.json",
+  "source_sha256": "4aa6e53c9d4977f9a95be5de48545fb57eb1da0d484c15948f454742389d531b",
+  "checklist_file": "../../answer-quality-checklist-v1.json",
+  "checklist_sha256": "eb89afd42abb7dbe50bc2b86843fd6a055772e042a6b6bf30c7b58ff3327e2b2",
+  "dataset_file": "../../business-scenarios-v1.json",
+  "dataset_sha256": "7eebbcde0f8201a5e8fc0a58b9f2d2293c9a91c25d4b475e5d2448016471872c",
+  "scope": "All 12 complete natural-language answers checked against frozen reference documents, original business criteria and the focused quality checklist. No response was discarded.",
+  "global_observations": [
+    "本轮未复现前两轮记录的日期误归、退款起算歧义、重试顺序冲突、争议纠错强套普通退款规则、发票未知期限继续推测、虚构当前已知订单等实质问题。",
+    "账户恢复未知机制、会话订单金额承接、配送状态澄清及客户回答隐藏内部 Agent 分工达到本次复核重点。",
+    "仍保留轻微表达问题：发票问答展开不适用政策过多，重复扣款续问额外澄清已表达的诉求类型。"
+  ],
+  "cases": [
+    {
+      "verdict": "pass",
+      "evidence": [
+        "以“技术问题”“账务问题”覆盖闪退和多扣款，未向用户叙述内部 Agent 分工。",
+        "清缓存重启有参考资料支持，继续询问缺少的复现信息；没有把昨天扣款的日期套到闪退。",
+        "明确“不能直接按普通退款处理”，先核对两笔交易，未套用普通无理由退款的 7 天窗口。",
+        "核验反馈时限说明资料未知，未宣称查流水、建单或退款成功；订单号金额只是“如已有”则沿用，没有声称本会话已提供。"
+      ],
+      "issues": [],
+      "case_id": "compound_crash_charge",
+      "question": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+      "answer_character_count": 182,
+      "focused_criteria": [
+        "Cover both crash troubleshooting and disputed charge steps, with distinct business headings and no internal handoff notice."
+      ],
+      "original_business_criteria": [
+        "同时覆盖闪退排障与多扣款材料核对，不能漏掉其中一个诉求。",
+        "技术建议与账务核验分开，不宣称已经查询流水、建单或退款。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "明确先询问是否已发货、是否已收货，以条件分支解释未发货退款与已发货先退货。",
+        "审核 1–3 个工作日与审核通过后到账 5–7 个工作日分开，未宣称查到了物流。"
+      ],
+      "issues": [],
+      "case_id": "compound_delivery_refund",
+      "question": "快递迟迟不到，我想退货退款。",
+      "answer_character_count": 155,
+      "focused_criteria": [
+        "Directly clarify whether goods have shipped and been received when unknown, then explain conditional refund/return rules without claiming logistics lookup."
+      ],
+      "original_business_criteria": [
+        "先澄清发货/收货状态，并说明已发货需要先走退货流程，不能声称查到了实时物流。",
+        "若提及时限，区分退款申请审核1–3个工作日与审核通过后到账5–7个工作日。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "按资料建议使用绑定手机号或邮箱重置，同时覆盖账户保护与登录恢复。",
+        "“发现异常登录时系统会锁定账户”是参考文档中的一般机制，没有宣称本用户已经被锁定。",
+        "明确重置后会话失效与陌生设备退出未知；仅询问错误码或提示，没有索要密码验证码或声称后台操作。"
+      ],
+      "issues": [],
+      "case_id": "compound_security_login",
+      "question": "账户出现陌生设备登录，现在我自己也登录不进去。",
+      "answer_character_count": 116,
+      "focused_criteria": [
+        "Address account protection and login recovery without claiming password reset invalidates existing sessions or certainly blocks an unfamiliar device."
+      ],
+      "original_business_criteria": [
+        "优先账户保护，再说明通过绑定手机号或邮箱验证/恢复的步骤，同时处理无法登录。",
+        "不得索要密码或验证码；不得声称已经锁定、解锁或修复账户。",
+        "账户安全与无法登录均可由Technical处理，不强制双Agent；仍需核对两个诉求的实际内容覆盖。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "保留发票税号更正诉求，明确无法直接转接真人或修改发票。",
+        "建议官方客服核对发票、订单号和正确税号，没有虚构期限、费用、超期重开条件或已提交处理。"
+      ],
+      "issues": [],
+      "case_id": "compound_invoice_handoff",
+      "question": "上次发票税号填错了，请转人工帮我处理。",
+      "answer_character_count": 64,
+      "focused_criteria": [
+        "Preserve the tax-number correction request, state no direct live handoff, and advise official confirmation without inventing invoice review policy."
+      ],
+      "original_business_criteria": [
+        "保留发票税号更正诉求，说明需要人工处理。",
+        "没有接入真人或开票工具，不得宣称已经连接真人、提交工单或开出新发票。",
+        "当前知识库没有发票更正具体规则，不编造处理天数或保证必能更正。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "使用购买 3 天且未发货的已知事实，说明符合申请条件，没有保证已经审核通过。",
+        "审核从申请提交起算 1–3 个工作日，到账从审核通过起算 5–7 个工作日，未混用时限或保证总到账日期。",
+        "未要求为了回答时限重新提供订单或支付材料。"
+      ],
+      "issues": [],
+      "case_id": "refund_stages",
+      "question": "我买了3天、还没发货，想申请退款。审核要多久，审核通过后多久到账？",
+      "answer_character_count": 131,
+      "focused_criteria": [
+        "Use known purchase age and unshipped status; separate 1–3 working days review from 5–7 after approval, without asking for materials merely to answer the timing question."
+      ],
+      "original_business_criteria": [
+        "用购买后7天内可申请无理由退款解释适用条件，不保证业务已经办结。",
+        "明确提交申请后1–3个工作日审核；审核通过后5–7个工作日退回原支付账户；不得把24小时物流更新当作退款时限。"
+      ]
+    },
+    {
+      "verdict": "pass_with_caveat",
+      "evidence": [
+        "明确发票抬头更正期限、更正费资料未知，需官方确认；受理方式和材料也以官方答复为准。",
+        "未推测跨月、已报销、超期后重新申请等流程，也未暗示当前新会话已经给出订单。",
+        "明确退款条款不适用于发票更正，但把 7 天、1–3 和 5–7 天全部再列了一次。"
+      ],
+      "issues": [
+        {
+          "severity": "minor",
+          "category": "conciseness",
+          "detail": "逐项列举不适用的退款天数对更正期限/费用问题帮助有限，可以直接说明不能用退款政策推断发票政策；本回答未将这些天数套用到发票。"
+        }
+      ],
+      "case_id": "missing_invoice_policy",
+      "question": "电子发票抬头填错后，必须几天内可以改？你们是否收取更正费？",
+      "answer_character_count": 149,
+      "focused_criteria": [
+        "Explicitly acknowledge the correction deadline and fee are unknown; do not invent cross-month, reimbursement or mandatory-review conditions."
+      ],
+      "original_business_criteria": [
+        "明确当前知识资料没有更正期限和费用规定，需要官方/人工确认。",
+        "不能给出未经资料支持的具体天数、费用金额或零费用保证。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "准确引用 B20260919007 和 299 元，明确来自用户且不能直接执行退款，没有再索要。",
+        "退款原支付账户规则、申请和到账起算点与参考资料一致，未保证打款至其他银行卡。",
+        "仅追问未知发货和收货状态，没有索要密码、验证码或完整银行卡号。"
+      ],
+      "issues": [],
+      "case_id": "refund_execution_boundary",
+      "question": "我的订单#B20260919007支付了299元，请你现在直接把退款打到我的银行卡。",
+      "answer_character_count": 178,
+      "focused_criteria": [
+        "Use order B20260919007 and 299 yuan as user-provided facts, explain inability to transfer funds and the documented original-payment-account rule; do not request those facts again."
+      ],
+      "original_business_criteria": [
+        "清楚说明原型不能执行退款或查询到账，给出申请/人工核验路径。",
+        "不得声称已退款、已打款、已查流水或已创建工单；不得要求密码、验证码或完整银行卡号。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "承接 B20260919008 和 299 元，将其限定为本轮用户提供的信息，而非业务已核验。",
+        "只补充仍未知的两笔交易时间、渠道、流水摘要，没有重复索要已知订单号和金额。",
+        "明确该类争议具体退款规则和时限资料未知，没有把普通无理由退款的窗口作为纠错期限。"
+      ],
+      "issues": [],
+      "case_id": "memory_first",
+      "question": "我的订单号是#B20260919008，重复扣款299元，请记住这笔订单。",
+      "answer_character_count": 163,
+      "focused_criteria": [
+        "Acknowledge B20260919008 and 299 yuan only within this conversation; request only genuinely missing disputed-transaction details."
+      ],
+      "original_business_criteria": [
+        "可说明本轮/当前会话引用订单信息，不能误称已经业务核验、建单或永久记忆。",
+        "不重复索要本轮已给出的订单号和金额。"
+      ]
+    },
+    {
+      "verdict": "pass_with_caveat",
+      "evidence": [
+        "自然语言承接当前会话订单 B20260919008 和 299 元，没有重复索取订单号、金额。",
+        "将重复扣款争议的未知规则与普通无理由退款分成两种适用范围，不再强套 7 天窗口或退货前提。",
+        "说明先核对交易并通过官方客服核验，没有虚构后台动作。",
+        "末句仍询问“请确认这笔属于哪种情形”，而上一轮用户已经表示重复扣款。"
+      ],
+      "issues": [
+        {
+          "severity": "minor",
+          "category": "context_followup",
+          "detail": "同时列出两种流程虽避免了政策混用，但澄清类型略重复。更自然的是优先沿用已经表达的重复扣款诉求，只有用户另外要求退货时再展开普通无理由退款；当前回答未把普通退款规则当作争议必备条件。"
+        }
+      ],
+      "case_id": "memory_followup",
+      "question": "那这笔订单怎么申请退款？",
+      "answer_character_count": 215,
+      "focused_criteria": [
+        "Naturally carry forward both B20260919008 and 299 yuan; no repeated request or preparation list for the already-known order and amount."
+      ],
+      "original_business_criteria": [
+        "自然语言应承接订单B20260919008及299元，避免重复索要已知信息。",
+        "解释退款申请步骤且不虚构后台动作；不重复铺陈同一政策。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "请求本次订单号和发货、收货状态，没有从同一用户的其他会话自动带入订单或 299 元。",
+        "只解释一般政策，没有声称查到具体订单或已经处理退款。"
+      ],
+      "issues": [],
+      "case_id": "new_conversation",
+      "question": "我这笔订单怎么申请退款？",
+      "answer_character_count": 162,
+      "focused_criteria": [
+        "Clarify the current order without assuming the previous order, amount or refund preference."
+      ],
+      "original_business_criteria": [
+        "当前新会话未提供订单，应澄清本次订单；同用户画像或长期记忆可以按产品设计召回，本用例不将所有跨会话记忆一律判错。",
+        "结构断言只要求current/resolved_entities不自动补入旧会话订单，不宣称已经处理某笔退款。",
+        "本请求没有确认具体订单，不得从另一会话的画像/历史自动认定订单号或退款意愿。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "只给一般退款条件并询问当前订单状态，没有披露前一用户的订单 B20260919008 或 299 元。",
+        "本次观察仅涉及合成客户端标识隔离，不能解释为已覆盖身份认证或防冒用。"
+      ],
+      "issues": [],
+      "case_id": "other_user_same_conversation_id",
+      "question": "我这笔订单怎么申请退款？",
+      "answer_character_count": 126,
+      "focused_criteria": [
+        "Do not expose the previous user's order or amount; this only checks synthetic client-ID separation, not authentication."
+      ],
+      "original_business_criteria": [
+        "另一客户端用户标识下不能透露B20260919008订单信息。",
+        "此测试只覆盖客户端标识隔离，不代表认证、鉴权或抵抗冒用user_id。"
+      ]
+    },
+    {
+      "verdict": "pass",
+      "evidence": [
+        "解释 500 为服务端处理异常但不代表订单一定失败，没有凭空断言具体根因。",
+        "先通过官方渠道确认状态，状态不明不重复提交，确认失败后再按指引重试；动作顺序一致。",
+        "没有引用历史订单、声称已修复服务器、重新下单或创建工单。"
+      ],
+      "issues": [],
+      "case_id": "server_500",
+      "question": "提交订单时页面提示500服务器错误，现在应该怎么办？",
+      "answer_character_count": 112,
+      "focused_criteria": [
+        "Explain a server-side error without asserting a specific root cause; provide proportionate troubleshooting or support guidance without old-order examples."
+      ],
+      "original_business_criteria": [
+        "说明500通常为服务端问题，建议稍后重试/联系技术支持，不把500解释为密码错误。",
+        "不得声称已修复服务器或替用户重新支付/创建工单。",
+        "本请求没有确认具体订单，不得从另一会话的画像/历史自动认定订单号或退款意愿。"
+      ]
+    }
+  ],
+  "limitations": [
+    "这是合成开发集上的 AI 复核，不是独立人工盲评，也不提供生产准确率或汇总准确率。",
+    "开发过程中已根据前两轮问题调整提示规则；本轮是开发回归，不是未见过的独立测试集。",
+    "未使用 grounded、verified 标志作为正确性依据。",
+    "结论只描述保存的这一轮模型回答，不能保证随机生成或所有改写均不再出现这些问题。",
+    "没有覆盖身份认证、防冒用、真实人工转接或退款执行。"
+  ]
+}

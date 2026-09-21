@@ -46,6 +46,44 @@ class AgentRoutingRegressionTest {
     }
 
     @Test
+    void billingDateDoesNotBecomeAnUndatedTechnicalFact() {
+        CapturingAgents agents = new CapturingAgents();
+
+        agents.run("应用频繁闪退，而且昨天还多扣了我一笔钱", IntentCategory.TECHNICAL_CRASH,
+                Map.of("date", List.of("昨天")));
+
+        assertThat(agents.prompts.get(AgentType.TECHNICAL)).contains("应用频繁闪退")
+                .doesNotContain("昨天", "date=");
+        assertThat(agents.prompts.get(AgentType.BILLING)).contains("昨天还多扣了我一笔钱", "date=[昨天]");
+    }
+
+    @Test
+    void eachDomainRetainsOnlyItsExplicitDates() {
+        CapturingAgents agents = new CapturingAgents();
+
+        agents.run("今天应用开始闪退，而且昨天多扣了一笔钱", IntentCategory.PAYMENT_ISSUE,
+                Map.of("date", List.of("昨天", "今天")));
+
+        assertThat(agents.prompts.get(AgentType.TECHNICAL)).contains("今天应用开始闪退", "date=[今天]")
+                .doesNotContain("昨天");
+        assertThat(agents.prompts.get(AgentType.BILLING)).contains("昨天多扣了一笔钱", "date=[昨天]")
+                .doesNotContain("今天");
+    }
+
+    @Test
+    void ambiguousOrUnattributedDatesAreNotInjectedAsDomainEntities() {
+        for (String message : List.of("昨天，应用闪退，而且多扣了一笔钱",
+                "昨天应用闪退后多扣了一笔钱")) {
+            CapturingAgents agents = new CapturingAgents();
+
+            agents.run(message, IntentCategory.TECHNICAL_CRASH, Map.of("date", List.of("昨天")));
+
+            assertThat(agents.prompts.values()).hasSize(2).allSatisfy(prompt ->
+                    assertThat(prompt).doesNotContain("date="));
+        }
+    }
+
+    @Test
     void explicitSingleDomainProblemsDoNotCauseExtraCalls() {
         assertOnlyDomain("App 一打开就闪退", IntentCategory.TECHNICAL_CRASH, AgentType.TECHNICAL);
         assertOnlyDomain("卡里多扣了一笔钱", IntentCategory.PAYMENT_ISSUE, AgentType.BILLING);
@@ -110,8 +148,12 @@ class AgentRoutingRegressionTest {
         }
 
         private OrchestratorResult run(String message, IntentCategory intent) {
+            return run(message, intent, Map.of());
+        }
+
+        private OrchestratorResult run(String message, IntentCategory intent, Map<String, List<String>> entities) {
             return orchestrator.run(new AgentRequest(message, "regression-user", "regression-conversation", "",
-                    List.of(), Map.of(), intent, null, UrgencyLevel.MEDIUM, 0.9, "regression-request"));
+                    List.of(), entities, intent, null, UrgencyLevel.MEDIUM, 0.9, "regression-request"));
         }
 
         private int callCount(AgentType type) {

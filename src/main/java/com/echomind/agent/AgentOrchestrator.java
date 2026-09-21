@@ -160,24 +160,13 @@ public class AgentOrchestrator {
     private OrchestratorResult runParallel(AgentRequest req, RoutingDecision decision, List<ToolCallTrace> externalToolCalls, Instant start) {
         List<AgentType> targets = decision.agentTypes();
         List<AgentResponse> responses = executeWithinDeadline(req, decision);
-        int lastSuccessfulIndex = -1;
-        for (int index = 0; index < responses.size(); index++) {
-            if (responses.get(index).success()) {
-                lastSuccessfulIndex = index;
-            }
-        }
         List<String> parts = new ArrayList<>();
-        for (int index = 0; index < responses.size(); index++) {
-            AgentResponse response = responses.get(index);
+        for (AgentResponse response : responses) {
             if (response.success()) {
-                String role = response.agentType() == decision.primaryAgent() ? "主处理" : "辅助处理";
-                String responseContent = index == lastSuccessfulIndex
-                        ? removeTrailingCollaborationNotice(response.content())
-                        : response.content();
-                parts.add("[" + response.agentType().name().toLowerCase(Locale.ROOT) + " - " + role + "]\n" + responseContent);
+                parts.add("## " + domainTitle(response.agentType()) + "\n\n" + response.content());
             }
         }
-        String content = parts.isEmpty() ? "抱歉，所有 Agent 均处理失败。" : String.join("\n\n", parts);
+        String content = parts.isEmpty() ? "抱歉，暂时无法完成这些问题的处理。" : String.join("\n\n", parts);
         List<String> failures = responses.stream()
                 .filter(response -> !response.success())
                 .map(AgentResponse::content)
@@ -221,7 +210,7 @@ public class AgentOrchestrator {
         for (int index = 0; index < targets.size(); index++) {
             AgentType type = targets.get(index);
             AgentRequest scoped = decision.multiAgent()
-                    ? scopedRequest(request, type, index == targets.size() - 1)
+                    ? scopedRequest(request, type)
                     : request;
             if (deadlineNanos - System.nanoTime() <= 0) {
                 pending.add(new PendingAgent(type, null, "timeout"));
@@ -274,12 +263,7 @@ public class AgentOrchestrator {
     }
 
     private AgentResponse executionFailure(AgentType type, String reason, long startedNanos) {
-        String domain = switch (type) {
-            case TECHNICAL -> "技术问题";
-            case BILLING -> "账务问题";
-            case ESCALATION -> "升级请求";
-            default -> "当前问题";
-        };
+        String domain = domainTitle(type);
         String message = switch (reason) {
             case "timeout" -> domain + "处理超时，请稍后重试。";
             case "rejected" -> domain + "处理服务繁忙，请稍后重试。";
@@ -301,39 +285,50 @@ public class AgentOrchestrator {
         private static final ThreadPoolExecutor INSTANCE = AgentExecutionConfig.newExecutor(new AgentExecutionProperties());
     }
 
-    private AgentRequest scopedRequest(AgentRequest request, AgentType agentType, boolean lastTarget) {
+    private String domainTitle(AgentType type) {
+        return switch (type) {
+            case TECHNICAL -> "技术问题";
+            case BILLING -> "账务问题";
+            case ESCALATION -> "人工支持请求";
+            case GENERAL -> "订单与服务";
+        };
+    }
+
+    private AgentRequest scopedRequest(AgentRequest request, AgentType agentType) {
         String original = request.message() == null ? "" : request.message();
         String scopedMessage;
         Map<String, List<String>> scopedEntities = new LinkedHashMap<>();
         Map<String, List<String>> entities = request.entities() == null ? Map.of() : request.entities();
         copyEntity(entities, scopedEntities, "order_id");
-        copyEntity(entities, scopedEntities, "date");
 
         if (agentType == AgentType.TECHNICAL) {
+            copyScopedDates(entities, scopedEntities, original, agentType);
             copyEntity(entities, scopedEntities, "error_code");
             scopedMessage = """
                     [用户请求中与技术相关的内容]
                     %s
 
                     [技术子任务]
-                    你当前就是 Technical Agent。只处理账户保护、登录恢复、认证、系统故障和订单不可见等技术问题；不要回答扣款、退款、到账或财务审核。
-                    回复中不要复述、解释或提示账务问题，账务子任务会由协同 Agent 独立处理。
-                    不得建议“转交技术Agent”或“升级至技术Agent”。如确需人工后台排查，只说明需要人工后台排查；不得声称已记录、将记录、已提交、将提交或会继续跟进。
-                    %s
-                    """.formatted(domainMessage(original, AgentType.TECHNICAL), endingInstruction(lastTarget));
+                    你当前只负责技术问题。只处理账户保护、登录恢复、认证、系统故障和订单不可见等技术问题；不要回答扣款、退款、到账或财务审核。
+                    回复中不要复述、解释或提示账务问题，也不要介绍内部角色、协同流程或结果展示顺序。
+                    回答完本领域问题后直接结束，不要添加处理范围说明或跨领域转交提示。
+                    如确需人工后台排查，只说明需要人工后台排查；不得声称已记录、将记录、已提交、将提交或会继续跟进。
+                    """.formatted(domainMessage(original, AgentType.TECHNICAL));
         } else if (agentType == AgentType.BILLING) {
+            copyScopedDates(entities, scopedEntities, original, agentType);
             copyEntity(entities, scopedEntities, "amount");
             scopedMessage = """
                     [用户请求中与账务相关的内容]
                     %s
 
                     [账务子任务]
-                    你当前就是 Billing Agent。只处理扣款、支付、退款、账单和流水核验；不要回答登录、401、缓存或技术排障。
-                    回复中不要复述、解释或提示技术问题，技术子任务会由协同 Agent 独立处理。
+                    你当前只负责账务问题。只处理扣款、支付、退款、账单和流水核验；不要回答登录、401、缓存或技术排障。
+                    回复中不要复述、解释或提示技术问题，也不要介绍内部角色、协同流程或结果展示顺序。
+                    回答完本领域问题后直接结束，不要添加处理范围说明或跨领域转交提示。
                     区分扣款核验、退款申请审核和审核通过后到账三个阶段；只引用知识库中对应阶段的规则与起算点，没有该阶段时限时明确未知，不得将审核时限当作到账承诺。
-                    涉及实际退款可说明需要人工或财务审核，但不得声称当前对话已经转人工或已经完成退款。
-                    %s
-                    """.formatted(domainMessage(original, AgentType.BILLING), endingInstruction(lastTarget));
+                    多扣金额的争议不等于普通商品无理由退货退款；知识未明确说明适用时，不能套用七天申请期限、先退货条件或无理由退款时限，先说明核验争议的下一步即可。
+                    退款的审核主体、适用条件只按知识库说明；当前对话无法执行退款不代表平台必须人工或财务审核。不得声称当前对话已经转人工或已经完成退款。
+                    """.formatted(domainMessage(original, AgentType.BILLING));
         } else {
             scopedEntities.putAll(entities);
             scopedMessage = original;
@@ -354,44 +349,38 @@ public class AgentOrchestrator {
         );
     }
 
-    private String endingInstruction(boolean lastTarget) {
-        if (lastTarget) {
-            return "你是本次并行结果中最后展示的 Agent。回答完本领域问题后直接结束，不得再说明其他问题由哪个 Agent 处理，也不要添加“处理范围说明”段落。";
-        }
-        return "你不是最后展示的 Agent；如有必要，可在结尾用一句话提示剩余领域将由下一个协同 Agent 处理。";
-    }
-
-    private String removeTrailingCollaborationNotice(String content) {
-        if (content == null || content.isBlank()) {
-            return content == null ? "" : content;
-        }
-        List<String> blocks = new ArrayList<>(Arrays.asList(content.strip().split("\\R\\s*\\R")));
-        if (!blocks.isEmpty() && isCollaborationNotice(blocks.getLast())) {
-            blocks.removeLast();
-            if (!blocks.isEmpty() && blocks.getLast().trim().matches("#{1,6}\\s*.*(?:处理范围|协同).*(?:说明)?")) {
-                blocks.removeLast();
-            }
-        }
-        return String.join("\n\n", blocks).strip();
-    }
-
-    private boolean isCollaborationNotice(String block) {
-        String text = block == null ? "" : block.toLowerCase(Locale.ROOT);
-        return text.contains("agent")
-                && (text.contains("协同") || text.contains("另一部分") || text.contains("其他问题"))
-                && (text.contains("独立处理") || text.contains("不展开") || text.contains("不做展开") || text.contains("处理范围"));
-    }
-
     private String domainMessage(String original, AgentType agentType) {
+        List<String> relevant = domainClauses(original, agentType);
+        return relevant.isEmpty() ? "本轮没有明确的本领域问题，请勿推断或展开其他领域内容。" : String.join("；", relevant);
+    }
+
+    private List<String> domainClauses(String original, AgentType agentType) {
         String[] keywords = agentType == AgentType.TECHNICAL
                 ? new String[]{"登录", "401", "认证", "凭证", "报错", "错误", "故障", "闪退", "崩溃", "查不到", "不可见", "系统",
                         "账号被盗", "账户被盗", "账户安全", "账号安全", "密码被改", "账户保护", "账号保护"}
                 : new String[]{"扣款", "支付", "退款", "账单", "发票", "流水", "金额", "多扣", "扣了两次", "重复收费"};
-        List<String> relevant = Arrays.stream(clauses(original))
+        return Arrays.stream(clauses(original))
                 .map(String::trim)
                 .filter(part -> countActiveHits(part.toLowerCase(Locale.ROOT), keywords) > 0)
                 .toList();
-        return relevant.isEmpty() ? "本轮没有明确的本领域问题，请勿推断或展开其他领域内容。" : String.join("；", relevant);
+    }
+
+    private void copyScopedDates(Map<String, List<String>> source, Map<String, List<String>> target,
+                                 String original, AgentType agentType) {
+        AgentType otherDomain = agentType == AgentType.TECHNICAL ? AgentType.BILLING : AgentType.TECHNICAL;
+        List<String> otherClauses = domainClauses(original, otherDomain);
+        List<String> ownClauses = domainClauses(original, agentType).stream()
+                .filter(clause -> !otherClauses.contains(clause))
+                .toList();
+        // Copy only verbatim dates in an unambiguous domain clause. Do not infer attribution
+        // from global entities or convert dates; the scoped original wording remains available.
+        List<String> dates = source.getOrDefault("date", List.of()).stream()
+                .filter(date -> date != null && !date.isBlank())
+                .filter(date -> ownClauses.stream().anyMatch(clause -> clause.contains(date)))
+                .toList();
+        if (!dates.isEmpty()) {
+            target.put("date", dates);
+        }
     }
 
     private void copyEntity(
