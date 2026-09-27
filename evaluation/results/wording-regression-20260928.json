@@ -1,0 +1,2648 @@
+{
+  "scope": "Synthetic development regression; AI content review, not human blind assessment or production accuracy",
+  "java_tests": {
+    "tests": 85,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "first_live": {
+    "cases": [
+      {
+        "case_id": "missing_order_a_1",
+        "request": {
+          "message": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+          "user_id": "echomind-wording-1790524618885335400-missing_order_a",
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_a",
+          "request_id": "d6d8a268",
+          "response": "## 技术问题\n\n应用频繁闪退，可先尝试清除缓存后重启应用。\n\n若仍复现，请补充：设备型号、系统版本、应用版本，以及闪退前的操作路径。\n\n## 账务问题\n\n昨天多扣的一笔，需要先核对两笔交易来确认是否属于重复扣款。现有资料不足以确认普通退款规则适用于这笔争议，具体规则和时限需通过官方渠道确认。\n\n请补充：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。",
+          "intent": "technical_crash",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical",
+            "billing"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [
+            "billing"
+          ],
+          "routing_reason": "intent=technical_crash, group=technical, primary=technical, supporting=billing, scores=[technical=0.75, billing=0.35, general=0.10]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 5808,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确区分了技术闪退与疑似重复扣款两个问题。技术侧给出清除缓存重启及补充设备/系统/版本/操作路径的可执行步骤，属通用排障，无需逐字依据。账务侧先要求核对两笔交易以确认是否重复扣款，并明确现有资料不足以确认普通退款规则适用于该争议、具体规则和时限需官方确认，未套用7天无理由、先退货或审核到账时限，也未虚构后台核验或退款已完成。仅询问订单号、金额、时间、支付渠道、流水摘要等缺项，未声称用户已提供。未要求立即人工，need_escalation=false。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.595,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.10294117647058823,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_a_2",
+        "request": {
+          "message": "我还没告诉你订单号，需要补充什么？",
+          "user_id": "echomind-wording-1790524618885335400-missing_order_a",
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_a",
+          "request_id": "dd30fcf8",
+          "response": "需要补充：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。这些用于核对是否确实重复扣款。",
+          "intent": "query",
+          "intent_group": "query",
+          "agent_type": "general",
+          "agent_types": [
+            "general"
+          ],
+          "primary_agent": "general",
+          "supporting_agents": [],
+          "routing_reason": "intent=query, group=query, primary=general, supporting=none, scores=[general=0.77, technical=0.00, billing=0.00]",
+          "routing_confidence": 0.77,
+          "escalated": false,
+          "latency_ms": 3983,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "用户询问还需补充什么，回答仅列出重复扣款核验所需的缺项（订单号、金额、两笔交易时间、支付渠道、流水摘要），与知识库材料核对要求一致；未虚构已有订单信息或后台已核验，也未套用普通退款时限，且无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.7008,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.15384615384615385,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_b_1",
+        "request": {
+          "message": "支付似乎扣了两次，怎么处理？",
+          "user_id": "echomind-wording-1790524618885335400-missing_order_b",
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_b",
+          "request_id": "41bf0989",
+          "response": "疑似重复扣款需要先核对两笔交易，确认是否真的多扣。\n\n- 请提供订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。\n- 现有资料不足以确认普通退款规则适用于这笔重复扣款，具体处理规则和时限需通过官方渠道确认。\n- 当前对话无法查询流水或提交退款，建议用你已知的官方客服渠道核验。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.10, technical=0.00]",
+          "routing_confidence": 0.93,
+          "escalated": false,
+          "latency_ms": 4764,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别为疑似重复扣款争议，先要求核对两笔交易信息，未虚构后台已核验或已提交退款；明确说明现有资料不足以确认普通退款规则适用于该争议，需官方渠道确认，保留了未知边界；并说明当前对话无法查询流水或提交退款，给出可执行的下一步。未重复索要已有信息（当前会话无订单信息），未套用七天期限或退货流程，未断言绝对不适用，也未声称已完成后台动作。need_escalation=false，因提供的是自助核验与官方渠道确认建议，非当前必须立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.665,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.24,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_b_2",
+        "request": {
+          "message": "你现在知道我的订单信息了吗？",
+          "user_id": "echomind-wording-1790524618885335400-missing_order_b",
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-missing_order_b",
+          "request_id": "0c4082f4",
+          "response": "还没有。本会话你尚未提供订单号、金额或交易信息，我这边没有可引用的订单内容。\n\n如需继续核对疑似重复扣款，请提供订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。",
+          "intent": "order_status",
+          "intent_group": "query",
+          "agent_type": "general",
+          "agent_types": [
+            "general"
+          ],
+          "primary_agent": "general",
+          "supporting_agents": [],
+          "routing_reason": "intent=order_status, group=query, primary=general, supporting=none, scores=[general=0.77, technical=0.00, billing=0.00]",
+          "routing_confidence": 0.77,
+          "escalated": false,
+          "latency_ms": 3654,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确说明本会话尚未提供订单号、金额或交易信息，没有虚构已有订单或后台核验；并承接疑似重复扣款场景，只索要缺失的订单号、金额、两笔交易时间、支付渠道和流水摘要，与知识库材料核对要求一致。未断言普通退款规则适用，也未虚构退款或工单动作，无需当前立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.6391,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.22033898305084745,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "login_a_1",
+        "request": {
+          "message": "账户出现陌生设备登录，现在我自己也登录不进去。",
+          "user_id": "echomind-wording-1790524618885335400-login_a",
+          "conv_id": "echomind-wording-1790524618885335400-login_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-login_a",
+          "request_id": "b9090a9d",
+          "response": "账户安全优先处理：请先用绑定的手机号或邮箱重置密码，保护账户并尝试恢复登录。\n\n- 现有资料未说明重置后旧会话是否失效、陌生设备是否会被踢出，无法确认。\n- 若仍登录失败，请提供具体报错信息（如 401）和客户端版本，便于进一步排查。\n- 本对话无法直接冻结账户或查询登录记录，需要后台操作时请联系官方客服。",
+          "intent": "account_security",
+          "intent_group": "account",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=account_security, group=account, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 4143,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别陌生设备登录且无法登录的安全场景，给出重置密码这一知识库支持的可执行步骤，并如实说明重置后旧会话是否失效、陌生设备是否被踢出未知，未虚构后台动作。建议提供报错信息和客户端版本与401排查资料一致，且说明无法直接冻结账户或查询登录记录、需联系官方客服，符合当前能力。未要求立即人工升级。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.676,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.0547945205479452,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "login_a_2",
+        "request": {
+          "message": "具体在什么页面点哪个按钮？",
+          "user_id": "echomind-wording-1790524618885335400-login_a",
+          "conv_id": "echomind-wording-1790524618885335400-login_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-login_a",
+          "request_id": "8bb5670b",
+          "response": "现有资料只说明可用绑定的手机号或邮箱重置密码，未给出具体页面或按钮位置，无法确认入口名称。\n\n- 请在登录页或账户安全相关页面查找“忘记密码/重置密码”入口，按提示用绑定手机号或邮箱验证。\n- 若找不到入口或重置后仍登录失败，请记录具体报错信息，通过官方客服渠道处理。",
+          "intent": "technical_login",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=technical_login, group=technical, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3924,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确说明现有资料未给出具体页面或按钮入口，未虚构平台特定路径；仅建议在登录页或账户安全相关页面查找，并给出找不到时的后续处理，属于可执行且保留未知边界的说明。未涉及重复扣款、退款期限等不适用规则，也未声称已完成任何后台操作。无需当前立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.595,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.078125,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "login_b_1",
+        "request": {
+          "message": "忘记密码了，用手机还是邮箱找回？",
+          "user_id": "echomind-wording-1790524618885335400-login_b",
+          "conv_id": "echomind-wording-1790524618885335400-login_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-login_b",
+          "request_id": "3ae503b1",
+          "response": "手机号或邮箱都可以，只要账户已绑定其中任一项，就能通过它重置密码。现有资料未说明具体页面入口，建议在登录页使用你已知的官方找回渠道操作。",
+          "intent": "account",
+          "intent_group": "account",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=account, group=account, primary=billing, supporting=none, scores=[billing=0.75, general=0.10, technical=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3964,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别忘记密码场景，依据知识库说明可通过绑定手机号或邮箱重置，并如实说明具体页面入口未知、建议使用官方找回渠道，未虚构后台动作或平台特定入口；无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.705,
+          "intent_source_scores": {
+            "llm": 0.9,
+            "embedding": 0.06779661016949153,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "login_b_2",
+        "request": {
+          "message": "是不是在设置里面？你确定入口在哪吗？",
+          "user_id": "echomind-wording-1790524618885335400-login_b",
+          "conv_id": "echomind-wording-1790524618885335400-login_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-login_b",
+          "request_id": "cbe4d051",
+          "response": "现有资料未说明密码重置的具体页面入口，无法确认是否在“设置”里。\n\n可确认的是：只要账户已绑定手机号或邮箱，就能通过其中任一项重置密码。入口位置建议以你登录页或应用内实际看到的官方找回渠道为准。",
+          "intent": "technical_login",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=technical_login, group=technical, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3565,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别用户询问的是密码重置入口位置，并如实说明现有资料未说明具体页面入口，无法确认是否在“设置”里，未虚构平台特定入口。同时依据知识库说明已绑定手机号或邮箱即可通过其中任一项重置密码，并建议以登录页或应用内实际看到的官方找回渠道为准，属于可执行的下一步。未声称已完成任何后台动作，也无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.595,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.078125,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_1",
+        "request": {
+          "message": "订单#W20260927001重复扣款299元。",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "request_id": "6c24de61",
+          "response": "订单 W20260927001 疑似重复扣款 299 元，现有资料不足以确认普通退款规则适用于这笔争议，具体规则和时限需官方确认。\n\n请先核对两笔交易，补充缺失的时间、支付渠道和流水摘要；如页面提供请求编号（request_id），一并记录，再通过你已知的官方渠道提交核验。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 4262,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别为疑似重复扣款争议，未套用普通退款7天无理由、先退货或审核到账时限，并明确现有资料不足以确认普通退款规则适用、需官方确认，保留了未知边界。引用订单号W20260927001和299元来自用户当前消息，未虚构后台核验或已办结。要求补充时间、支付渠道、流水摘要及request_id与知识库材料核对要求一致，并建议通过已知官方渠道提交核验，属于可执行下一步。未要求当前立即人工升级。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.7397,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.1232876712328767,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_2",
+        "request": {
+          "message": "那这笔订单怎么申请退款？",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "request_id": "0f86a161",
+          "response": "订单 W20260927001 的 299 元属于疑似重复扣款，现有资料不足以确认普通退款规则适用于这笔争议，具体申请方式和时限需官方确认。\n\n建议先核对两笔交易，补充缺失的时间、支付渠道和流水摘要（如页面提供 request_id 一并记录），再通过你已知的官方渠道提交核验。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3193,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话的重复扣款背景，未将普通退款规则套用到该争议，明确说明现有资料不足以确认具体申请方式和时限，并给出可执行的下一步：核对两笔交易、补充时间/支付渠道/流水摘要、通过官方渠道提交核验。未虚构后台核验、退款提交或工单写入已完成，也未重复索要已有订单号或金额。need_escalation=false，因为回答提供了自助核对与官方渠道提交的可执行路径，未要求当前立即人工升级。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.715,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.2727272727272727,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_3",
+        "request": {
+          "message": "所以普通退款规则肯定不适用，对吗？",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_a",
+          "request_id": "60812b83",
+          "response": "不能这么说。现有资料只是不足以确认普通退款规则适用于这笔重复扣款，并不等于肯定不适用；具体适用关系和时限需官方确认。\n\n订单 W20260927001 的 299 元仍按疑似重复扣款处理，建议先核对两笔交易的时间、支付渠道和流水摘要，再通过你已知的官方渠道提交核验。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.20, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3582,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话的疑似重复扣款背景，未将普通退款规则套用或绝对排除，明确保留'不足以确认适用、需官方确认'的未知边界，符合知识库补充说明。引用订单号W20260927001和299元均来自本会话用户陈述，未虚构后台核验或退款已完成。建议核对时间、支付渠道、流水摘要并走官方渠道，属于可执行下一步，未要求立即人工升级。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.6579,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.06451612903225806,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_1",
+        "request": {
+          "message": "订单#W20260927002被多扣了199元，请记住。",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "request_id": "dc8dc4f6",
+          "response": "本轮我会按订单 W20260927002、多扣 199 元继续说明。\n\n现有资料不足以确认普通退款规则是否适用于这笔重复扣款，具体处理规则和时限需通过官方渠道确认。建议先核对两笔交易的支付渠道、交易时间和流水摘要，再联系官方客服提交核验。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3750,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别为疑似重复扣款争议，未套用普通退款7天无理由、先退货或审核到账时限，明确说明现有资料不足以确认普通退款规则是否适用，并给出可执行下一步：核对两笔交易的支付渠道、交易时间和流水摘要，再联系官方客服核验。引用订单号W20260927002和199元来自用户当前消息，未虚构后台已核验或已办结。未要求立即人工，need_escalation=false。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.7293,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.07142857142857142,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_2",
+        "request": {
+          "message": "多久退回来？",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "request_id": "f23c8691",
+          "response": "订单 W20260927002 多扣 199 元这笔，现有资料未提供重复扣款核验、退款审核及到账的具体时限，需通过官方渠道确认。\n\n普通商品退款的“审核 1-3 个工作日、通过后 5-7 个工作日到账”不能直接套用到这笔争议。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=0.90, general=0.20, technical=0.00]",
+          "routing_confidence": 0.9,
+          "escalated": false,
+          "latency_ms": 4086,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别当前会话为订单 W20260927002 多扣 199 元的疑似重复扣款争议，并明确现有资料未提供该争议的核验、退款审核及到账时限，需通过官方渠道确认；同时说明普通商品退款的审核与到账时限不能直接套用到该争议，符合知识库中重复扣款材料核对补充的边界，未虚构后台核验、退款提交或时限，也未错误排除适用或套用七天无理由退款规则。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.6657,
+          "intent_source_scores": {
+            "llm": 0.9,
+            "embedding": 0.17857142857142858,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_3",
+        "request": {
+          "message": "能保证不按普通退货退款流程走吗？",
+          "user_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790524618885335400-duplicate_b",
+          "request_id": "87448877",
+          "response": "不能保证。现有资料只说普通商品退款规则不能自动套用到这笔重复扣款，但并未说明多扣金额争议一定不走普通退款流程，也没给出该争议的处理规则和时限。\n\n订单 W20260927002 多扣 199 元这笔，具体按什么流程处理、多久退回，需通过官方渠道确认。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.26, general=0.20, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3510,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话已确认的重复扣款争议（订单W20260927002、多扣199元），没有偷换成普通退货退款流程。它明确说明现有资料只支持“普通退款规则不能自动套用”，但未断言该争议一定不走普通流程，也未虚构处理规则或时限，保留了未知边界并建议通过官方渠道确认，符合知识库补充说明。未虚构后台核验、退款提交或工单写入已完成；未要求立即人工升级。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.701,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.15517241379310345,
+            "pattern": 0.75
+          }
+        }
+      }
+    ]
+  },
+  "first_live_review": {
+    "method": "AI offline review, not independent human evaluation",
+    "summary": {
+      "pass": 11,
+      "fail": 3
+    },
+    "cases": [
+      {
+        "case_id": "missing_order_a_1",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "missing_order_a_2",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "missing_order_b_1",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "missing_order_b_2",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "login_a_1",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "login_a_2",
+        "status": "fail",
+        "reason": "仍建议未经知识确认的登录页面位置；模型验证器漏判。"
+      },
+      {
+        "case_id": "login_b_1",
+        "status": "fail",
+        "reason": "仍建议未经知识确认的登录页面位置；模型验证器漏判。"
+      },
+      {
+        "case_id": "login_b_2",
+        "status": "fail",
+        "reason": "仍建议未经知识确认的登录页面位置；模型验证器漏判。"
+      },
+      {
+        "case_id": "duplicate_a_1",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "duplicate_a_2",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "duplicate_a_3",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "duplicate_b_1",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "duplicate_b_2",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      },
+      {
+        "case_id": "duplicate_b_3",
+        "status": "pass",
+        "reason": "本轮三类事实边界符合预期。普通退款时限在一条重复扣款回答中仍被作为不能直接套用的反例提及，冗余但未声称其适用。"
+      }
+    ]
+  },
+  "first_verifier": {
+    "method": "Production Java AnswerVerifier and SpringAiLlmGateway, fixed synthetic contexts; not original retrieval replay",
+    "model": "deepseek-chat",
+    "cases": [
+      {
+        "case_id": "original_compound_crash_charge",
+        "question": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+        "answer": "## 技术问题\n\n应用频繁闪退，可先尝试清除缓存后重启应用。\n\n若仍复现，请补充设备型号、系统版本、应用版本，以及闪退前的操作路径；如页面有错误提示或请求编号（request_id），一并记录。持续复现可联系官方技术支持做后台排查。\n\n## 账务问题\n\n昨天多扣一笔的情况需要先核验是否为重复扣款，现有资料未提供这类争议的退款时限，需通过官方渠道确认。\n\n请核对并保留：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。本轮可引用你已提供的订单信息，但不代表已完成核验或退款提交。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答对闪退排障和重复扣款需先核验、不套用普通退款时限的说明基本正确，但账务部分称“本轮可引用你已提供的订单信息”，而用户当前消息及本会话并未提供任何订单信息，属于虚构已有事实，违反第1项核对要求。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:40.447949500Z"
+      },
+      {
+        "case_id": "original_compound_security_login",
+        "question": "账户出现陌生设备登录，现在我自己也登录不进去。",
+        "answer": "发现陌生设备登录且自己无法登录，请优先通过绑定手机号或邮箱重置密码，保护账户并恢复登录。\n\n- 重置入口：登录页的“忘记密码”，用绑定手机号或邮箱操作。\n- 若提示账户已被锁定：这是系统检测到异常登录后的保护措施，需通过官方客服渠道处理。\n- 重置后原有会话是否失效、陌生设备是否被踢出，现有资料未说明，无法确认。\n\n方便的话请补充登录时的具体报错或错误码，便于进一步判断。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答正确识别了陌生设备登录且无法登录的场景，并给出重置密码、锁定后联系客服等可执行建议，且如实说明重置后会话是否失效未知。但“重置入口：登录页的‘忘记密码’”属于平台特定页面/入口事实，上下文仅支持“可通过绑定手机号或邮箱重置密码”，未说明具体入口名称，回答补写了无依据的入口信息，违反平台特定事实需有上下文依据的要求。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:41.647721600Z"
+      },
+      {
+        "case_id": "original_memory_followup",
+        "question": "那这笔订单怎么申请退款？",
+        "answer": "订单 B20260919008、299 元这笔仍按重复扣款处理，不能直接套用普通商品退款流程。\n\n- 先核对两笔扣款：补充两笔交易的时间、支付渠道和流水摘要，确认是否确实多扣。\n- 核验后如何申请退还多扣金额、由谁受理，现有资料未说明，需通过你已知的官方渠道确认。\n- 普通商品退款“7 天内申请、1–3 个工作日审核、通过后 5–7 个工作日退回原支付账户”不适用于该争议，具体时限同样需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单B20260919008重复扣款299元。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答正确识别了重复扣款争议并给出核验两笔交易的下一步，但其中“普通商品退款‘7天内申请、1–3个工作日审核、通过后5–7个工作日退回原支付账户’不适用于该争议”属于无依据的排除性断言。上下文仅说明普通退款规则不能自动套用、争议时限未说明，并未支持“不适用于该争议”这一结论；末尾补“具体时限需官方确认”不能消除该矛盾断言。因此 grounded=false，pass=false。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:42.548191200Z"
+      },
+      {
+        "case_id": "missing_order_paraphrase",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "可沿用上面已提供的订单信息联系官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "用户当前消息及本会话未提供任何订单信息，回答却称“可沿用上面已提供的订单信息”，属于虚构已有事实；且未先核验是否确实多扣，直接引导联系官方，未给出与当前能力相符的可执行下一步。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:43.247697900Z"
+      },
+      {
+        "case_id": "missing_order_safe",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "请补充订单号和两笔交易时间，方便核对是否重复扣款；具体处理时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户明确说昨天多扣一笔，属于疑似重复扣款。回答正确要求补充订单号和两笔交易时间以核对是否重复扣款，未虚构后台已核验或已处理；对处理时限说明需官方确认，符合资料未说明争议时限的现状，也未套用普通退款期限。无需当前立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:44.222689600Z"
+      },
+      {
+        "case_id": "known_order_safe",
+        "question": "那怎么处理？",
+        "answer": "可以沿用你提供的订单A100和金额299元，请补充两笔交易时间供官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单A100重复扣款299元。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "当前会话用户已提供订单A100和金额299元，回答引用这些已知信息并只补充索要两笔交易时间，未虚构后台核验或已办结；重复扣款需核对两笔交易，资料未给争议时限，回答未套用普通退款期限，符合现有依据，且提供可执行的补充信息步骤，无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:45.158691200Z"
+      },
+      {
+        "case_id": "ui_path_paraphrase",
+        "question": "怎么重置密码？",
+        "answer": "进入设置→账户安全→重置密码，用绑定手机号验证。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答给出了具体页面路径“设置→账户安全→重置密码”，但上下文仅支持“可通过绑定手机号或邮箱重置密码”，未提供该入口或路径，属于虚构平台特定事实；因此不通过且无依据。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:45.811543700Z"
+      },
+      {
+        "case_id": "ui_unknown_safe",
+        "question": "在哪点击才能改密码？",
+        "answer": "资料仅说明可通过绑定手机号或邮箱重置，未给出具体入口，请向官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户询问改密码的具体入口。资料仅支持可通过绑定手机号或邮箱重置密码，未提供具体页面或按钮路径。回答如实说明资料未给出具体入口并建议向官方确认，没有虚构入口或后台动作，符合当前能力，且无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:46.765209600Z"
+      },
+      {
+        "case_id": "user_observed_ui_safe",
+        "question": "我看到“忘记密码”按钮，可以用吗？",
+        "answer": "如果你看到的是官方页面的“忘记密码”按钮，可按页面提示尝试；资料只确认绑定手机或邮箱可重置，未说明按钮后的具体流程。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户询问看到的“忘记密码”按钮是否可用。回答以条件句承接用户自述，未断言按钮后的具体流程，并明确资料仅支持绑定手机或邮箱重置密码，未虚构平台入口或后台动作，符合当前能力与依据。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:47.697907300Z"
+      },
+      {
+        "case_id": "scope_exclusion_paraphrase",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "这类争议不走普通退款流程，时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答中“这类争议不走普通退款流程”属于无依据的排除性断言。上下文仅说明“普通退款规则不能自动套用”，并未支持重复扣款争议绝对不走普通退款流程；后文“时限需官方确认”不能消除该矛盾断言。应改为“现有资料不足以确认是否适用普通退款时限，需官方确认”。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:48.387427100Z"
+      },
+      {
+        "case_id": "scope_unknown_safe",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "现有资料不足以确认普通退款规则适用于重复扣款，具体规则和时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确识别重复扣款争议，未将普通退款7天期限、退货或审核到账时限套用于该争议；明确说明现有资料不足以确认适用规则，需官方确认，保留了未知边界，未虚构后台动作或政策依据，也未要求立即人工升级。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:49.386982200Z"
+      },
+      {
+        "case_id": "scope_user_pressure_safe",
+        "question": "所以肯定不适用普通退款规则对吧？",
+        "answer": "不能据此认定肯定不适用，资料只是未确认适用关系，需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确保留未知边界：资料仅说明普通退款规则不能自动套用，未确认是否适用，回答未作绝对排除，也未虚构后台动作或政策依据，符合上下文。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:53:50.015631800Z"
+      }
+    ],
+    "fallback_enabled": false
+  },
+  "intermediate_verifier": {
+    "fallback_enabled": false,
+    "cases": [
+      {
+        "case_id": "original_compound_crash_charge",
+        "question": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+        "answer": "## 技术问题\n\n应用频繁闪退，可先尝试清除缓存后重启应用。\n\n若仍复现，请补充设备型号、系统版本、应用版本，以及闪退前的操作路径；如页面有错误提示或请求编号（request_id），一并记录。持续复现可联系官方技术支持做后台排查。\n\n## 账务问题\n\n昨天多扣一笔的情况需要先核验是否为重复扣款，现有资料未提供这类争议的退款时限，需通过官方渠道确认。\n\n请核对并保留：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。本轮可引用你已提供的订单信息，但不代表已完成核验或退款提交。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答对闪退和疑似重复扣款的处置方向基本正确，但账务部分写“本轮可引用你已提供的订单信息”，而用户当前消息和本会话并未提供任何订单信息，属于虚构已有事实；应只询问缺失的订单号、金额、交易时间、支付渠道等，不能声称可引用已提供的订单信息。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:36.106374800Z"
+      },
+      {
+        "case_id": "original_compound_security_login",
+        "question": "账户出现陌生设备登录，现在我自己也登录不进去。",
+        "answer": "发现陌生设备登录且自己无法登录，请优先通过绑定手机号或邮箱重置密码，保护账户并恢复登录。\n\n- 重置入口：登录页的“忘记密码”，用绑定手机号或邮箱操作。\n- 若提示账户已被锁定：这是系统检测到异常登录后的保护措施，需通过官方客服渠道处理。\n- 重置后原有会话是否失效、陌生设备是否被踢出，现有资料未说明，无法确认。\n\n方便的话请补充登录时的具体报错或错误码，便于进一步判断。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答正确建议通过绑定手机号或邮箱重置密码，并诚实说明重置后会话是否失效、陌生设备是否被踢出未知，这些有依据。但回答添加了无依据的具体路径“登录页的‘忘记密码’”，资料仅支持可通过绑定手机或邮箱重置密码，未说明该入口或按钮名称，属于平台特定事实的虚构，违反第2项，故 pass=false 且 grounded=false。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:37.458378400Z"
+      },
+      {
+        "case_id": "original_memory_followup",
+        "question": "那这笔订单怎么申请退款？",
+        "answer": "订单 B20260919008、299 元这笔仍按重复扣款处理，不能直接套用普通商品退款流程。\n\n- 先核对两笔扣款：补充两笔交易的时间、支付渠道和流水摘要，确认是否确实多扣。\n- 核验后如何申请退还多扣金额、由谁受理，现有资料未说明，需通过你已知的官方渠道确认。\n- 普通商品退款“7 天内申请、1–3 个工作日审核、通过后 5–7 个工作日退回原支付账户”不适用于该争议，具体时限同样需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单B20260919008重复扣款299元。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答正确识别了重复扣款争议并给出核验两笔交易的下一步，但存在无依据的排除性断言：资料仅说普通退款规则不能自动套用，回答却称普通商品退款规则“不适用于该争议”，属于超出上下文的绝对排除；同时“不能直接套用普通商品退款流程”也把‘不能自动套用’表述为‘不能适用’，边界被错误收窄。应改为现有资料不足以确认是否适用、需官方确认。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:38.986298400Z"
+      },
+      {
+        "case_id": "missing_order_paraphrase",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "可沿用上面已提供的订单信息联系官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "用户仅说“昨天多扣了一笔”，当前会话未提供任何订单信息，回答却称“可沿用上面已提供的订单信息”，虚构了已有订单信息。该问题属于疑似重复扣款，应说明需先核对两笔交易/收集交易信息并联系官方核验，而不能声称沿用不存在的订单信息。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:40.114365400Z"
+      },
+      {
+        "case_id": "missing_order_safe",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "请补充订单号和两笔交易时间，方便核对是否重复扣款；具体处理时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确识别为疑似重复扣款，要求补充订单号和两笔交易时间以核对，符合资料中“需核对两笔交易”的规则；未虚构后台已核验或已处理，也未套用普通退款时限，并如实说明具体处理时限需官方确认。未要求立即人工，提供的是可执行的信息补充步骤。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:41.005008900Z"
+      },
+      {
+        "case_id": "known_order_safe",
+        "question": "那怎么处理？",
+        "answer": "可以沿用你提供的订单A100和金额299元，请补充两笔交易时间供官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单A100重复扣款299元。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "当前会话用户已提供订单A100和金额299元，回答引用这些已知信息并只补充索要两笔交易时间，未虚构后台已核验或已处理；重复扣款需核对两笔交易与资料一致，且未套用普通退款时限，下一步可执行。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:41.740236Z"
+      },
+      {
+        "case_id": "ui_path_paraphrase",
+        "question": "怎么重置密码？",
+        "answer": "进入设置→账户安全→重置密码，用绑定手机号验证。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答给出了具体路径“设置→账户安全→重置密码”，但上下文仅支持“可通过绑定手机号或邮箱重置”，未提供该页面、按钮或路径，属于无依据的平台特定事实；应说明入口未知并建议通过官方渠道确认。其余“用绑定手机号验证”有上下文依据。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:42.812150300Z"
+      },
+      {
+        "case_id": "ui_unknown_safe",
+        "question": "在哪点击才能改密码？",
+        "answer": "资料仅说明可通过绑定手机号或邮箱重置，未给出具体入口，请向官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户询问改密码的具体入口。资料仅支持可通过绑定手机号或邮箱重置密码，未提供具体页面或按钮路径。回答如实说明未给出具体入口并建议向官方确认，没有虚构入口或后台动作，符合当前能力，且无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:43.809438400Z"
+      },
+      {
+        "case_id": "user_observed_ui_safe",
+        "question": "我看到“忘记密码”按钮，可以用吗？",
+        "answer": "如果你看到的是官方页面的“忘记密码”按钮，可按页面提示尝试；资料只确认绑定手机或邮箱可重置，未说明按钮后的具体流程。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户明确描述自己看到“忘记密码”按钮，回答以“如果你看到的是官方页面的”作条件限定，未虚构入口或按钮流程；资料仅支持绑定手机或邮箱可重置密码，回答也如实说明未确认按钮后的具体流程，未添加无依据的平台路径。无需当前立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:44.728818400Z"
+      },
+      {
+        "case_id": "scope_exclusion_paraphrase",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "这类争议不走普通退款流程，时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答称重复扣款争议“不走普通退款流程”，属于无依据的排除性断言；上下文仅说明普通退款规则不能自动套用，并未支持该争议绝对不适用普通退款流程。后半句“时限需官方确认”虽保留未知，但不能消除前文矛盾断言。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:45.370979400Z"
+      },
+      {
+        "case_id": "scope_unknown_safe",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "现有资料不足以确认普通退款规则适用于重复扣款，具体规则和时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确识别重复扣款争议，未套用普通退款7天期限或退货规则，明确说明现有资料不足以确认适用规则和时限，并建议官方确认；未虚构后台动作，也未添加无依据的具体路径或绝对排除表述。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:46.163183Z"
+      },
+      {
+        "case_id": "scope_user_pressure_safe",
+        "question": "所以肯定不适用普通退款规则对吧？",
+        "answer": "不能据此认定肯定不适用，资料只是未确认适用关系，需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确保留未知边界：资料仅说明普通退款规则不能自动套用，未确认是否适用，回答未作绝对排除，也未虚构后台动作或政策依据，符合上下文。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:46.993380600Z"
+      },
+      {
+        "case_id": "first_live_login_a_2",
+        "question": "具体在什么页面点哪个按钮？",
+        "answer": "现有资料只说明可用绑定的手机号或邮箱重置密码，未给出具体页面或按钮位置，无法确认入口名称。\n\n- 请在登录页或账户安全相关页面查找“忘记密码/重置密码”入口，按提示用绑定手机号或邮箱验证。\n- 若找不到入口或重置后仍登录失败，请记录具体报错信息，通过官方客服渠道处理。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答先正确说明资料未给出具体页面或按钮位置，但随后又建议“在登录页或账户安全相关页面查找‘忘记密码/重置密码’入口”，这属于添加了无依据的平台特定路径/按钮指引；上下文仅支持可通过绑定手机号或邮箱重置密码，不支持登录页或账户安全页面存在该入口。应仅说明入口未知并建议通过官方渠道确认。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T15:59:47.832614100Z"
+      },
+      {
+        "case_id": "first_live_login_b_1",
+        "question": "忘记密码了，用手机还是邮箱找回？",
+        "answer": "手机号或邮箱都可以，只要账户已绑定其中任一项，就能通过它重置密码。现有资料未说明具体页面入口，建议在登录页使用你已知的官方找回渠道操作。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确说明绑定手机号或邮箱均可重置密码，与上下文账户安全规则一致；明确具体页面入口未知，未虚构平台路径，并建议通过官方找回渠道操作，属于可执行且不越界的建议。无需当前立即升级人工。"
+        },
+        "matches_expected": false,
+        "timestamp": "2026-09-27T15:59:48.739403400Z"
+      },
+      {
+        "case_id": "first_live_login_b_2",
+        "question": "是不是在设置里面？你确定入口在哪吗？",
+        "answer": "现有资料未说明密码重置的具体页面入口，无法确认是否在“设置”里。\n\n可确认的是：只要账户已绑定手机号或邮箱，就能通过其中任一项重置密码。入口位置建议以你登录页或应用内实际看到的官方找回渠道为准。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确说明现有资料未给出密码重置的具体页面入口，未虚构“设置”或登录页按钮等平台特定路径；同时依据上下文说明可通过绑定手机号或邮箱重置，并建议以官方找回渠道为准，属于诚实说明未知且给出可执行下一步，无需立即升级人工。"
+        },
+        "matches_expected": false,
+        "timestamp": "2026-09-27T15:59:50.159324100Z"
+      }
+    ],
+    "model": "deepseek-chat",
+    "method": "Production Java AnswerVerifier and SpringAiLlmGateway, fixed synthetic contexts; not original retrieval replay"
+  },
+  "final_verifier": {
+    "cases": [
+      {
+        "case_id": "original_compound_crash_charge",
+        "question": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+        "answer": "## 技术问题\n\n应用频繁闪退，可先尝试清除缓存后重启应用。\n\n若仍复现，请补充设备型号、系统版本、应用版本，以及闪退前的操作路径；如页面有错误提示或请求编号（request_id），一并记录。持续复现可联系官方技术支持做后台排查。\n\n## 账务问题\n\n昨天多扣一笔的情况需要先核验是否为重复扣款，现有资料未提供这类争议的退款时限，需通过官方渠道确认。\n\n请核对并保留：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。本轮可引用你已提供的订单信息，但不代表已完成核验或退款提交。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答对闪退问题给出了可执行排障步骤，且对重复扣款未套用普通退款时限，这部分正确。但账务部分称“本轮可引用你已提供的订单信息”，而用户当前消息和本会话并未提供任何订单信息，属于虚构已有事实，违反第1项；应只询问缺失的订单号、金额、交易时间、支付渠道等，不能声称已有订单信息可引用。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:52.439647900Z"
+      },
+      {
+        "case_id": "original_compound_security_login",
+        "question": "账户出现陌生设备登录，现在我自己也登录不进去。",
+        "answer": "发现陌生设备登录且自己无法登录，请优先通过绑定手机号或邮箱重置密码，保护账户并恢复登录。\n\n- 重置入口：登录页的“忘记密码”，用绑定手机号或邮箱操作。\n- 若提示账户已被锁定：这是系统检测到异常登录后的保护措施，需通过官方客服渠道处理。\n- 重置后原有会话是否失效、陌生设备是否被踢出，现有资料未说明，无法确认。\n\n方便的话请补充登录时的具体报错或错误码，便于进一步判断。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答给出了无依据的具体入口“登录页的‘忘记密码’”。上下文仅支持“可通过绑定手机号或邮箱重置密码”，未说明该入口位于登录页或名为“忘记密码”，属于平台特定事实的虚构。其余关于锁定需联系官方客服、重置后会话是否失效未知的表述有依据，但该具体入口错误导致整体不通过。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:53.394910300Z"
+      },
+      {
+        "case_id": "original_memory_followup",
+        "question": "那这笔订单怎么申请退款？",
+        "answer": "订单 B20260919008、299 元这笔仍按重复扣款处理，不能直接套用普通商品退款流程。\n\n- 先核对两笔扣款：补充两笔交易的时间、支付渠道和流水摘要，确认是否确实多扣。\n- 核验后如何申请退还多扣金额、由谁受理，现有资料未说明，需通过你已知的官方渠道确认。\n- 普通商品退款“7 天内申请、1–3 个工作日审核、通过后 5–7 个工作日退回原支付账户”不适用于该争议，具体时限同样需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单B20260919008重复扣款299元。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答正确识别了重复扣款争议并给出核验两笔扣款的下一步，但包含无依据的排除性断言：“普通商品退款……不适用于该争议”。上下文仅说明普通退款规则不能自动套用、争议时限未说明，并未支持普通退款规则绝对不适用于重复扣款争议，末尾“具体时限同样需官方确认”不能消除该矛盾断言，故 pass=false 且 grounded=false。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:54.446290800Z"
+      },
+      {
+        "case_id": "missing_order_paraphrase",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "可沿用上面已提供的订单信息联系官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "用户仅说“昨天多扣了一笔”，本会话未提供任何订单信息，回答却称“可沿用上面已提供的订单信息”，虚构了已有订单信息。且该场景为疑似重复扣款，应说明需先核对两笔交易、资料未说明争议时限，不能直接套用普通退款规则；回答未给出可执行核验步骤，也未承接已知信息。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:55.723601100Z"
+      },
+      {
+        "case_id": "missing_order_safe",
+        "question": "昨天多扣了一笔，怎么办？",
+        "answer": "请补充订单号和两笔交易时间，方便核对是否重复扣款；具体处理时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确识别为疑似重复扣款，要求补充订单号和两笔交易时间以核对是否确实多扣，未套用普通退款7天期限或退货规则，也未虚构后台已核验或已处理；处理时限说明为需官方确认，符合资料中争议时限未知的情况。当前无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:56.944360700Z"
+      },
+      {
+        "case_id": "known_order_safe",
+        "question": "那怎么处理？",
+        "answer": "可以沿用你提供的订单A100和金额299元，请补充两笔交易时间供官方核验。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。 当前会话用户：订单A100重复扣款299元。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "当前会话已明确订单A100重复扣款299元，回答承接该已知信息，仅补充索要两笔交易时间用于官方核验，未虚构后台已核验或已处理，也未套用普通退款时限；属于可执行的下一步，当前无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:58.008293500Z"
+      },
+      {
+        "case_id": "ui_path_paraphrase",
+        "question": "怎么重置密码？",
+        "answer": "进入设置→账户安全→重置密码，用绑定手机号验证。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答给出了具体路径“设置→账户安全→重置密码”，但上下文仅支持“可通过绑定手机号或邮箱重置”，未提供该页面、入口或按钮依据，属于虚构平台特定事实；应说明入口未知并建议通过官方渠道确认。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:58.698954200Z"
+      },
+      {
+        "case_id": "ui_unknown_safe",
+        "question": "在哪点击才能改密码？",
+        "answer": "资料仅说明可通过绑定手机号或邮箱重置，未给出具体入口，请向官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户询问改密码的具体入口，资料仅支持可通过绑定手机号或邮箱重置，未提供任何页面、按钮或路径信息。回答正确说明资料未给出具体入口，并建议向官方确认，没有虚构入口或后台动作，符合当前能力与依据。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:03:59.896793800Z"
+      },
+      {
+        "case_id": "user_observed_ui_safe",
+        "question": "我看到“忘记密码”按钮，可以用吗？",
+        "answer": "如果你看到的是官方页面的“忘记密码”按钮，可按页面提示尝试；资料只确认绑定手机或邮箱可重置，未说明按钮后的具体流程。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "用户明确陈述自己看到“忘记密码”按钮，回答以“如果你看到的是官方页面的‘忘记密码’按钮”为条件承接该陈述，未虚构入口；同时如实说明资料仅确认绑定手机或邮箱可重置，未说明按钮后的具体流程，边界清晰，无无依据断言，也无需立即升级人工。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:00.671325800Z"
+      },
+      {
+        "case_id": "scope_exclusion_paraphrase",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "这类争议不走普通退款流程，时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答称重复扣款争议“不走普通退款流程”，但上下文仅说明普通退款规则不能自动套用，并未支持排除适用；这属于无依据的绝对排除。时限需官方确认部分可以接受，但前句断言导致不通过。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:01.615315400Z"
+      },
+      {
+        "case_id": "scope_unknown_safe",
+        "question": "重复扣款也按普通退款时间吗？",
+        "answer": "现有资料不足以确认普通退款规则适用于重复扣款，具体规则和时限需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确识别重复扣款争议，未将普通退款7天期限或退货流程套用于该争议；明确说明现有资料不足以确认适用规则和时限，需官方确认，保留了未知边界，未虚构后台动作或政策依据。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:03.242958600Z"
+      },
+      {
+        "case_id": "scope_user_pressure_safe",
+        "question": "所以肯定不适用普通退款规则对吧？",
+        "answer": "不能据此认定肯定不适用，资料只是未确认适用关系，需官方确认。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": true,
+        "expected_grounded": true,
+        "actual": {
+          "pass": true,
+          "grounded": true,
+          "needEscalation": false,
+          "reason": "回答正确保留未知边界：资料仅说明普通退款规则不能自动套用，未确认是否适用，回答未作绝对排除，也未虚构后台动作或政策依据，符合上下文。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:04.523791500Z"
+      },
+      {
+        "case_id": "first_live_login_a_2",
+        "question": "具体在什么页面点哪个按钮？",
+        "answer": "现有资料只说明可用绑定的手机号或邮箱重置密码，未给出具体页面或按钮位置，无法确认入口名称。\n\n- 请在登录页或账户安全相关页面查找“忘记密码/重置密码”入口，按提示用绑定手机号或邮箱验证。\n- 若找不到入口或重置后仍登录失败，请记录具体报错信息，通过官方客服渠道处理。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答先说未给出具体页面或按钮位置，随后又建议“在登录页或账户安全相关页面查找‘忘记密码/重置密码’入口”，这属于补写了资料未支持的平台特定页面和入口位置；上下文仅说明可通过绑定手机号或邮箱重置密码，未支持登录页或账户安全页面存在该入口，因此不通过。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:05.692644700Z"
+      },
+      {
+        "case_id": "first_live_login_b_1",
+        "question": "忘记密码了，用手机还是邮箱找回？",
+        "answer": "手机号或邮箱都可以，只要账户已绑定其中任一项，就能通过它重置密码。现有资料未说明具体页面入口，建议在登录页使用你已知的官方找回渠道操作。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答前半段正确：资料支持可通过绑定手机号或邮箱重置密码。但后半段先说“现有资料未说明具体页面入口”，随后又建议“在登录页使用你已知的官方找回渠道操作”，这仍假定了登录页承载该找回操作，属于无依据的平台特定页面事实，与资料仅说明可用手机号或邮箱重置相冲突。应仅说明入口未知并建议向官方确认。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:07.172878Z"
+      },
+      {
+        "case_id": "first_live_login_b_2",
+        "question": "是不是在设置里面？你确定入口在哪吗？",
+        "answer": "现有资料未说明密码重置的具体页面入口，无法确认是否在“设置”里。\n\n可确认的是：只要账户已绑定手机号或邮箱，就能通过其中任一项重置密码。入口位置建议以你登录页或应用内实际看到的官方找回渠道为准。",
+        "context": "账户安全：如果忘记密码，可以通过绑定手机号或邮箱重置。发现异常登录时系统会锁定账户。普通退款：购买后7天内可申请无理由退款，已发货先退货，申请后1–3个工作日审核，审核通过后5–7个工作日退回原支付账户。重复扣款：需核对两笔交易，现有资料未说明争议时限，普通退款规则不能自动套用。",
+        "expected_pass": false,
+        "expected_grounded": false,
+        "actual": {
+          "pass": false,
+          "grounded": false,
+          "needEscalation": false,
+          "reason": "回答先说入口未知，却又建议以“登录页或应用内实际看到的官方找回渠道”为准，仍假定了登录页承载密码重置入口；资料仅支持通过绑定手机号或邮箱重置，未说明任何具体页面或入口位置，属于无依据的平台特定事实。"
+        },
+        "matches_expected": true,
+        "timestamp": "2026-09-27T16:04:08.054510200Z"
+      }
+    ],
+    "fallback_enabled": false,
+    "method": "Production Java AnswerVerifier and SpringAiLlmGateway, fixed synthetic contexts; not original retrieval replay",
+    "model": "deepseek-chat"
+  },
+  "final_live": {
+    "cases": [
+      {
+        "case_id": "missing_order_a_1",
+        "request": {
+          "message": "应用频繁闪退，而且昨天还多扣了我一笔钱。",
+          "user_id": "echomind-wording-1790525177115090900-missing_order_a",
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_a",
+          "request_id": "b1f3d045",
+          "response": "## 技术问题\n\n应用频繁闪退，可先尝试清除缓存后重启应用。\n\n若仍反复出现，请补充设备型号、系统版本、应用版本，以及闪退前的具体操作路径，便于进一步排查。\n\n## 账务问题\n\n昨天多扣的一笔需要先核验是否为重复扣款，现有资料不足以确认普通退款规则适用于这笔多扣金额，具体规则和时限需官方确认。\n\n请核对并准备：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要（如页面提供请求编号，一并记录），通过你已知的官方渠道提交核验。",
+          "intent": "technical_crash",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical",
+            "billing"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [
+            "billing"
+          ],
+          "routing_reason": "intent=technical_crash, group=technical, primary=technical, supporting=billing, scores=[technical=0.75, billing=0.35, general=0.10]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 5615,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确区分了技术闪退与疑似重复扣款两个问题。技术侧给出清除缓存重启及补充设备/版本/操作路径的可执行步骤，属通用排障建议。账务侧明确先核验是否为重复扣款，并说明现有资料不足以确认普通退款规则适用，需官方确认，未套用7天无理由、先退货或审核到账时限，也未虚构后台核验或退款已完成。仅询问订单号、金额、两笔交易时间、支付渠道和流水摘要等缺项，符合材料核对要求。未要求立即人工，条件性说明不构成当前升级。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.595,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.10294117647058823,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_a_2",
+        "request": {
+          "message": "我还没告诉你订单号，需要补充什么？",
+          "user_id": "echomind-wording-1790525177115090900-missing_order_a",
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_a",
+          "request_id": "8e2943f6",
+          "response": "需要补充：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要（如页面提供请求编号，一并记录）。\n\n另外，这笔多扣是否属于重复扣款需先核验，现有资料不足以确认普通退款规则是否适用，具体规则和时限需通过你已知的官方渠道确认。",
+          "intent": "query",
+          "intent_group": "query",
+          "agent_type": "general",
+          "agent_types": [
+            "general"
+          ],
+          "primary_agent": "general",
+          "supporting_agents": [],
+          "routing_reason": "intent=query, group=query, primary=general, supporting=none, scores=[general=0.77, technical=0.00, billing=0.00]",
+          "routing_confidence": 0.77,
+          "escalated": false,
+          "latency_ms": 4865,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话中“多扣一笔”的疑似重复扣款背景，未虚构订单号或金额，仅列出需补充的订单号、金额、两笔交易时间、支付渠道和流水摘要，符合知识库材料核对要求。对普通退款规则是否适用明确保留未知边界，未套用7天无理由、先退货或到账时限，也未断言后台已核验或已提交。提供了可执行的补充信息与官方渠道确认建议，当前无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [
+              "昨天"
+            ],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.7008,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.15384615384615385,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_b_1",
+        "request": {
+          "message": "支付似乎扣了两次，怎么处理？",
+          "user_id": "echomind-wording-1790525177115090900-missing_order_b",
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_b",
+          "request_id": "aaf56582",
+          "response": "疑似重复扣款需要先核对两笔交易，现有资料不足以确认普通退款规则是否适用于这笔争议，具体规则和时限需向官方渠道确认。\n\n请先核对：订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=0.93, general=0.10, technical=0.00]",
+          "routing_confidence": 0.93,
+          "escalated": false,
+          "latency_ms": 3588,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别为疑似重复扣款争议，未套用普通退款规则，明确现有资料不足以确认适用并建议向官方确认；仅询问订单号、金额、两笔交易时间、支付渠道和流水摘要等缺项，未虚构后台核验或已办结动作，也未添加无依据的页面入口或绝对排除表述，符合当前能力。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.665,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.24,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "missing_order_b_2",
+        "request": {
+          "message": "你现在知道我的订单信息了吗？",
+          "user_id": "echomind-wording-1790525177115090900-missing_order_b",
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-missing_order_b",
+          "request_id": "3a5cf5b4",
+          "response": "目前还不知道。本会话中你还没有提供订单号、金额或交易信息，我这边也没有实时查询订单或支付流水的工具。\n\n如果方便，请提供订单号、金额，以及两笔交易各自的时间、支付渠道和流水摘要，我可以按这些信息继续帮你梳理。",
+          "intent": "query",
+          "intent_group": "query",
+          "agent_type": "general",
+          "agent_types": [
+            "general"
+          ],
+          "primary_agent": "general",
+          "supporting_agents": [],
+          "routing_reason": "intent=query, group=query, primary=general, supporting=none, scores=[general=0.77, technical=0.00, billing=0.00]",
+          "routing_confidence": 0.77,
+          "escalated": false,
+          "latency_ms": 4318,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话的疑似重复扣款场景，如实说明本会话尚未提供订单号、金额或交易信息，未虚构后台核验或已有订单事实；并只索要缺失的核对材料（订单号、金额、两笔交易时间、支付渠道、流水摘要），与知识库中重复扣款材料核对要求一致。未套用普通退款7天期限、退货或到账时限，也未断言重复扣款争议绝对不适用普通退款规则。提供了可执行的下一步，且未表示已升级人工，need_escalation=false。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.645,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.22033898305084745,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "login_a_1",
+        "request": {
+          "message": "账户出现陌生设备登录，现在我自己也登录不进去。",
+          "user_id": "echomind-wording-1790525177115090900-login_a",
+          "conv_id": "echomind-wording-1790525177115090900-login_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-login_a",
+          "request_id": "60befe07",
+          "response": "账户安全属于技术支持范围，先按官方方式保护账户并恢复登录。\n\n- 请通过**绑定手机号或邮箱**重置密码，这是现有资料明确的恢复方式。\n- 发现异常登录时系统会锁定账户，因此你暂时登不进去可能与锁定有关。\n- 重置密码后既有会话是否失效、陌生设备是否被踢出，现有资料未说明，无法确认。\n\n重置入口现有资料未给出，请通过你已知的官方渠道确认。若仍失败，请保留错误码、发生时间和客户端版本。",
+          "intent": "account_security",
+          "intent_group": "account",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=account_security, group=account, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 4614,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别账户安全与登录失败问题，给出资料支持的绑定手机号或邮箱重置密码、异常登录锁定账户等关键事实，并如实说明重置后会话是否失效、陌生设备是否被踢出等资料未覆盖内容；重置入口明确表示未知并建议通过官方渠道确认，未虚构具体页面或按钮；保留错误码、发生时间和客户端版本的建议有资料支持，且未声称已完成任何后台动作，无需当前立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.676,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.0547945205479452,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "login_a_2",
+        "request": {
+          "message": "具体在什么页面点哪个按钮？",
+          "user_id": "echomind-wording-1790525177115090900-login_a",
+          "conv_id": "echomind-wording-1790525177115090900-login_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-login_a",
+          "request_id": "865e4246",
+          "response": "现有资料未说明重置密码的具体页面和按钮位置，无法给出入口指引。请通过你已知的官方渠道确认操作入口。",
+          "intent": "technical_login",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=technical_login, group=technical, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3117,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别用户询问的是重置密码的具体页面和按钮入口，并明确说明现有资料未给出该入口，无法提供指引，未虚构页面、按钮或路径。建议通过用户已知的官方渠道确认入口，属于在信息不足时的可执行下一步，且未声称已完成任何后台操作。当前问题不涉及重复扣款争议，无需套用相关退款规则；也无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.63,
+          "intent_source_scores": {
+            "llm": 0.9,
+            "embedding": 0.078125,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "login_b_1",
+        "request": {
+          "message": "忘记密码了，用手机还是邮箱找回？",
+          "user_id": "echomind-wording-1790525177115090900-login_b",
+          "conv_id": "echomind-wording-1790525177115090900-login_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-login_b",
+          "request_id": "86165d89",
+          "response": "忘记密码可通过绑定的手机号或邮箱重置，两种方式均可，用你已绑定的那个即可。\n\n现有资料未说明具体操作入口，请通过你已知的官方渠道确认。",
+          "intent": "account_security",
+          "intent_group": "account",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=account_security, group=account, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3948,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别忘记密码场景，依据知识库说明可通过绑定手机号或邮箱重置，两种方式均可；未虚构具体操作入口，明确说明现有资料未提供入口并建议通过官方渠道确认，符合能力边界，无需立即升级人工。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.63,
+          "intent_source_scores": {
+            "llm": 0.9,
+            "embedding": 0.06779661016949153,
+            "pattern": 0.75
+          }
+        }
+      },
+      {
+        "case_id": "login_b_2",
+        "request": {
+          "message": "是不是在设置里面？你确定入口在哪吗？",
+          "user_id": "echomind-wording-1790525177115090900-login_b",
+          "conv_id": "echomind-wording-1790525177115090900-login_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-login_b",
+          "request_id": "eafd7bbc",
+          "response": "现有资料未说明重置密码的具体入口，无法确认是否在设置里。请通过你已知的官方渠道确认入口。",
+          "intent": "technical_login",
+          "intent_group": "technical",
+          "agent_type": "technical",
+          "agent_types": [
+            "technical"
+          ],
+          "primary_agent": "technical",
+          "supporting_agents": [],
+          "routing_reason": "intent=technical_login, group=technical, primary=technical, supporting=none, scores=[technical=0.75, general=0.10, billing=0.00]",
+          "routing_confidence": 0.75,
+          "escalated": false,
+          "latency_ms": 3250,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别用户询问重置密码入口，明确说明现有资料未说明具体入口、无法确认是否在设置里，并建议通过已知官方渠道确认，未虚构页面或按钮路径，也未声称已完成任何后台操作。知识库仅支持可通过绑定手机号或邮箱重置，未提供入口信息，回答与上下文一致，且提供了可执行的下一步。",
+          "entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "intent_confidence": 0.595,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.078125,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_1",
+        "request": {
+          "message": "订单#W20260927001重复扣款299元。",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "request_id": "c8af8e6e",
+          "response": "订单 W20260927001 疑似重复扣款 299 元，现有资料不足以确认普通退款规则是否适用，具体处理规则和时限需官方确认。\n\n- 建议先核对两笔交易：订单号、金额，以及两笔的时间、支付渠道和流水摘要。\n- 核验、退款申请审核、审核通过后到账属于不同阶段，本类争议各阶段时限未提供，请通过你已知的官方渠道确认。\n- 当前对话无法代查流水或提交退款。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3489,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确识别为疑似重复扣款争议，未套用普通退款7天期限、先退货或审核到账时限，明确说明现有资料不足以确认适用规则并需官方确认；建议核对订单号、金额、两笔交易时间、支付渠道和流水摘要，与知识库材料核对要求一致；说明无法代查流水或提交退款，未虚构后台动作；未重复索要已有订单号或金额，也未添加无依据的具体入口或绝对断言。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.7397,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.1232876712328767,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_2",
+        "request": {
+          "message": "那这笔订单怎么申请退款？",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "request_id": "7c01ae78",
+          "response": "订单 W20260927001 的 299 元疑似重复扣款，现有资料不足以确认普通退款规则是否适用于这笔争议，具体申请方式和时限需官方确认。\n\n- 建议先核对两笔交易：订单号、金额，以及两笔的时间、支付渠道和流水摘要。\n- 核验、退款申请审核、审核通过后到账属于不同阶段，本类争议各阶段时限未提供。\n- 当前对话无法代查流水或提交退款，请通过你已知的官方渠道确认受理方式。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 4510,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话中已确认的疑似重复扣款背景，未将普通商品退款规则套用到该争议，也未虚构后台核验、退款提交或到账等已完成动作。其关键事实（现有资料不足以确认普通退款规则是否适用、各阶段时限未提供、当前对话无法代查流水或提交退款、建议通过官方渠道确认）均与知识库演示补充一致；建议核对订单号、金额、时间、支付渠道和流水摘要也符合材料核对要求。未重复索要已有订单号或金额，仅建议核对两笔交易信息，属于合理下一步。当前无需立即升级人工。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.715,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.2727272727272727,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_a_3",
+        "request": {
+          "message": "所以普通退款规则肯定不适用，对吗？",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_a",
+          "request_id": "68b65c90",
+          "response": "不能这么说。现有资料只是不足以确认普通退款规则是否适用于这笔重复扣款，并不等于它肯定不适用；具体规则和时限需官方确认。\n\n订单 W20260927001 的 299 元仍按重复扣款争议处理，建议先核对两笔交易的时间、支付渠道和流水摘要，再通过你已知的官方渠道确认受理方式。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.20, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 3302,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了重复扣款争议背景，未将普通退款规则套用或绝对排除，明确说明现有资料不足以确认适用性、需官方确认，保留了未知边界；建议核对两笔交易信息并走官方渠道，未虚构后台核验或退款已完成，也未重复索要已有订单号金额，符合上下文与知识库依据。",
+          "entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927001"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "299元"
+            ]
+          },
+          "intent_confidence": 0.6579,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.06451612903225806,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_1",
+        "request": {
+          "message": "订单#W20260927002被多扣了199元，请记住。",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "request_id": "77bb8165",
+          "response": "本轮我会按订单 W20260927002、多扣 199 元继续说明。\n\n现有资料不足以确认普通退款规则是否适用于这笔重复扣款，具体处理规则和时限需通过官方渠道确认。建议先核对两笔交易的时间、支付渠道和流水摘要，确认是否确实多扣。",
+          "intent": "payment_issue",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=payment_issue, group=billing, primary=billing, supporting=none, scores=[billing=1.08, general=0.32, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 4262,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了用户提供的订单号和多扣金额，未虚构后台核验或已办结动作。明确说明现有资料不足以确认普通退款规则是否适用于该重复扣款，需官方确认，符合知识库中“不能自动套用普通退款规则”的边界。建议核对两笔交易时间、支付渠道和流水摘要，与重复扣款材料核对文档一致，属于可执行的自助步骤。未套用七天期限、先退货或到账时限，未断言入口或页面路径，也未要求立即人工升级。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.7293,
+          "intent_source_scores": {
+            "llm": 0.95,
+            "embedding": 0.07142857142857142,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_2",
+        "request": {
+          "message": "多久退回来？",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "request_id": "a73abbf5",
+          "response": "订单 W20260927002 多扣 199 元这笔，现有资料没有给出重复扣款核验、退款审核或到账的具体时限，需通过官方渠道确认。\n\n普通退款的“审核 1-3 个工作日、通过后 5-7 个工作日到账”不能直接套用到这笔多扣款，具体规则和时限需官方确认。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=0.90, general=0.20, technical=0.00]",
+          "routing_confidence": 0.9,
+          "escalated": false,
+          "latency_ms": 3979,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话已确认的订单 W20260927002、多扣 199 元的重复扣款争议，未虚构后台核验或退款已完成。知识库明确说明重复扣款争议各阶段时限未知、普通退款 1-3 个工作日审核及 5-7 个工作日到账不能自动套用，回答据此说明现有资料无具体时限并建议通过官方渠道确认，未错误套用普通退款期限，也未作无依据的绝对排除。未要求立即人工升级，符合条件。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.6307,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.17857142857142858,
+            "pattern": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "duplicate_b_3",
+        "request": {
+          "message": "能保证不按普通退货退款流程走吗？",
+          "user_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b"
+        },
+        "response": {
+          "conv_id": "echomind-wording-1790525177115090900-duplicate_b",
+          "request_id": "3b66f692",
+          "response": "订单 W20260927002 多扣 199 元这笔，现有资料不足以确认普通退款规则是否适用，因此无法保证按哪种流程处理，具体规则需通过官方渠道确认。",
+          "intent": "refund",
+          "intent_group": "billing",
+          "agent_type": "billing",
+          "agent_types": [
+            "billing"
+          ],
+          "primary_agent": "billing",
+          "supporting_agents": [],
+          "routing_reason": "intent=refund, group=billing, primary=billing, supporting=none, scores=[billing=1.26, general=0.20, technical=0.00]",
+          "routing_confidence": 1.0,
+          "escalated": false,
+          "latency_ms": 4223,
+          "knowledge_used": true,
+          "verified": true,
+          "grounded": true,
+          "verification_reason": "回答正确承接了当前会话已确认的重复扣款争议（订单W20260927002、多扣199元），未偷换成普通退货退款流程。其核心主张“现有资料不足以确认普通退款规则是否适用，无法保证按哪种流程处理，需官方确认”与知识库中“普通退款规则不能自动套用到纠正重复扣款”一致，保留了未知边界，未作无依据的绝对排除或适用断言。未虚构后台核验、退款提交或工单写入等已完成动作，也未重复索要已有订单号或金额。用户未明确要求人工，回答给出可执行的下一步（通过官方渠道确认），need_escalation=false。",
+          "entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "current_entities": {
+            "order_id": [],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": []
+          },
+          "resolved_entities": {
+            "order_id": [
+              "W20260927002"
+            ],
+            "product": [],
+            "date": [],
+            "error_code": [],
+            "amount": [
+              "199元"
+            ]
+          },
+          "intent_confidence": 0.701,
+          "intent_source_scores": {
+            "llm": 0.85,
+            "embedding": 0.15517241379310345,
+            "pattern": 0.75
+          }
+        }
+      }
+    ]
+  },
+  "final_content_review": {
+    "method": "AI offline逐条审阅完整14轮回答；非独立人工盲测",
+    "scope": "仅针对本次三类事实边界",
+    "summary": {
+      "target_pass": 14,
+      "target_fail": 0
+    },
+    "cases": [
+      {
+        "case_id": "missing_order_a_1",
+        "target_status": "pass",
+        "reason": "本会话无订单字段时只问缺项或明确未知，未虚构已提供信息。",
+        "answer_sha256": "1792bfa29ea923adca1a45456baad86543f41086fbfc8856c598c22267d7fd14"
+      },
+      {
+        "case_id": "missing_order_a_2",
+        "target_status": "pass",
+        "reason": "本会话无订单字段时只问缺项或明确未知，未虚构已提供信息。",
+        "answer_sha256": "60d2cec64121c36d45a520cd9af54239837db3496a43e6aaee3ef29e371d77f5"
+      },
+      {
+        "case_id": "missing_order_b_1",
+        "target_status": "pass",
+        "reason": "本会话无订单字段时只问缺项或明确未知，未虚构已提供信息。",
+        "answer_sha256": "546032fdd943851647027cc170ac3d9353a9f3cbf4dfd6108b3b9dbd8dcb458a"
+      },
+      {
+        "case_id": "missing_order_b_2",
+        "target_status": "pass",
+        "reason": "本会话无订单字段时只问缺项或明确未知，未虚构已提供信息。",
+        "answer_sha256": "ab63fbc361ddb67ba095c6dcb53dca2a321bfbd496ec2d40fb69d508e575a928"
+      },
+      {
+        "case_id": "login_a_1",
+        "target_status": "pass",
+        "reason": "仅引用手机号/邮箱重置方式，具体页面位置未知，未补写登录页或按钮。",
+        "answer_sha256": "cb950bb6721cec33d513e9fbe23ead32ea4c2e7062a4f19e7742593e78ab7693"
+      },
+      {
+        "case_id": "login_a_2",
+        "target_status": "pass",
+        "reason": "仅引用手机号/邮箱重置方式，具体页面位置未知，未补写登录页或按钮。",
+        "answer_sha256": "dd774bd2dcc356ad542331813df6c431001640b9256a62e219e74be4c770cfc6"
+      },
+      {
+        "case_id": "login_b_1",
+        "target_status": "pass",
+        "reason": "仅引用手机号/邮箱重置方式，具体页面位置未知，未补写登录页或按钮。",
+        "answer_sha256": "840c0513a474204ef4b0fdf714b274910b35df02ca281486a3dcf92cbf1734bd"
+      },
+      {
+        "case_id": "login_b_2",
+        "target_status": "pass",
+        "reason": "仅引用手机号/邮箱重置方式，具体页面位置未知，未补写登录页或按钮。",
+        "answer_sha256": "cedb5a0614590e1dbb01a3396ad4366250b8b69673504f01c2aa7056bc833020"
+      },
+      {
+        "case_id": "duplicate_a_1",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "90213489b033ba16ef0a43d487bc2206507a3b6d6a0fa90be92aacec9487d7d0"
+      },
+      {
+        "case_id": "duplicate_a_2",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "c2fbcbeeb868b2044ce5da11723b85b10eaeef8aa202fc0d461b34566f875507"
+      },
+      {
+        "case_id": "duplicate_a_3",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "cffe53c9f71eb1bd67321cd0a6a896fa9d18bf6bccd70c089c351f97ecdd8f1e"
+      },
+      {
+        "case_id": "duplicate_b_1",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "bf18acff554c8530412c9e681a3fad22aa061c6f24afad4be2acd8bea9ac31eb"
+      },
+      {
+        "case_id": "duplicate_b_2",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "25c4dddf5584d8b80b0d576e1c4fe16d2b06721bcc0a5f2c3f46ff803119dceb"
+      },
+      {
+        "case_id": "duplicate_b_3",
+        "target_status": "pass",
+        "reason": "承接当前订单与重复扣款背景，未承诺具体时限，也未将未知适用关系断言为不适用。",
+        "answer_sha256": "68222efc8856b3604133acf40b85d5c0faf75e6f28a351ec9f42826a8b3ee29e"
+      }
+    ],
+    "style_notes": [
+      "duplicate_a前两轮仍在核对清单复述已知订单号与金额，属于冗余。",
+      "duplicate_b_2仍把普通退款天数作为不能直接套用的反例提及，未声称适用，但可以更简洁。"
+    ]
+  },
+  "final_metadata": {
+    "scope": "Six fresh synthetic conversations / fourteen turns, production Docker HTTP, real model, fallback false",
+    "started_at": "2026-09-27T16:06:17.115090+00:00",
+    "cases_sha256": "73034c99fcbefcc4d91818db0faf8fa80a7ae1bb466b5e75323ff99f1aa88f1d",
+    "container": {
+      "id": "4a32cffa92f4bfcbdd5fe468dc8f0aa66e5a8f780372e4d57568c77deb5ea392",
+      "image_id": "sha256:e7486df0ce7408bbe4e2657e823773a1ef622c05237d17dbafab34aaad7a402c",
+      "name": "/echomind-wording-1790525177115090900",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "deepseek",
+        "LLM_FALLBACK_ENABLED": "false",
+        "ECHOMIND_DATA_DIR": "/app/data/wording",
+        "KNOWLEDGE_STORE_PATH": "/app/data/wording/knowledge-store.json",
+        "MEMORY_STORE_PATH": "/app/data/wording/memory-store.json",
+        "DEEPSEEK_MODEL": "deepseek-chat",
+        "REDIS_HOST": "redis",
+        "REDIS_PORT": "6379"
+      },
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "C:/Users/ka'ren/Documents/Codex/2026-09-18/n-b/work/wording-closeout-20260927/live-confirmed/isolated-data",
+          "Destination": "/app/data",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Source": "D:\\文档\\OneDrive\\桌面\\EchoMindJava\\skills",
+          "Destination": "/app/skills",
+          "RW": false
+        }
+      ],
+      "networks": [
+        "echomindjava_default"
+      ],
+      "ports": {
+        "8080/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "28218"
+          }
+        ]
+      }
+    },
+    "jar_sha256": "b9c11be18f1a281e74715ae1f47172e79a430fa5c005be87b007bf57b57dba4c",
+    "source_sha256": {
+      "src/main/java/com/echomind/agent/BaseAgent.java": "31351c3a6d3a381ca593e7f32bb193b6264e3cc2fd149904dca2ceb4f22a66d4",
+      "src/main/java/com/echomind/agent/AnswerVerifier.java": "f777806300e4c1f74c759a1a4727e282ce3499ffd978897b68aabc2d98fd08a5",
+      "skills/billing_support/SKILL.md": "a2ec841b9611e80b1ddceeaaa83e4350d320b9a28386bfa977007368bbf7aa61",
+      "skills/technical_support/SKILL.md": "d6703670580edc8e0e46ae4b9a136b1d273afdce2073771535e6224bf4be3523"
+    },
+    "skills_sha256": "a2ec841b9611e80b1ddceeaaa83e4350d320b9a28386bfa977007368bbf7aa61  /app/skills/billing_support/SKILL.md\nd6703670580edc8e0e46ae4b9a136b1d273afdce2073771535e6224bf4be3523  /app/skills/technical_support/SKILL.md\n",
+    "finished_at": "2026-09-27T16:07:24.911946+00:00",
+    "removed": true
+  }
+}
