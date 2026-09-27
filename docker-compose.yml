@@ -52,6 +52,7 @@ services:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-anthropic}
     volumes:
       - app-data:/app/data
+      - ./skills:/app/skills:ro
     depends_on:
       redis:
         condition: service_healthy

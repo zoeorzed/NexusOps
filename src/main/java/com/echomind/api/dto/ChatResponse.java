@@ -42,6 +42,9 @@ public record ChatResponse(
         boolean verified,
         @Schema(description = "回答是否基于上下文")
         boolean grounded,
+        @Schema(description = "回答校验的判定理由；校验器不可用时说明回答尚未验证")
+        @JsonProperty("verification_reason")
+        String verificationReason,
         @Schema(description = "兼容旧版调用方的结构化实体字段，内容与 resolved_entities 相同")
         Map<String, List<String>> entities,
         @Schema(description = "仅从当前一轮用户消息中直接抽取的结构化实体")

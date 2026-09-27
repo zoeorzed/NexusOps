@@ -6,7 +6,8 @@ import com.echomind.intent.*;
 import com.echomind.memory.*;
 import com.echomind.tool.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import java.time.Instant;
 import java.util.*;
@@ -15,7 +16,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.*;
 
 class ChatMemoryFlowTest {
-    @Test void historicalOrderReachesAgentBeforeGenerationAndCurrentEntitiesStaySeparate() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void historicalOrderReachesAgentAndVerificationOutcomeRemainsObservable(boolean verificationPassed) throws Exception {
         var intent = mock(IntentRecognizer.class);
         var memory = mock(MemoryManager.class);
         var orchestrator = mock(AgentOrchestrator.class);
@@ -32,7 +35,8 @@ class ChatMemoryFlowTest {
         when(orchestrator.run(any(AgentRequest.class),anyList())).thenReturn(new OrchestratorResult(
                 "req","请核实订单",AgentType.BILLING,IntentCategory.REFUND,false,0,List.of(AgentType.BILLING),
                 AgentType.BILLING,List.of(),List.of(),List.of(),"test",.9));
-        when(verifier.verify(anyString(),anyString(),anyString())).thenReturn(new AnswerVerifier.VerificationResult(true,true,false,"test"));
+        String reason = verificationPassed ? "用户信息与上下文一致" : "退款到账时限缺少依据";
+        when(verifier.verify(anyString(),anyString(),anyString())).thenReturn(new AnswerVerifier.VerificationResult(verificationPassed,verificationPassed,false,reason));
         var controller = new EchoMindController(orchestrator,intent,memory,new ConversationEntityResolver(intent),tools,
                 null,verifier,null,null,null,new ObjectMapper(),null);
         var response = controller.chat(new ChatRequest("那这笔订单怎么退款？","demo","c"));
@@ -43,6 +47,11 @@ class ChatMemoryFlowTest {
                 .doesNotContain("OLD999", "退到银行卡", "用户画像", "相关历史");
         assertThat(response.currentEntities()).isEmpty();
         assertThat(response.resolvedEntities()).containsEntry("order_id",List.of("A20260914001"));
+        assertThat(response.verified()).isEqualTo(verificationPassed);
+        assertThat(response.grounded()).isEqualTo(verificationPassed);
+        assertThat(response.verificationReason()).isEqualTo(reason);
+        var json = new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(response));
+        assertThat(json.path("verification_reason").asText()).isEqualTo(reason);
         verify(memory).addMessage("demo","c",MessageRole.USER,"那这笔订单怎么退款？");
     }
 }

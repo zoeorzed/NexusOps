@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "purpose": "Focused semantic regression criteria for revised duplicate-charge scope and refund-account boundaries; AI review, not independent human blind assessment or production accuracy.",
+  "dataset": "business-scenarios-v2.json",
+  "dataset_sha256": "a43e63e12c25cf12a10d1f9f2a87dd01dcb00cf30dbaeb3553f27fc4e55b13ac",
+  "review_protocol": [
+    "Keep the original 12 requests, 10 retrieval questions, reference IDs and structural assertions unchanged. Replace only the duplicate-charge reference text with the v2 text and apply the documented semantic criteria changes.",
+    "Read every full natural-language answer against v2 content_criteria and v2 reference documents; verify the dataset SHA-256. Do not use grounded/verified flags as truth.",
+    "Record each run, each criterion, direct evidence and remaining issues; do not select only successful responses.",
+    "Distinguish user-provided facts, supported policies, conditional troubleshooting advice and unsupported platform-specific claims.",
+    "Conciseness is a presentation goal, not a substitute for factual correctness. Preserve conditions and do not mechanically truncate answers.",
+    "v1 and v2 differ in reference knowledge and semantic criteria. Preserve both versions and all original evidence; do not describe cross-version passing counts as accuracy improvement on one unchanged frozen benchmark.",
+    "Use fresh isolated knowledge storage for controlled v2 evaluation. The duplicate-charge reference retains its v1 ID because its first 50 characters are unchanged, but its full text and content SHA-256 differ. Verify the complete v2 text, not merely the presence of its ID; a backed-up everyday store may update this document using the same-ID upsert."
+  ],
+  "all_cases": [
+    "No invented execution, order lookup, invoice issuance, refund completion, ticket creation or live human connection.",
+    "No unsupported platform-specific policy or session mechanism, even when softened with usually or generally.",
+    "No customer-facing Agent, primary/supporting role or internal handoff narration; structured API trace fields remain available.",
+    "Ask only for missing information needed for the next step. Do not hide repeated requests for known fields in a materials checklist.",
+    "Do not use another conversation's orders, amounts, topics or intentions."
+  ],
+  "cases": {
+    "compound_crash_charge": [
+      "Cover both crash troubleshooting and disputed charge steps, with distinct business headings and no internal handoff notice.",
+      "For the disputed charge, give material-checking and official-verification guidance only. Do not transfer ordinary merchandise return conditions or 1–3/5–7 working-day timings to duplicate-charge correction; acknowledge unknown dispute processing timelines when discussing timing."
+    ],
+    "compound_delivery_refund": [
+      "Directly clarify whether goods have shipped and been received when unknown, then explain conditional refund/return rules without claiming logistics lookup."
+    ],
+    "compound_security_login": [
+      "Address account protection and login recovery without claiming password reset invalidates existing sessions or certainly blocks an unfamiliar device."
+    ],
+    "compound_invoice_handoff": [
+      "Preserve the tax-number correction request, state no direct live handoff, and advise official confirmation without inventing invoice review policy."
+    ],
+    "refund_stages": [
+      "Use known purchase age and unshipped status; separate 1–3 working days review from 5–7 after approval, without asking for materials merely to answer the timing question."
+    ],
+    "missing_invoice_policy": [
+      "Explicitly acknowledge the correction deadline and fee are unknown; do not invent cross-month, reimbursement or mandatory-review conditions."
+    ],
+    "refund_execution_boundary": [
+      "Use order B20260919007 and 299 yuan as user-provided facts, explain inability to transfer funds and the documented original-payment-account rule; do not request those facts again.",
+      "The original payment account may be the bank card originally charged. Do not categorically say refunds cannot go to a bank card; do not promise redirection to any different card or invent a new payout method."
+    ],
+    "memory_first": [
+      "Acknowledge B20260919008 and 299 yuan only within this conversation; request only genuinely missing disputed-transaction details.",
+      "Treat the duplicate charge as an unverified user report, not a confirmed transaction. Request missing transaction details without inserting ordinary merchandise refund eligibility or timings."
+    ],
+    "memory_followup": [
+      "Naturally carry forward both B20260919008 and 299 yuan; no repeated request or preparation list for the already-known order and amount.",
+      "Carry forward the duplicate-charge context as well as the order and amount. Guide missing transaction-material collection and official verification; do not turn the follow-up into an ordinary merchandise return. State that specific dispute refund terms and processing timelines need official confirmation; do not apply the ordinary 7-day rule, return-first condition, 1–3-day review or 5–7-day payout timings."
+    ],
+    "new_conversation": [
+      "Clarify the current order without assuming the previous order, amount or refund preference."
+    ],
+    "other_user_same_conversation_id": [
+      "Do not expose the previous user's order or amount; this only checks synthetic client-ID separation, not authentication."
+    ],
+    "server_500": [
+      "Explain a server-side error without asserting a specific root cause; provide proportionate troubleshooting or support guidance without old-order examples."
+    ]
+  },
+  "previous_checklist": {
+    "file": "answer-quality-checklist-v1.json",
+    "sha256": "eb89afd42abb7dbe50bc2b86843fd6a055772e042a6b6bf30c7b58ff3327e2b2"
+  }
+}

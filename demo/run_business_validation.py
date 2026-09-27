@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSESSMENT_VERSION = 2
+DEFAULT_DATASET_PATH = ROOT / 'evaluation/business-scenarios-v2.json'
 
 
 def as_mapping(value):
@@ -23,6 +24,18 @@ def as_mapping(value):
 
 def as_list(value):
     return value if isinstance(value, list) else []
+
+
+def validate_business_skills(summary):
+    """Reject the missing Docker Skills mount before importing data or chatting."""
+    skills = as_list(as_mapping(summary).get('skills'))
+    expected = {'账单退款处理规范', '通用客服接待规范', '技术支持处理规范'}
+    enabled = {item.get('name') for item in skills
+               if isinstance(item, dict) and item.get('enabled') is True}
+    if (as_mapping(summary).get('count') != len(skills)
+            or as_mapping(summary).get('errors') != []
+            or not expected.issubset(enabled)):
+        raise ValueError('Required enabled business Skills are missing or have load errors')
 
 
 def validate_dataset(dataset):
@@ -199,7 +212,8 @@ def utc_now():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base-url', default='http://127.0.0.1:8080')
-    parser.add_argument('--dataset', type=Path, default=ROOT / 'evaluation/business-scenarios-v1.json')
+    parser.add_argument('--dataset', type=Path, default=DEFAULT_DATASET_PATH)
+    parser.add_argument('--knowledge', type=Path, default=ROOT / 'demo/knowledge.json')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--timeout-seconds', type=int, default=180)
     args = parser.parse_args()
@@ -213,7 +227,7 @@ def main():
         parser.error('timeout-seconds must be 1..600')
     dataset = json.loads(args.dataset.read_text(encoding='utf-8'))
     validate_dataset(dataset)
-    knowledge_path = ROOT / 'demo/knowledge.json'
+    knowledge_path = args.knowledge
     demo = json.loads(knowledge_path.read_text(encoding='utf-8'))
     expected_demo = [{key: ref[key] for key in ('title', 'content')}
                      for ref in dataset['reference_documents'] if ref['origin'] == 'demo/knowledge.json']
@@ -265,6 +279,8 @@ def main():
 
     try:
         evidence['health'] = request('/health')
+        evidence['skills_before'] = request('/skills')
+        validate_business_skills(evidence['skills_before'])
         evidence['knowledge_before'] = request('/knowledge/stats')
         if evidence['knowledge_before'].get('total_chunks') != 6:
             raise ValueError('Fresh isolated service must contain exactly six default chunks before import')

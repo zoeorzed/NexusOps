@@ -4,7 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
-from run_business_validation import assess_chat, assess_retrieval, validate_dataset
+from run_business_validation import (DEFAULT_DATASET_PATH, assess_chat, assess_retrieval,
+                                     validate_business_skills, validate_dataset)
 
 
 DATASET_PATH = Path(__file__).resolve().parents[1] / 'evaluation/business-scenarios-v1.json'
@@ -42,6 +43,34 @@ def check_results(case, record, previous=None):
 
 
 class BusinessDatasetContractTest(unittest.TestCase):
+    def test_current_dataset_matches_demo_knowledge_and_preserves_original_cases(self):
+        current = json.loads(DEFAULT_DATASET_PATH.read_text(encoding='utf-8'))
+        validate_dataset(current)
+        legacy = dataset_fixture()
+        for group in ('chat_cases', 'retrieval_cases'):
+            def protocol(case):
+                return {key: value for key, value in case.items()
+                        if key not in ('content_criteria', 'reference_ids', 'expected_reference_ids')}
+            self.assertEqual([protocol(case) for case in current[group]],
+                             [protocol(case) for case in legacy[group]])
+        knowledge = json.loads((DATASET_PATH.parents[1] / 'demo/knowledge.json').read_text(encoding='utf-8'))
+        references = [{key: ref[key] for key in ('title', 'content')}
+                      for ref in current['reference_documents'] if ref['origin'] == 'demo/knowledge.json']
+        self.assertEqual(knowledge['documents'], references)
+
+    def test_missing_docker_skills_mount_is_rejected_even_without_errors(self):
+        with self.assertRaisesRegex(ValueError, 'Skills'):
+            validate_business_skills({'root_dir': '/app/skills', 'count': 0, 'skills': [], 'errors': []})
+
+    def test_only_enabled_complete_business_skills_are_accepted(self):
+        skills = [{'name': name, 'enabled': True} for name in
+                  ['账单退款处理规范', '通用客服接待规范', '技术支持处理规范']]
+        summary = {'count': 3, 'skills': skills, 'errors': []}
+        validate_business_skills(summary)
+        skills[0]['enabled'] = False
+        with self.assertRaisesRegex(ValueError, 'Skills'):
+            validate_business_skills(summary)
+
     def test_frozen_dataset_is_bounded_and_references_are_consistent(self):
         dataset = dataset_fixture()
         validate_dataset(dataset)

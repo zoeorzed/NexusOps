@@ -55,12 +55,14 @@ class EvidenceContractTest(unittest.TestCase):
         checks, _ = assess_evidence(records)
         self.assertFalse(checks['second_turn_order_comes_from_history'])
 
-    def test_demo_supplement_defers_to_default_refund_policy(self):
+    def test_demo_supplement_separates_duplicate_charge_from_ordinary_returns(self):
         payload = json.loads(Path(__file__).with_name('knowledge.json').read_text(encoding='utf-8'))
         billing = next(doc['content'] for doc in payload['documents'] if '重复扣款' in doc['title'])
         self.assertIn('默认《退款政策》', billing)
-        self.assertIn('不规定核验反馈时限', billing)
-        self.assertNotRegex(billing, r'\d+\s*(小时|个工作日|至|-)')
+        self.assertIn('未提供该类争议各阶段的具体时限', billing)
+        self.assertIn('适用于普通商品退款，不能自动套用到纠正重复扣款', billing)
+        self.assertIn('也应保留重复扣款背景', billing)
+        self.assertNotIn('退款申请条件、审核与到账时限统一以默认', billing)
         self.assertIn('当前会话可以引用', billing)
 
 

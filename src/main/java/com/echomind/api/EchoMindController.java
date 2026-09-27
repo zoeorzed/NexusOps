@@ -165,6 +165,7 @@ public class EchoMindController {
                 knowledge.success() && knowledge.data() != null && !knowledge.data().isEmpty(),
                 verification.pass(),
                 verification.grounded(),
+                verification.reason(),
                 resolvedEntities,
                 currentEntities,
                 resolvedEntities,

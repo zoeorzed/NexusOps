@@ -1,6 +1,8 @@
 # 业务场景验证的复现与判分
 
-本验证补充真实 `/chat` 链路和知识检索的业务证据。数据位于 [`business-scenarios-v1.json`](../evaluation/business-scenarios-v1.json)：12 条对话请求、10 条独立检索请求，全部使用合成用户、订单和演示知识。它是开发回归集，未混入冻结的 95 条单标签意图评测，也没有独立人工盲标，结果不能表述为生产问答正确率。
+本验证补充真实 `/chat` 链路和知识检索的业务证据。当前数据位于 [`business-scenarios-v2.json`](../evaluation/business-scenarios-v2.json)：12 条对话请求、10 条独立检索请求，全部使用合成用户、订单和演示知识。它是开发回归集，未混入冻结的 95 条单标签意图评测，也没有独立人工盲标，结果不能表述为生产问答正确率。
+
+v2 保留 v1 的用户问题和结构预期，澄清重复扣款核验与普通商品退货的知识范围，并补充银行卡退款渠道的内容标准。v1 和历史原始结果仍保留；知识资料已经变化，新旧内容结果不能包装成同一冻结基准上的准确率提升。历史复现需同时传入 `--dataset` 与 `--knowledge`，使用对应历史数据集及知识快照。
 
 ## 覆盖范围
 
@@ -17,7 +19,7 @@
 
 先完成 Java 构建，启动专用 Redis 和项目服务。使用已有的模型配置，设置 `LLM_FALLBACK_ENABLED=false`，令 `ECHOMIND_DATA_DIR` 指向一个新建的空目录，并将服务绑定本机接口。显式设置实际 Redis 地址及密码。不要使用已有演示服务的数据目录：采集器要求初始库恰好为 6 个默认 chunk，随后只导入一次 `demo/knowledge.json` 的 2 个补充 chunk。
 
-服务就绪后，在项目根目录运行：
+服务就绪后，在项目根目录运行。采集器会先检查 `/skills` 的三项业务技能均启用且无加载错误，未通过会在导入知识和模型调用前退出，防止 Docker 漏挂载时仍宣布业务验收成功：
 
 ```powershell
 python demo/run_business_validation.py --base-url http://127.0.0.1:8080 --output evaluation/results/business-new-run.json
@@ -49,6 +51,8 @@ python -m unittest discover -s demo -p test_business_validation.py -v
 ## 对话结构检查与内容复核
 
 结构检查核对请求/会话/Trace 标识、预期领域参与、升级标记、检索工具报告状态、Agent 执行失败和实体继承。工具报告成功仍不能替代内容复核。`intent_source_scores.llm` 记录模型侧置信度，零值也可能来自识别异常后的兜底；接口未暴露明确失败标记，不能仅凭零值统计调用失败。`verified`、`grounded` 是模型判断，不是独立业务真值。
+
+`/chat` 还返回 `verification_reason`，保留校验器的简短判定依据，采集器会随原始响应一并保存。遇到 `verified=false` 或 `grounded=false` 时，先读理由，再对照当前用户消息、当前会话和知识的适用范围判断。校验器不可用时仍返回未验证状态及 `verifier unavailable: answer unverified`，不会改成通过。旧结果没有此字段，不能事后认定其失败一定来自误判，也不能通过重新采样覆盖原记录；应使用新的输出目录保存复测。
 
 逐条内容复核需对照数据集 `content_criteria` 和冻结参考原文：是否覆盖全部诉求，退款审核 1–3 个工作日与审核通过后到账 5–7 个工作日是否区分，缺失规则时是否承认未知，是否误称已查流水/退款/开票/建单/接通真人。不要仅用关键词命中或另一模型自评分宣布业务通过。由 AI 助手完成的复核应明确标注，不称为独立人工验收。
 
