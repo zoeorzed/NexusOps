@@ -120,7 +120,7 @@ public class EchoMindController {
         IntentResult resolvedIntent = new IntentResult(intentResult.intent(), intentResult.confidence(),
                 intentResult.urgency(), intentResult.intentGroup(), resolvedEntities,
                 intentResult.reasoning(), intentResult.latencyMs(), intentResult.sourceScores());
-        boolean useKnowledge = shouldUseKnowledge(intentResult.intent());
+        boolean useKnowledge = shouldUseKnowledge(intentResult.intent()) && !isMemoryCapabilityOnly(request.message());
         ToolCallTrace knowledgeTrace = null;
         ToolResult<List<SearchResult>> knowledge = useKnowledge
                 ? knowledgeToolManager.searchWithRewrite(request.message(), 3)
@@ -142,16 +142,17 @@ public class EchoMindController {
                 AgentRequest.of(request.message(), userId, conversationId, fullContext, history, resolvedIntent, requestId),
                 knowledgeTrace == null ? List.of() : List.of(knowledgeTrace)
         );
-        AnswerVerifier.VerificationResult verification = answerVerifier.verify(request.message(), result.response(), fullContext);
+        AnswerVerifier.ReviewedAnswer reviewed = answerVerifier.review(request.message(), result.response(), fullContext);
+        AnswerVerifier.VerificationResult verification = reviewed.verification();
         boolean escalated = result.escalated() || verification.needEscalation();
         orchestrator.updateTraceEscalated(result.requestId(), escalated);
         memoryManager.addMessage(userId, conversationId, MessageRole.USER, request.message());
-        memoryManager.addMessage(userId, conversationId, MessageRole.ASSISTANT, result.response());
+        memoryManager.addMessage(userId, conversationId, MessageRole.ASSISTANT, reviewed.answer());
         memoryManager.updateProfile(userId, conversationId);
         return new ChatResponse(
                 conversationId,
                 result.requestId(),
-                result.response(),
+                reviewed.answer(),
                 result.intent() == null ? "other" : result.intent().name().toLowerCase(),
                 intentResult.intentGroup(),
                 result.agentType().name().toLowerCase(),
@@ -261,6 +262,13 @@ public class EchoMindController {
     @Operation(summary = "运行评测", description = "运行意图识别和对话质量评测；请求体为空时使用内置默认用例。")
     public Map<String, Object> eval(@RequestBody(required = false) EvalRunRequest request) {
         return evaluator.run(request);
+    }
+
+    static boolean isMemoryCapabilityOnly(String message) {
+        if (message == null) return false;
+        boolean capability = message.matches("(?s).*(会话记忆|会话存储|记忆能力|记忆功能).*?");
+        boolean businessQuestion = message.matches("(?s).*(退款|退货|扣款|支付|物流|发货|配送|会员|积分|密码|登录).*?");
+        return capability && !businessQuestion;
     }
 
     private boolean shouldUseKnowledge(IntentCategory intent) {

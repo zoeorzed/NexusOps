@@ -610,6 +610,10 @@ public class AgentOrchestrator {
     }
 
     private boolean needsClarification(AgentRequest req) {
+        // A canned first-turn clarification discards useful context on follow-ups.
+        if (req.history() != null && req.history().stream().anyMatch(m -> "user".equals(m.get("role")))) {
+            return false;
+        }
         if (req.intent() != IntentCategory.OTHER) {
             return false;
         }

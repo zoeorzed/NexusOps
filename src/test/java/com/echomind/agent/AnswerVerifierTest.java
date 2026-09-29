@@ -11,7 +11,7 @@ class AnswerVerifierTest {
     @Test
     void doesNotEscalateConditionalManualInvestigation() {
         LlmGateway llm = (system, prompt, temperature, maxTokens) ->
-                "{\"pass\":true,\"grounded\":true,\"need_escalation\":true,\"reason\":\"mentions manual review\"}";
+                "{\"pass\":true,\"grounded\":true,\"need_escalation\":true,\"reason\":\"mentions manual review\",\"claims\":[{\"statement_id\":\"A0\",\"kind\":\"SUGGESTION\",\"verdict\":\"SUPPORTED\",\"source_ids\":[]}],\"contradictions\":[]}";
         AnswerVerifier verifier = new AnswerVerifier(llm, new ObjectMapper());
 
         AnswerVerifier.VerificationResult result = verifier.verify(

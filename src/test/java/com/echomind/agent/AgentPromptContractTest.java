@@ -118,7 +118,7 @@ class AgentPromptContractTest {
     }
 
     @Test
-    void verifierReceivesOriginalCardAndDisputedChargeRulesAlongsideCandidateAnswer() {
+    void verifierReceivesQuestionAnswerContextAndEvidenceSources() {
         AtomicReference<String> prompt = new AtomicReference<>();
         LlmGateway capture = (s, p, t, m) -> {
             prompt.set(p);
@@ -130,11 +130,7 @@ class AgentPromptContractTest {
 
         new AnswerVerifier(capture, new ObjectMapper()).verify(question, answer, context);
 
-        assertThat(prompt.get()).contains(question, answer, context, "与银行卡不是互斥选项", "原渠道未知时不得自行断言",
-                "原路退款也不意味着可换到任意新卡", "需要先核验是否确实多扣", "不能偷换成普通商品退货",
-                "pass=false 且 grounded=false", "用户当前消息和当前会话中的用户陈述", "带条件的规则",
-                "引用回答中的具体主张", "检索到某篇文档不证明用户发生了该文档描述的情况",
-                "只有当前会话已说明疑似重复扣款时", "无需知识库再记录这笔用户交易");
+        assertThat(prompt.get()).contains(question, answer, context, "[来源目录]", "CAPABILITIES", "SCOPE", "source_ids", "contradictions");
     }
 
     @ParameterizedTest

@@ -64,14 +64,14 @@ def sha(path):
 
 
 rows=[];created=False
-metadata={'scope':'Six fresh synthetic conversations / fourteen turns, production Docker HTTP, real model, fallback false','started_at':now(),'cases_sha256':sha(CASES)}
+metadata={'scope':'Evidence gate regression / frozen holdout; case file defines turns, production Docker HTTP, real model, fallback false','started_at':now(),'cases_sha256':sha(CASES)}
 try:
  data=ROOT/'isolated-data';data.mkdir(exist_ok=False)
  args=['compose','run','-d','--no-deps','--name',NAME,'-p','127.0.0.1:28218:8080','--volume',f'{data.as_posix()}:/app/data']
  for k,v in {'LLM_FALLBACK_ENABLED':'false','ECHOMIND_DATA_DIR':'/app/data/wording','KNOWLEDGE_STORE_PATH':'/app/data/wording/knowledge-store.json','MEMORY_STORE_PATH':'/app/data/wording/memory-store.json'}.items():args+=['-e',f'{k}={v}']
  docker(*args,'echomind-java');created=True
  metadata['container']=safe_inspect(inspect(NAME));metadata['jar_sha256']=docker('exec',NAME,'sha256sum','/app/echomind-java.jar').stdout.split()[0]
- metadata['source_sha256']={name:sha(PROJECT/name) for name in ['src/main/java/com/echomind/agent/BaseAgent.java','src/main/java/com/echomind/agent/AnswerVerifier.java','skills/billing_support/SKILL.md','skills/technical_support/SKILL.md']}
+ metadata['source_sha256']={name:sha(PROJECT/name) for name in ['src/main/java/com/echomind/agent/BaseAgent.java','src/main/java/com/echomind/agent/AgentOrchestrator.java','src/main/java/com/echomind/agent/AnswerVerifier.java','src/main/java/com/echomind/agent/EvidenceBoundaryChecks.java','src/main/java/com/echomind/api/EchoMindController.java','skills/billing_support/SKILL.md','skills/technical_support/SKILL.md']}
  metadata['skills_sha256']=docker('exec',NAME,'sha256sum','/app/skills/billing_support/SKILL.md','/app/skills/technical_support/SKILL.md').stdout
  assert metadata['container']['environment']['LLM_FALLBACK_ENABLED']=='false'
  for _ in range(90):
@@ -89,5 +89,7 @@ try:
    save('live-result.json',{'cases':rows});print(rows[-1]['case_id']+' completed',flush=True)
 finally:
  if created:docker('rm','-f',NAME,check=False)
+ metadata['source_unchanged']=all(sha(PROJECT/n)==v for n,v in metadata.get('source_sha256',{}).items())
+ metadata['cases_unchanged']=sha(CASES)==metadata['cases_sha256']
  metadata['finished_at']=now();metadata['removed']=docker('inspect',NAME,check=False).returncode!=0
  save('live-metadata.json',metadata)

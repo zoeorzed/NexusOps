@@ -19,6 +19,18 @@ class AgentOrchestratorTest {
 
     private final LlmGateway deterministicLlm = (system, prompt, temperature, maxTokens) -> "处理完成";
 
+    @Test void lowConfidenceFollowupUsesConversationInsteadOfCannedFirstTurnQuestion() {
+        AtomicInteger calls = new AtomicInteger();
+        LlmGateway llm = (s,p,t,m) -> { calls.incrementAndGet(); assertThat(p).contains("疑似重复扣款"); return "请补充两笔交易的时间。"; };
+        var pool = Map.of(AgentType.GENERAL, List.<BaseAgent>of(new GeneralAgent(llm, null)));
+        var orchestrator = new AgentOrchestrator(null, pool, new RequestTraceStore());
+        var request = new AgentRequest("现在缺哪些？", "u", "c", "user: 疑似重复扣款",
+                List.of(Map.of("role", "user", "content", "疑似重复扣款")), Map.of(), IntentCategory.OTHER,
+                "other", UrgencyLevel.LOW, 0.42, "followup-context");
+        assertThat(orchestrator.run(request).response()).isEqualTo("请补充两笔交易的时间。");
+        assertThat(calls.get()).isEqualTo(1);
+    }
+
     @Test
     void routesCompositeRequestToPrimaryAndSupportingAgentsAndRecordsTrace() {
         RequestTraceStore traceStore = new RequestTraceStore();
