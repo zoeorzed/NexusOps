@@ -11,8 +11,6 @@ data/
 .mvn/*.zip
 .mvn/wrapper/maven-wrapper.jar
 /src/main/java/Main.java
-.resume-*/
-.resume_compare/
 /*.docx
 /output/
 /tmp/
